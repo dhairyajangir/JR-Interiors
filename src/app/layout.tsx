@@ -6,6 +6,8 @@ import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/components/CartProvider";
 import { RevealObserver } from "@/components/RevealObserver";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getCartCount } from "@/lib/cart";
 
 const dmSans = DM_Sans({
@@ -89,6 +91,8 @@ export default async function RootLayout({
           <Footer />
         </CartProvider>
         <RevealObserver />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
