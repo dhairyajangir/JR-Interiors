@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -9,13 +8,6 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getCartCount } from "@/lib/cart";
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-dm-sans",
-  display: "swap",
-});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -76,7 +68,7 @@ export default async function RootLayout({
   const cartCount = await getCartCount();
 
   return (
-    <html lang="en" className={`${dmSans.variable} scroll-smooth`}>
+    <html lang="en" className="scroll-smooth">
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
