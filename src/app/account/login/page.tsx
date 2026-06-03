@@ -1,0 +1,24 @@
+import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import { getCurrentUser } from "@/lib/auth";
+import { AuthForm } from "@/components/AuthForm";
+
+export const dynamic = "force-dynamic";
+export const metadata: Metadata = { title: "Sign In | JR INTERIORS" };
+
+export default async function LoginPage() {
+  if (await getCurrentUser()) redirect("/account");
+  return (
+    <main className="pt-32 pb-stack-lg min-h-screen">
+      <div className="max-w-md mx-auto px-margin-mobile">
+        <div className="text-center mb-stack-md">
+          <span className="text-label-xs uppercase tracking-[0.2em] text-primary/60 mb-3 block">Welcome back</span>
+          <h1 className="text-headline-section-mobile text-primary">Sign in to your account</h1>
+        </div>
+        <div className="bg-surface-container-lowest rounded-xl editorial-shadow p-6 md:p-8">
+          <AuthForm mode="login" />
+        </div>
+      </div>
+    </main>
+  );
+}

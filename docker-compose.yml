@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: jr_interiors_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: jr
+      POSTGRES_PASSWORD: jr_secret
+      POSTGRES_DB: jr_interiors
+    ports:
+      - "5433:5432"
+    volumes:
+      - jr_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jr -d jr_interiors"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  jr_pgdata:

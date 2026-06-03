@@ -1,0 +1,16 @@
+node_modules
+.next
+.next/
+out
+.env
+.env.local
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+*.log
+prod*.log
+build*.log
+seed*.log
+push*.log
+dev.log
+gen.log

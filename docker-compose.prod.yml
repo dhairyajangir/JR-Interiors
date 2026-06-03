@@ -1,0 +1,41 @@
+# Full production stack: Postgres + the Next.js app (standalone image).
+# 1. Copy .env.example -> .env.production and fill real values.
+# 2. docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+# 3. First run only — apply schema + seed (from a machine with the repo):
+#      DATABASE_URL=<prod-url> npx prisma db push && npx prisma db seed
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-jr}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jr_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-jr_interiors}
+    volumes:
+      - jr_pgdata_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-jr} -d ${POSTGRES_DB:-jr_interiors}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      args:
+        AUTH_SECRET: ${AUTH_SECRET}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      AUTH_SECRET: ${AUTH_SECRET}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET}
+    ports:
+      - "3000:3000"
+
+volumes:
+  jr_pgdata_prod:

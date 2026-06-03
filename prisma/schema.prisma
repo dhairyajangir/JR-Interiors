@@ -1,0 +1,174 @@
+// JR Interiors — data model. Prices stored as integer cents.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  fullName     String
+  phone        String?
+  createdAt    DateTime  @default(now())
+  addresses    Address[]
+  orders       Order[]
+}
+
+model Address {
+  id         String  @id @default(cuid())
+  userId     String
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label      String  @default("Home")
+  fullName   String
+  line1      String
+  line2      String?
+  city       String
+  region     String
+  postalCode String
+  country    String  @default("India")
+  phone      String?
+  isDefault  Boolean @default(false)
+
+  @@index([userId])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  kind        String    @default("room") // "room" | "collection" | "type"
+  description String?
+  imageUrl    String?
+  itemCount   Int       @default(0)
+  sortOrder   Int       @default(0)
+  products    Product[]
+
+  @@index([kind])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  tagline     String? // e.g. "Walnut / Linen"
+  series      String? // e.g. "Artisanal Living Series"
+  description String
+  priceCents  Int
+  material    String
+  room        String // "Living" | "Office" | "Dining" | "Bedroom" | "Studio"
+  type        String // "Seating" | "Tables" | "Storage" | "Bedroom" | "Lighting" | "Decor"
+  imageUrl    String
+  images      String[] @default([])
+  finishes    Json     @default("[]") // [{ name, hex }]
+  upholstery  String[] @default([])
+  colorHexes  String[] @default([])
+  rating      Float    @default(0)
+  reviewCount Int      @default(0)
+  featured    Boolean  @default(false)
+  signature   Boolean  @default(false)
+  inStock     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  categoryId String?
+  category   Category?   @relation(fields: [categoryId], references: [id])
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+  reviews    Review[]
+
+  @@index([room])
+  @@index([type])
+  @@index([featured])
+  @@index([signature])
+  @@index([room, type]) // combined catalog filter
+  @@index([material])
+  @@index([createdAt]) // default "newest" sort
+  @@index([priceCents]) // price sort
+  @@index([reviewCount]) // "most popular" sort
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  author    String
+  initials  String
+  rating    Int
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id         String  @id @default(cuid())
+  cartId     String
+  cart       Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity   Int     @default(1)
+  finish     String?
+  upholstery String?
+
+  @@index([cartId])
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  number        String      @unique
+  email         String
+  fullName      String
+  phone         String?
+  address1      String
+  address2      String?
+  city          String
+  region        String
+  postalCode    String
+  country       String      @default("India")
+  shippingType  String      @default("standard")
+  subtotalCents Int
+  shippingCents Int
+  taxCents      Int // GST amount (paise)
+  totalCents    Int
+  status        String      @default("confirmed")
+  paymentMethod String      @default("cod") // "cod" | "razorpay"
+  paymentStatus String      @default("pending") // "pending" | "paid" | "failed"
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  createdAt     DateTime    @default(now())
+  userId        String?
+  user          User?       @relation(fields: [userId], references: [id])
+  items         OrderItem[]
+
+  @@index([userId])
+  @@index([createdAt]) // order history + admin list (newest first)
+  @@index([email])
+  @@index([paymentStatus])
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId  String?
+  product    Product? @relation(fields: [productId], references: [id])
+  name       String
+  priceCents Int
+  quantity   Int
+  finish     String?
+  upholstery String?
+  imageUrl   String?
+
+  @@index([orderId])
+}
