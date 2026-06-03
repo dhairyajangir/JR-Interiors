@@ -79,6 +79,7 @@ export async function createOrderFromCart(input: CheckoutInput): Promise<CreateO
           finish: l.finish,
           upholstery: l.upholstery,
           imageUrl: l.imageUrl,
+          sellerId: l.sellerId,
         })),
       },
     },

@@ -15,7 +15,7 @@ type Finish = { name: string; hex: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const product = await prisma.product.findUnique({ where: { slug } });
+  const product = await prisma.product.findFirst({ where: { slug, status: "PUBLISHED" } });
   if (!product) return { title: "Not found | JR INTERIORS" };
   return {
     title: `${product.name} | JR INTERIORS`,
@@ -25,14 +25,14 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: { reviews: { orderBy: { createdAt: "asc" } }, category: true },
+  const product = await prisma.product.findFirst({
+    where: { slug, status: "PUBLISHED" },
+    include: { reviews: { orderBy: { createdAt: "asc" } }, category: true, seller: true },
   });
   if (!product) notFound();
 
   const related = await prisma.product.findMany({
-    where: { room: product.room, id: { not: product.id } },
+    where: { room: product.room, id: { not: product.id }, status: "PUBLISHED" },
     take: 4,
     orderBy: { reviewCount: "desc" },
   });
@@ -66,6 +66,7 @@ export default async function ProductPage({ params }: { params: Params }) {
           images: product.images.length ? product.images : [product.imageUrl],
           finishes: (product.finishes as unknown as Finish[]) ?? [],
           upholstery: product.upholstery,
+          sellerName: product.seller?.brandName ?? "JR Interiors",
         }}
         reviews={product.reviews.map((r) => ({
           id: r.id,

@@ -24,7 +24,7 @@ const CONSULT =
 export default async function HomePage() {
   const [signature, rooms] = await Promise.all([
     prisma.product.findMany({
-      where: { signature: true },
+      where: { signature: true, status: "PUBLISHED" },
       take: 4,
       orderBy: { priceCents: "desc" },
     }),

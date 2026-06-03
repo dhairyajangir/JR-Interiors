@@ -14,9 +14,26 @@ model User {
   passwordHash String
   fullName     String
   phone        String?
+  role         String    @default("CUSTOMER") // "CUSTOMER" | "SELLER" | "ADMIN"
   createdAt    DateTime  @default(now())
   addresses    Address[]
   orders       Order[]
+  seller       Seller?
+
+  @@index([role])
+}
+
+model Seller {
+  id        String    @id @default(cuid())
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brandName String
+  slug      String    @unique
+  bio       String?
+  logoUrl   String?
+  status    String    @default("active") // "active" | "suspended"
+  createdAt DateTime  @default(now())
+  products  Product[]
 }
 
 model Address {
@@ -72,8 +89,13 @@ model Product {
   featured    Boolean  @default(false)
   signature   Boolean  @default(false)
   inStock     Boolean  @default(true)
+  stock       Int      @default(0)
+  status      String   @default("PUBLISHED") // "DRAFT" | "PENDING" | "PUBLISHED" | "REJECTED"
+  reviewNote  String? // admin rejection reason
   createdAt   DateTime @default(now())
 
+  sellerId   String?
+  seller     Seller?     @relation(fields: [sellerId], references: [id])
   categoryId String?
   category   Category?   @relation(fields: [categoryId], references: [id])
   cartItems  CartItem[]
@@ -89,6 +111,9 @@ model Product {
   @@index([createdAt]) // default "newest" sort
   @@index([priceCents]) // price sort
   @@index([reviewCount]) // "most popular" sort
+  @@index([status]) // storefront publish filter + moderation queue
+  @@index([sellerId]) // seller dashboard
+  @@index([status, createdAt]) // published catalog ordered by newest
 }
 
 model Review {
@@ -169,6 +194,9 @@ model OrderItem {
   finish     String?
   upholstery String?
   imageUrl   String?
+  sellerId   String? // snapshot of the product's seller at order time
+  itemStatus String  @default("pending") // "pending" | "fulfilled"
 
   @@index([orderId])
+  @@index([sellerId])
 }

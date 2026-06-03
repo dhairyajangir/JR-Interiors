@@ -23,6 +23,7 @@ export default async function FurniturePage({ searchParams }: { searchParams: SP
   const page = Math.max(1, parseInt((sp.page as string) ?? "1", 10) || 1);
 
   const where: Prisma.ProductWhereInput = {
+    status: "PUBLISHED",
     ...(type ? { type } : {}),
     ...(room ? { room } : {}),
     ...(materials.length ? { material: { in: materials } } : {}),

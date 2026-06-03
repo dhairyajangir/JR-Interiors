@@ -28,12 +28,16 @@ export default async function AccountPage() {
             <p className="text-body-lg text-on-surface-variant">Welcome back, {user.fullName.split(" ")[0]}.</p>
           </div>
           <div className="flex items-center gap-6">
-            {process.env.ADMIN_EMAIL &&
-              user.email.toLowerCase() === process.env.ADMIN_EMAIL.toLowerCase() && (
-                <Link href="/admin/orders" className="flex items-center gap-2 text-label-sm text-primary font-semibold hover:underline">
-                  <Icon name="dashboard" className="text-[18px]" /> All orders
-                </Link>
-              )}
+            {user.sellerId && (
+              <Link href="/seller" className="flex items-center gap-2 text-label-sm text-primary font-semibold hover:underline">
+                <Icon name="storefront" className="text-[18px]" /> Seller Studio
+              </Link>
+            )}
+            {user.isAdmin && (
+              <Link href="/admin/orders" className="flex items-center gap-2 text-label-sm text-primary font-semibold hover:underline">
+                <Icon name="dashboard" className="text-[18px]" /> Admin
+              </Link>
+            )}
             <LogoutButton />
           </div>
         </div>

@@ -16,6 +16,7 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
   const results = query
     ? await prisma.product.findMany({
         where: {
+          status: "PUBLISHED",
           OR: [
             { name: { contains: query, mode: "insensitive" } },
             { description: { contains: query, mode: "insensitive" } },
@@ -31,7 +32,7 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
     : [];
 
   const popular = !query
-    ? await prisma.product.findMany({ where: { signature: true }, take: 4, orderBy: { priceCents: "desc" } })
+    ? await prisma.product.findMany({ where: { signature: true, status: "PUBLISHED" }, take: 4, orderBy: { priceCents: "desc" } })
     : [];
 
   return (

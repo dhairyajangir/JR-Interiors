@@ -15,6 +15,7 @@ export type CartLine = {
   quantity: number;
   finish: string | null;
   upholstery: string | null;
+  sellerId: string | null;
   lineTotalCents: number;
 };
 
@@ -80,6 +81,7 @@ export async function getCart(): Promise<CartSummary> {
       quantity: item.quantity,
       finish: item.finish,
       upholstery: item.upholstery,
+      sellerId: item.product.sellerId,
       lineTotalCents: lineTotal,
     };
   });

@@ -433,9 +433,10 @@ async function main() {
   await prisma.cartItem.deleteMany();
   await prisma.cart.deleteMany();
   await prisma.review.deleteMany();
-  await prisma.address.deleteMany();
-  await prisma.user.deleteMany();
   await prisma.product.deleteMany();
+  await prisma.address.deleteMany();
+  await prisma.seller.deleteMany();
+  await prisma.user.deleteMany();
   await prisma.category.deleteMany();
 
   console.log("Seeding demo user…");
@@ -513,14 +514,77 @@ async function main() {
     }
   }
 
+  console.log("Seeding demo seller + listings…");
+  const sellerUser = await prisma.user.create({
+    data: {
+      email: "seller@studiooak.in",
+      passwordHash: hashPassword("password123"),
+      fullName: "Riya Mehta",
+      role: "SELLER",
+      seller: {
+        create: {
+          brandName: "Studio Oak",
+          slug: "studio-oak",
+          bio: "Small-batch lighting & soft furnishings, handmade in Jaipur.",
+        },
+      },
+    },
+    include: { seller: true },
+  });
+  const sellerId = sellerUser.seller!.id;
+
+  await prisma.product.create({
+    data: {
+      slug: "oslo-reading-lamp",
+      name: "Oslo Reading Lamp",
+      tagline: "Brushed Brass",
+      description:
+        "A slim brushed-brass reading lamp with a pivoting head and warm dimmable glow. Hand-assembled by Studio Oak.",
+      priceCents: 1650000,
+      material: "Brushed Brass",
+      room: "Studio",
+      type: "Lighting",
+      imageUrl: G(IMG.aurora),
+      images: [G(IMG.aurora)],
+      colorHexes: ["#b08d57", CHARCOAL],
+      stock: 12,
+      inStock: true,
+      status: "PUBLISHED",
+      sellerId,
+      categoryId: catByRoom.get("Studio") ?? null,
+    },
+  });
+
+  await prisma.product.create({
+    data: {
+      slug: "nordic-linen-pouffe",
+      name: "Nordic Linen Pouffe",
+      tagline: "Wool / Oatmeal",
+      description:
+        "A hand-stitched wool pouffe in oatmeal — doubles as a footrest or extra seat. Awaiting approval.",
+      priceCents: 1200000,
+      material: "Wool",
+      room: "Living",
+      type: "Seating",
+      imageUrl: G(IMG.stark),
+      images: [G(IMG.stark)],
+      colorHexes: [CREAM, TAUPE],
+      stock: 20,
+      inStock: true,
+      status: "PENDING",
+      sellerId,
+      categoryId: catByRoom.get("Living") ?? null,
+    },
+  });
+
   console.log("Updating category counts…");
   for (const [room, id] of catByRoom) {
-    const count = await prisma.product.count({ where: { room } });
+    const count = await prisma.product.count({ where: { room, status: "PUBLISHED" } });
     await prisma.category.update({ where: { id }, data: { itemCount: count } });
   }
 
   const total = await prisma.product.count();
-  console.log(`Done. ${total} products, ${CATEGORIES.length} categories.`);
+  console.log(`Done. ${total} products, ${CATEGORIES.length} categories, 1 demo seller.`);
 }
 
 main()

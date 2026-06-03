@@ -17,7 +17,7 @@ export async function addToCart(input: {
 }): Promise<ActionResult> {
   const qty = Math.max(1, Math.min(input.quantity ?? 1, 99));
   const product = await prisma.product.findUnique({ where: { id: input.productId } });
-  if (!product) return { ok: false, error: "Product not found" };
+  if (!product || product.status !== "PUBLISHED") return { ok: false, error: "Product not available" };
 
   const cartId = await ensureCart();
 

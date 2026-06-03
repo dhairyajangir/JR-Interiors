@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { priceExact } from "@/lib/format";
 import { Icon } from "@/components/Icon";
+import { AdminNav } from "@/components/AdminNav";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Orders · Admin", robots: { index: false } };
@@ -18,21 +19,21 @@ const dateFmt = new Intl.DateTimeFormat("en-IN", {
 
 export default async function AdminOrdersPage() {
   const user = await getCurrentUser();
-  const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
 
   // Hide existence from non-admins.
-  if (!user || !adminEmail || user.email.toLowerCase() !== adminEmail) notFound();
+  if (!user?.isAdmin) notFound();
 
-  const [orders, stats] = await Promise.all([
+  const [orders, stats, pendingCount] = await Promise.all([
     prisma.order.findMany({ orderBy: { createdAt: "desc" }, include: { items: true }, take: 100 }),
     prisma.order.aggregate({ _sum: { totalCents: true }, _count: true }),
+    prisma.product.count({ where: { status: "PENDING" } }),
   ]);
 
   return (
     <main className="pt-32 pb-stack-lg min-h-screen">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <AdminNav active="/admin/orders" pendingListings={pendingCount} />
         <div className="mb-stack-md">
-          <span className="text-label-xs uppercase tracking-[0.2em] text-primary/60 mb-2 block">Admin</span>
           <h1 className="text-headline-section-mobile md:text-headline-section text-primary mb-2">Orders</h1>
           <p className="text-body-lg text-on-surface-variant">
             {stats._count} order{stats._count === 1 ? "" : "s"} · {priceExact(stats._sum.totalCents ?? 0)} total

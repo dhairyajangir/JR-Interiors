@@ -33,6 +33,25 @@ Next.js App Router and Postgres (Prisma) for fast, real-time data.
 - Motion: page transitions, scroll-reveal/stagger, hero Ken Burns, skeleton loaders
 - Fully responsive (verified 375px → desktop), `prefers-reduced-motion` aware
 
+## Multi-vendor seller platform
+
+A built-in marketplace layer — sellers list products, admin curates.
+
+- **Invite-only sellers**: admin creates seller accounts at `/admin/sellers` (no public seller signup)
+- **Seller Studio** (`/seller`): sellers manage their own products (create / edit / delete, ₹ pricing, images, stock) and see orders containing their items (`/seller/orders`) to mark fulfilled
+- **Admin moderation** (`/admin/listings`): every new/edited listing enters a PENDING queue; admin approves → goes live, or rejects with a reason shown to the seller
+- Storefront only ever shows `PUBLISHED` products; product pages show **"Sold by {brand}"**
+- Order items snapshot their seller, so per-seller order routing survives product edits/deletes
+
+Roles: `CUSTOMER` (default) · `SELLER` · admin (via `ADMIN_EMAIL` or role `ADMIN`).
+
+### Demo seller (after seeding)
+```
+email:    seller@studiooak.in
+password: password123
+```
+Comes with one published + one pending listing to demo the moderation flow.
+
 ## Local setup
 
 > **Prerequisites:** Node 18+, Docker Desktop **running**.

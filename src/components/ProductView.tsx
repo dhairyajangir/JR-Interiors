@@ -24,6 +24,7 @@ export type ProductViewData = {
   images: string[];
   finishes: Finish[];
   upholstery: string[];
+  sellerName: string;
 };
 
 const TABS = [
@@ -84,7 +85,10 @@ export function ProductView({ product, reviews }: { product: ProductViewData; re
                 </div>
               )}
             </div>
-            <p className="text-body-md text-on-surface-variant mb-8 leading-relaxed">{product.description}</p>
+            <p className="text-body-md text-on-surface-variant mb-4 leading-relaxed">{product.description}</p>
+            <p className="text-label-sm text-on-surface-variant mb-8">
+              Sold by <span className="text-primary font-semibold">{product.sellerName}</span>
+            </p>
 
             <div className="space-y-8 mb-10">
               {product.finishes.length > 0 && (

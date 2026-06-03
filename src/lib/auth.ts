@@ -22,7 +22,17 @@ export type SafeUser = {
   email: string;
   fullName: string;
   phone: string | null;
+  role: string;
+  isAdmin: boolean;
+  sellerId: string | null;
+  brandName: string | null;
 };
+
+/** Admin = role ADMIN or the configured store-owner email. */
+export function emailIsAdmin(email: string): boolean {
+  const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
+  return Boolean(adminEmail && email.toLowerCase() === adminEmail);
+}
 
 function sign(value: string): string {
   return createHmac("sha256", SECRET).update(value).digest("base64url");
@@ -70,7 +80,26 @@ export async function getCurrentUser(): Promise<SafeUser | null> {
   if (!token) return null;
   const userId = readToken(token);
   if (!userId) return null;
-  const user = await prisma.user.findUnique({ where: { id: userId } });
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { seller: true },
+  });
   if (!user) return null;
-  return { id: user.id, email: user.email, fullName: user.fullName, phone: user.phone };
+  return {
+    id: user.id,
+    email: user.email,
+    fullName: user.fullName,
+    phone: user.phone,
+    role: user.role,
+    isAdmin: user.role === "ADMIN" || emailIsAdmin(user.email),
+    sellerId: user.seller?.id ?? null,
+    brandName: user.seller?.brandName ?? null,
+  };
+}
+
+/** Require a logged-in seller; returns their user + sellerId or null. */
+export async function getSellerUser(): Promise<SafeUser | null> {
+  const user = await getCurrentUser();
+  if (!user || !user.sellerId) return null;
+  return user;
 }
