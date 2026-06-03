@@ -8,7 +8,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https://lh3.googleusercontent.com https://images.unsplash.com https://www.transparenttextures.com https://*.razorpay.com",
-  "connect-src 'self' https://*.razorpay.com https://lumberjack.razorpay.com https://api.razorpay.com",
+  "connect-src 'self' https://*.razorpay.com https://lumberjack.razorpay.com https://api.razorpay.com https://*.vercel-insights.com https://vitals.vercel-insights.com",
   "frame-src https://*.razorpay.com https://api.razorpay.com https://checkout.razorpay.com",
   "object-src 'none'",
   "base-uri 'self'",
