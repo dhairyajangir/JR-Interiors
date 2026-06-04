@@ -33,11 +33,6 @@ export default async function AccountPage() {
                 <Icon name="storefront" className="text-[18px]" /> Seller Studio
               </Link>
             )}
-            {user.isAdmin && (
-              <Link href="/admin/orders" className="flex items-center gap-2 text-label-sm text-primary font-semibold hover:underline">
-                <Icon name="dashboard" className="text-[18px]" /> Admin
-              </Link>
-            )}
             <LogoutButton />
           </div>
         </div>

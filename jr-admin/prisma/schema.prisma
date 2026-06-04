@@ -1,0 +1,86 @@
+// JR Admin standalone service. Prices stored in whole INR.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String                @id @default(cuid())
+  fullName     String
+  businessName String
+  email        String                @unique
+  phone        String?
+  passwordHash String
+  status       UserStatus            @default(TRIAL)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  products     Product[]
+  payments     RegistrationPayment[]
+
+  @@index([status])
+}
+
+model RegistrationPayment {
+  id         String        @id @default(cuid())
+  reference  String        @unique
+  planName   String
+  amountInr  Int
+  note       String
+  payeeVpa   String
+  payeeName  String
+  upiLink    String
+  status     PaymentStatus @default(PENDING)
+  screenshot String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  userId     String
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+}
+
+model Product {
+  id               String        @id @default(cuid())
+  title            String
+  slug             String        @unique
+  sku              String        @unique
+  category         String
+  priceInr         Int
+  inventory        Int           @default(0)
+  status           ProductStatus @default(LIVE)
+  shortDescription String
+  coverImage       String
+  gallery          String[]      @default([])
+  featured         Boolean       @default(false)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  ownerId          String
+  owner            User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId, createdAt])
+  @@index([status])
+  @@index([category])
+}
+
+enum UserStatus {
+  TRIAL
+  PENDING_REVIEW
+  ACTIVE
+  SUSPENDED
+}
+
+enum PaymentStatus {
+  PENDING
+  REPORTED
+  CONFIRMED
+}
+
+enum ProductStatus {
+  DRAFT
+  LIVE
+  ARCHIVED
+}

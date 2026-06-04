@@ -127,8 +127,8 @@ export function CheckoutPaymentForm({ razorpayReady }: { razorpayReady: boolean 
             >
               <Icon name={method === "razorpay" ? "radio_button_checked" : "radio_button_unchecked"} className="text-primary mt-0.5" />
               <div>
-                <p className="text-label-sm text-primary font-semibold">Pay Online</p>
-                <p className="text-label-xs text-on-surface-variant">UPI, cards, net banking & wallets via Razorpay</p>
+                <p className="text-label-sm text-primary font-semibold">Pay by UPI / Card</p>
+                <p className="text-label-xs text-on-surface-variant">GPay, PhonePe, Paytm & any UPI app · cards · net banking · wallets</p>
               </div>
             </button>
           )}
@@ -156,7 +156,7 @@ export function CheckoutPaymentForm({ razorpayReady }: { razorpayReady: boolean 
           disabled={processing}
           className="w-full bg-primary text-on-primary py-4 rounded-lg font-label-sm hover:opacity-90 transition active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
         >
-          {processing ? "Opening payment…" : (<><Icon name="lock" className="text-[18px]" /> Pay Securely</>)}
+          {processing ? "Opening payment…" : (<><Icon name="lock" className="text-[18px]" /> Pay by UPI / Card</>)}
         </button>
       ) : (
         <form
