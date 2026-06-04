@@ -6,15 +6,18 @@ import { prisma } from "@/lib/db";
 const COOKIE = "jr_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const DEV_FALLBACK = "dev-insecure-secret-change-me";
-const SECRET = process.env.AUTH_SECRET || DEV_FALLBACK;
 
-if (process.env.NODE_ENV === "production") {
-  if (!process.env.AUTH_SECRET) {
-    throw new Error("AUTH_SECRET is required in production. Set a long random value.");
+function authSecret(): string {
+  const secret = process.env.AUTH_SECRET || DEV_FALLBACK;
+  if (process.env.NODE_ENV === "production") {
+    if (!process.env.AUTH_SECRET) {
+      throw new Error("AUTH_SECRET is required in production. Set a long random value.");
+    }
+    if (secret === DEV_FALLBACK || secret.length < 16) {
+      console.warn("[auth] AUTH_SECRET is weak — use a long random string in production.");
+    }
   }
-  if (SECRET === DEV_FALLBACK || SECRET.length < 16) {
-    console.warn("[auth] AUTH_SECRET is weak — use a long random string in production.");
-  }
+  return secret;
 }
 
 export type SafeUser = {
@@ -35,7 +38,7 @@ export function emailIsAdmin(email: string): boolean {
 }
 
 function sign(value: string): string {
-  return createHmac("sha256", SECRET).update(value).digest("base64url");
+  return createHmac("sha256", authSecret()).update(value).digest("base64url");
 }
 
 /** token = base64url(userId).expiryMs.signature */
