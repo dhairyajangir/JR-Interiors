@@ -14,3 +14,5 @@ seed*.log
 push*.log
 dev.log
 gen.log
+
+.vercel

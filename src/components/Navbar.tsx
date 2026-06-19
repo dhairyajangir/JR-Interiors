@@ -77,6 +77,13 @@ export function Navbar() {
             <Icon name="search" className="text-[22px]" />
           </Link>
           <Link
+            href="/wishlist"
+            aria-label="Wishlist"
+            className="hidden sm:flex w-8 h-8 items-center justify-center hover:opacity-70 transition active:scale-95"
+          >
+            <Icon name="favorite" className="text-[22px]" />
+          </Link>
+          <Link
             href="/cart"
             aria-label={`Cart, ${count} items`}
             className="relative w-8 h-8 flex items-center justify-center hover:opacity-70 transition active:scale-95"
@@ -90,6 +97,13 @@ export function Navbar() {
                 {count}
               </span>
             )}
+          </Link>
+          <Link
+            href="/wishlist"
+            onClick={() => setMenuOpen(false)}
+            className="block text-label-sm uppercase tracking-widest text-on-surface-variant"
+          >
+            Wishlist
           </Link>
           <Link
             href="/account"

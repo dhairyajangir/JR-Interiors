@@ -6,6 +6,8 @@ import { prisma } from "@/lib/db";
 import { price } from "@/lib/format";
 import { Icon } from "@/components/Icon";
 import { ProductView } from "@/components/ProductView";
+import { getCurrentUser } from "@/lib/auth";
+import { getWishlistProductIds } from "@/lib/wishlist";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +38,8 @@ export default async function ProductPage({ params }: { params: Params }) {
     take: 4,
     orderBy: { reviewCount: "desc" },
   });
+  const user = await getCurrentUser();
+  const savedIds = await getWishlistProductIds(user?.id, [product.id]);
 
   return (
     <main className="pt-24 md:pt-28 pb-stack-lg">
@@ -53,6 +57,7 @@ export default async function ProductPage({ params }: { params: Params }) {
       </div>
 
       <ProductView
+        initialSaved={savedIds.has(product.id)}
         product={{
           id: product.id,
           slug: product.slug,

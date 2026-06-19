@@ -46,6 +46,15 @@ const nextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  async redirects() {
+    return [
+      {
+        source: "/favicon.ico",
+        destination: "/favicon.svg",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

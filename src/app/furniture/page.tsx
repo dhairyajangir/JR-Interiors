@@ -2,6 +2,8 @@ import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/ProductCard";
 import { CatalogControls, SortBar, PageLink, PageArrow } from "@/components/CatalogControls";
+import { getCurrentUser } from "@/lib/auth";
+import { getWishlistProductIds } from "@/lib/wishlist";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +40,7 @@ export default async function FurniturePage({ searchParams }: { searchParams: SP
       ? { reviewCount: "desc" }
       : { createdAt: "desc" };
 
-  const [total, products] = await Promise.all([
+  const [total, products, user] = await Promise.all([
     prisma.product.count({ where }),
     prisma.product.findMany({
       where,
@@ -46,7 +48,9 @@ export default async function FurniturePage({ searchParams }: { searchParams: SP
       skip: (page - 1) * PER_PAGE,
       take: PER_PAGE,
     }),
+    getCurrentUser(),
   ]);
+  const savedIds = await getWishlistProductIds(user?.id, products.map((product) => product.id));
 
   const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
   const from = total === 0 ? 0 : (page - 1) * PER_PAGE + 1;
@@ -88,6 +92,7 @@ export default async function FurniturePage({ searchParams }: { searchParams: SP
                 {products.map((p) => (
                   <ProductCard
                     key={p.id}
+                    initialSaved={savedIds.has(p.id)}
                     product={{
                       id: p.id,
                       slug: p.slug,

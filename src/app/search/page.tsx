@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/ProductCard";
 import { SearchBox } from "@/components/SearchBox";
+import { getCurrentUser } from "@/lib/auth";
+import { getWishlistProductIds } from "@/lib/wishlist";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Search | JR INTERIORS" };
@@ -34,6 +36,9 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
   const popular = !query
     ? await prisma.product.findMany({ where: { signature: true, status: "PUBLISHED" }, take: 4, orderBy: { priceCents: "desc" } })
     : [];
+  const products = query ? results : popular;
+  const user = await getCurrentUser();
+  const savedIds = await getWishlistProductIds(user?.id, products.map((product) => product.id));
 
   return (
     <main className="pt-32 pb-stack-lg min-h-screen">
@@ -58,6 +63,7 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
                 {results.map((p) => (
                   <ProductCard
                     key={p.id}
+                    initialSaved={savedIds.has(p.id)}
                     product={{ id: p.id, slug: p.slug, name: p.name, tagline: p.tagline, priceCents: p.priceCents, imageUrl: p.imageUrl, colorHexes: p.colorHexes }}
                   />
                 ))}
@@ -71,6 +77,7 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
               {popular.map((p) => (
                 <ProductCard
                   key={p.id}
+                  initialSaved={savedIds.has(p.id)}
                   product={{ id: p.id, slug: p.slug, name: p.name, tagline: p.tagline, priceCents: p.priceCents, imageUrl: p.imageUrl, colorHexes: p.colorHexes }}
                 />
               ))}

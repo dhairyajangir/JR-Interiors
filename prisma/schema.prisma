@@ -9,16 +9,17 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
-  passwordHash String
-  fullName     String
-  phone        String?
-  role         String    @default("CUSTOMER") // "CUSTOMER" | "SELLER" | "ADMIN"
-  createdAt    DateTime  @default(now())
-  addresses    Address[]
-  orders       Order[]
-  seller       Seller?
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String
+  fullName      String
+  phone         String?
+  role          String         @default("CUSTOMER") // "CUSTOMER" | "SELLER" | "ADMIN"
+  createdAt     DateTime       @default(now())
+  addresses     Address[]
+  orders        Order[]
+  seller        Seller?
+  wishlistItems WishlistItem[]
 
   @@index([role])
 }
@@ -94,13 +95,14 @@ model Product {
   reviewNote  String? // admin rejection reason
   createdAt   DateTime @default(now())
 
-  sellerId   String?
-  seller     Seller?     @relation(fields: [sellerId], references: [id])
-  categoryId String?
-  category   Category?   @relation(fields: [categoryId], references: [id])
-  cartItems  CartItem[]
-  orderItems OrderItem[]
-  reviews    Review[]
+  sellerId      String?
+  seller        Seller?        @relation(fields: [sellerId], references: [id])
+  categoryId    String?
+  category      Category?      @relation(fields: [categoryId], references: [id])
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  reviews       Review[]
+  wishlistItems WishlistItem[]
 
   @@index([room])
   @@index([type])
@@ -114,6 +116,19 @@ model Product {
   @@index([status]) // storefront publish filter + moderation queue
   @@index([sellerId]) // seller dashboard
   @@index([status, createdAt]) // published catalog ordered by newest
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId, createdAt])
+  @@index([productId])
 }
 
 model Review {
@@ -150,31 +165,31 @@ model CartItem {
 }
 
 model Order {
-  id            String      @id @default(cuid())
-  number        String      @unique
-  email         String
-  fullName      String
-  phone         String?
-  address1      String
-  address2      String?
-  city          String
-  region        String
-  postalCode    String
-  country       String      @default("India")
-  shippingType  String      @default("standard")
-  subtotalCents Int
-  shippingCents Int
-  taxCents      Int // GST amount (paise)
-  totalCents    Int
-  status        String      @default("confirmed")
-  paymentMethod String      @default("cod") // "cod" | "razorpay"
-  paymentStatus String      @default("pending") // "pending" | "paid" | "failed"
+  id                String      @id @default(cuid())
+  number            String      @unique
+  email             String
+  fullName          String
+  phone             String?
+  address1          String
+  address2          String?
+  city              String
+  region            String
+  postalCode        String
+  country           String      @default("India")
+  shippingType      String      @default("standard")
+  subtotalCents     Int
+  shippingCents     Int
+  taxCents          Int // GST amount (paise)
+  totalCents        Int
+  status            String      @default("confirmed")
+  paymentMethod     String      @default("cod") // "cod" | "razorpay"
+  paymentStatus     String      @default("pending") // "pending" | "paid" | "failed"
   razorpayOrderId   String?
   razorpayPaymentId String?
-  createdAt     DateTime    @default(now())
-  userId        String?
-  user          User?       @relation(fields: [userId], references: [id])
-  items         OrderItem[]
+  createdAt         DateTime    @default(now())
+  userId            String?
+  user              User?       @relation(fields: [userId], references: [id])
+  items             OrderItem[]
 
   @@index([userId])
   @@index([createdAt]) // order history + admin list (newest first)
@@ -183,9 +198,9 @@ model Order {
 }
 
 model OrderItem {
-  id         String  @id @default(cuid())
+  id         String   @id @default(cuid())
   orderId    String
-  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId  String?
   product    Product? @relation(fields: [productId], references: [id])
   name       String
@@ -195,7 +210,7 @@ model OrderItem {
   upholstery String?
   imageUrl   String?
   sellerId   String? // snapshot of the product's seller at order time
-  itemStatus String  @default("pending") // "pending" | "fulfilled"
+  itemStatus String   @default("pending") // "pending" | "fulfilled"
 
   @@index([orderId])
   @@index([sellerId])

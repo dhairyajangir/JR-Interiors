@@ -77,10 +77,12 @@ password: password123
 
 | Variable | Required | Notes |
 |----------|----------|-------|
-| `DATABASE_URL` | yes | Postgres connection string |
+| `DATABASE_URL` | yes | Postgres connection string (e.g. Supabase direct connection URL) |
 | `AUTH_SECRET` | yes in prod | Session-cookie signing key. `openssl rand -base64 32`. App refuses to boot in production without it. |
 | `NEXT_PUBLIC_SITE_URL` | recommended | Real domain — used for SEO, canonical, sitemap, OG |
-| `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | optional | From the Razorpay dashboard. Leave blank → Cash on Delivery only. Test keys = test mode, live keys = live. |
+| `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | optional | From the Razorpay dashboard. Leave blank → Cash on Delivery only. |
+| `NEXT_PUBLIC_SUPABASE_URL` | yes | URL of your Supabase hosted instance |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | yes | Publishable API key from your Supabase dashboard |
 
 ## Payments (Razorpay)
 
@@ -113,14 +115,30 @@ DATABASE_URL=<prod-url> npx prisma db push && npx prisma db seed
 App listens on `:3000` (standalone Next output). Put Nginx/Caddy in front for TLS, or
 host on Hostinger / DigitalOcean / AWS Lightsail. Health probe: `GET /api/health`.
 
-### Option B — Vercel + managed Postgres
+### Option B — Vercel + Supabase (Recommended)
 
-1. Push repo to GitHub, import in Vercel.
-2. Create Postgres on **Neon** or **Supabase**, copy the connection string.
-3. Set env vars in Vercel: `DATABASE_URL`, `AUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`,
-   `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`.
-4. From your machine: `DATABASE_URL=<neon-url> npx prisma db push && npx prisma db seed`.
-5. Deploy.
+1. Push the repository to GitHub, and import it into **Vercel**.
+2. Set the following Environment Variables in your Vercel project settings:
+   * `DATABASE_URL`: Ensure this points to the hosted Supabase connection string.
+     ```
+     postgresql://new_admin:SupabasePassword123!@db.jhzqywcmzaevfyzgezym.supabase.co:5432/postgres?schema=public&sslmode=require
+     ```
+   * `AUTH_SECRET`: A long random security key (e.g., generated with `openssl rand -base64 32`).
+   * `NEXT_PUBLIC_SITE_URL`: Your Vercel production domain (e.g., `https://jrinteriors.vercel.app`).
+   * `NEXT_PUBLIC_SUPABASE_URL`: `https://jhzqywcmzaevfyzgezym.supabase.co`
+   * `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: `sb_publishable_NWF-TlVW9HKayGl6tIBZ3Q_m2IOhjHo`
+   * `ADMIN_EMAIL`: `demo@jrinteriors.in` (and Razorpay credentials if active).
+3. Push your code. Vercel will automatically build and deploy the project.
+4. If you encounter the **"A moment of pause"** layout error page, verify that:
+   * The `DATABASE_URL` and `AUTH_SECRET` are properly configured in Vercel.
+   * You've run `npx prisma db push` to push the database schema to the Supabase instance.
+
+---
+
+## 6. Checkout Authentication & Simulated Tracking
+* **Checkout Security**: Guests can no longer check out. Both `/checkout/shipping` and `/checkout/payment` check for an active user session. Unauthenticated users are redirected to login, returning to checkout upon successful authentication.
+* **Live Notifications**: Dispatches simulated tracking templates for both SMS and Email to the console. Live dispatch templates can also be viewed in real-time on the Order Confirmation page (`/order/[number]`).
+* **Branding Updates**: Custom vector SVG Instagram icon (crisp, adaptive coloring matching the theme) used on footer and contact pages. Navigation bar icons are fully aligned in consistent flex wrappers.
 
 ## Production hardening included
 

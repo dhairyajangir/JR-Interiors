@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { price } from "@/lib/format";
 import { QuickAddButton } from "@/components/AddToCartButton";
+import { WishlistButton } from "@/components/WishlistButton";
 
 export type ProductCardData = {
   id: string;
@@ -18,10 +19,12 @@ export function ProductCard({
   product,
   quickAdd = true,
   priority = false,
+  initialSaved = false,
 }: {
   product: ProductCardData;
   quickAdd?: boolean;
   priority?: boolean;
+  initialSaved?: boolean;
 }) {
   return (
     <div className="group relative flex flex-col">
@@ -39,6 +42,11 @@ export function ProductCard({
           {quickAdd && <QuickAddButton productId={product.id} />}
         </div>
       </Link>
+      <WishlistButton
+        productId={product.id}
+        initialSaved={initialSaved}
+        className="absolute right-3 top-3 z-10"
+      />
       <div className="flex justify-between items-start">
         <div>
           <Link href={`/product/${product.slug}`}>

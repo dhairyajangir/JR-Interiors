@@ -14,9 +14,10 @@ export default async function AccountPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/account/login");
 
-  const [addresses, orders] = await Promise.all([
+  const [addresses, orders, wishlistCount] = await Promise.all([
     prisma.address.findMany({ where: { userId: user.id }, orderBy: [{ isDefault: "desc" }, { id: "asc" }] }),
     prisma.order.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, include: { items: true } }),
+    prisma.wishlistItem.count({ where: { userId: user.id, product: { status: "PUBLISHED" } } }),
   ]);
 
   return (
@@ -28,6 +29,9 @@ export default async function AccountPage() {
             <p className="text-body-lg text-on-surface-variant">Welcome back, {user.fullName.split(" ")[0]}.</p>
           </div>
           <div className="flex items-center gap-6">
+            <Link href="/wishlist" className="flex items-center gap-2 text-label-sm text-primary font-semibold hover:underline">
+              <Icon name="favorite" className="text-[18px]" /> Wishlist ({wishlistCount})
+            </Link>
             {user.sellerId && (
               <Link href="/seller" className="flex items-center gap-2 text-label-sm text-primary font-semibold hover:underline">
                 <Icon name="storefront" className="text-[18px]" /> Seller Studio

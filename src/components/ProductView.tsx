@@ -7,6 +7,7 @@ import { Icon } from "@/components/Icon";
 import { AddToCart } from "@/components/AddToCartButton";
 import { priceExact } from "@/lib/format";
 import { clsx } from "@/lib/clsx";
+import { WishlistButton } from "@/components/WishlistButton";
 
 type Finish = { name: string; hex: string };
 type ReviewT = { id: string; author: string; initials: string; rating: number; body: string };
@@ -34,7 +35,15 @@ const TABS = [
   { id: "revs", label: "Reviews" },
 ] as const;
 
-export function ProductView({ product, reviews }: { product: ProductViewData; reviews: ReviewT[] }) {
+export function ProductView({
+  product,
+  reviews,
+  initialSaved = false,
+}: {
+  product: ProductViewData;
+  reviews: ReviewT[];
+  initialSaved?: boolean;
+}) {
   const [activeImg, setActiveImg] = useState(product.images[0]);
   const [finish, setFinish] = useState<Finish | null>(product.finishes[0] ?? null);
   const [uph, setUph] = useState<string | null>(product.upholstery[0] ?? null);
@@ -62,9 +71,7 @@ export function ProductView({ product, reviews }: { product: ProductViewData; re
             </div>
             <div className="flex-1 rounded-xl overflow-hidden bg-surface-container relative group min-h-[360px] md:min-h-[560px]">
               <Image src={activeImg} alt={product.name} fill sizes="(max-width:1024px) 100vw, 58vw" priority className="object-cover transition-transform duration-700 group-hover:scale-105" />
-              <button className="absolute top-4 right-4 bg-surface/80 p-3 rounded-full shadow-sm hover:bg-white transition-all active:scale-90" aria-label="Save to wishlist">
-                <Icon name="favorite" className="text-primary" />
-              </button>
+              <WishlistButton productId={product.id} initialSaved={initialSaved} className="absolute right-4 top-4" />
             </div>
           </div>
 
