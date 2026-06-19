@@ -99,13 +99,6 @@ export function Navbar() {
             )}
           </Link>
           <Link
-            href="/wishlist"
-            onClick={() => setMenuOpen(false)}
-            className="block text-label-sm uppercase tracking-widest text-on-surface-variant"
-          >
-            Wishlist
-          </Link>
-          <Link
             href="/account"
             aria-label="Account"
             className="hidden sm:flex w-8 h-8 items-center justify-center hover:opacity-70 transition active:scale-95"
@@ -139,6 +132,13 @@ export function Navbar() {
               {l.label}
             </Link>
           ))}
+          <Link
+            href="/wishlist"
+            onClick={() => setMenuOpen(false)}
+            className="block text-label-sm uppercase tracking-widest text-on-surface-variant"
+          >
+            Wishlist
+          </Link>
           <Link
             href="/account"
             onClick={() => setMenuOpen(false)}
