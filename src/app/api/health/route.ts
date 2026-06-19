@@ -9,7 +9,13 @@ export async function GET() {
   try {
     await prisma.$queryRaw`SELECT 1`;
     return NextResponse.json({ status: "ok", db: "up" });
-  } catch {
-    return NextResponse.json({ status: "degraded", db: "down" }, { status: 503 });
+  } catch (err: any) {
+    return NextResponse.json({
+      status: "degraded",
+      db: "down",
+      error: err?.message || String(err),
+      env_db_url_exists: !!process.env.DATABASE_URL,
+      env_db_url_prefix: process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 30) : null
+    }, { status: 503 });
   }
 }
