@@ -7,17 +7,19 @@ export function Footer() {
       <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
         <div>
           <h3 className="text-2xl font-bold mb-8">JR Interiors</h3>
-          <p className="text-on-primary/60 mb-8 leading-relaxed max-w-xs">
-            Elevating modern living through curated luxury and artisanal
-            craftsmanship since 2012.
+          <p className="text-on-primary/60 mb-6 leading-relaxed max-w-xs">
+            Elevating modern living through custom furniture, ACP work, signage boards, name plates, and logos since 2024.
           </p>
-          <div className="flex gap-6">
-            <a href="#" aria-label="Website" className="text-on-primary/40 hover:text-on-primary transition-colors">
-              <Icon name="public" />
+          <div className="flex gap-6 mb-6">
+            <a href="https://instagram.com/jr_interiors_2024" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-on-primary/40 hover:text-on-primary transition-colors flex items-center gap-2 text-sm">
+              <Icon name="instagram" className="w-5 h-5" /> <span className="uppercase tracking-widest text-[10px]">@jr_interiors_2024</span>
             </a>
-            <a href="#" aria-label="Share" className="text-on-primary/40 hover:text-on-primary transition-colors">
-              <Icon name="share" />
-            </a>
+          </div>
+          <div className="text-on-primary/50 text-xs leading-relaxed max-w-xs border-t border-on-primary/10 pt-4">
+            <p className="font-bold uppercase tracking-wider mb-1">Jaipur Atelier</p>
+            <p>Pno. 251 Nirmal Vihar, Dadi Ka Phatak,</p>
+            <p>Jhotwara, Jaipur, Rajasthan 302012</p>
+            <p className="mt-2">Ph: +91 96678 64262, +91 94603 00750</p>
           </div>
         </div>
 

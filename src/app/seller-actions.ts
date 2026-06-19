@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getSellerUser } from "@/lib/auth";
 import { slugify } from "@/lib/catalog";
+import { simulateFulfillmentNotification } from "@/lib/notifications";
 
 function str(fd: FormData, k: string): string {
   return ((fd.get(k) as string) ?? "").trim();
@@ -108,9 +109,27 @@ export async function fulfillOrderItem(fd: FormData): Promise<void> {
   const seller = await getSellerUser();
   if (!seller?.sellerId) redirect("/account/login");
   const id = str(fd, "id");
-  await prisma.orderItem.updateMany({
+
+  const item = await prisma.orderItem.findFirst({
     where: { id, sellerId: seller.sellerId },
-    data: { itemStatus: "fulfilled" },
+    include: { order: true },
   });
+
+  if (item && item.order) {
+    await prisma.orderItem.update({
+      where: { id: item.id },
+      data: { itemStatus: "fulfilled" },
+    });
+
+    simulateFulfillmentNotification({
+      number: item.order.number,
+      email: item.order.email,
+      fullName: item.order.fullName,
+      phone: item.order.phone,
+      totalCents: item.order.totalCents,
+      paymentMethod: item.order.paymentMethod,
+    }, item.name);
+  }
+
   revalidatePath("/seller/orders");
 }

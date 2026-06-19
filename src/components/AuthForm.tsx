@@ -9,12 +9,13 @@ const FIELD =
   "w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition";
 const LABEL = "text-label-sm text-primary block mb-2";
 
-export function AuthForm({ mode }: { mode: "login" | "register" }) {
+export function AuthForm({ mode, redirectTo }: { mode: "login" | "register"; redirectTo?: string }) {
   const action = mode === "login" ? login : register;
   const [state, formAction, pending] = useActionState<AuthState, FormData>(action, undefined);
 
   return (
     <form action={formAction} className="space-y-5">
+      {redirectTo && <input type="hidden" name="redirectTo" value={redirectTo} />}
       {state?.error && (
         <div role="alert" className="flex items-start gap-2 bg-error-container text-on-error-container rounded-lg px-4 py-3 text-label-sm">
           <Icon name="error" className="text-[18px]" />
@@ -53,9 +54,25 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
       <p className="text-label-sm text-on-surface-variant text-center">
         {mode === "login" ? (
-          <>New to JR Interiors? <Link href="/account/register" className="text-primary font-semibold hover:underline">Create an account</Link></>
+          <>
+            New to JR Interiors?{" "}
+            <Link
+              href={`/account/register${redirectTo && redirectTo !== "/account" ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`}
+              className="text-primary font-semibold hover:underline"
+            >
+              Create an account
+            </Link>
+          </>
         ) : (
-          <>Already have an account? <Link href="/account/login" className="text-primary font-semibold hover:underline">Sign in</Link></>
+          <>
+            Already have an account?{" "}
+            <Link
+              href={`/account/login${redirectTo && redirectTo !== "/account" ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`}
+              className="text-primary font-semibold hover:underline"
+            >
+              Sign in
+            </Link>
+          </>
         )}
       </p>
     </form>

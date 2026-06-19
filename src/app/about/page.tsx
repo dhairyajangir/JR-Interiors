@@ -21,7 +21,7 @@ export default function AboutPage() {
             Craft as a quiet act of devotion.
           </h1>
           <p className="text-subheading text-on-surface-variant leading-relaxed">
-            Since 2012, JR Interiors has pursued a single belief: that the objects we live with should be made to last, made by hand, and made with intention. We partner with a small circle of master makers who treat timber, linen and stone as collaborators rather than commodities.
+            Established in 2024, JR Interiors has pursued a single belief: that the spaces we live and work in should be functional, beautiful, and made with intention. Based in Jaipur, we specialize in high-quality furniture design, custom signages, acrylic company logos, steel railings, and premium ACP panel work.
           </p>
         </div>
       </section>
@@ -54,7 +54,7 @@ export default function AboutPage() {
           <div>
             <h2 className="text-headline-section-mobile md:text-headline-section text-primary mb-6">The Atelier</h2>
             <p className="text-body-md text-on-surface-variant leading-relaxed mb-6">
-              Every commission begins as a conversation and ends as a piece of your home&rsquo;s story. Our design studio and workshop sit under one roof, so the people who imagine a piece are never far from the people who build it.
+              Every commission begins as a conversation and ends as a custom solution for your space. Located in Jaipur, our design studio and workshop sit under one roof, allowing us to seamlessly manage everything from custom residential name plates and MDF decor to major commercial ACP installations.
             </p>
             <Link href="/contact" className="inline-flex items-center gap-2 text-label-sm font-bold text-primary border-b border-primary/30 pb-1 hover:border-primary transition">
               Book a Consultation <Icon name="arrow_forward" className="text-[18px]" />

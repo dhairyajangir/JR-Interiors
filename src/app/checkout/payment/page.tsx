@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getCart } from "@/lib/cart";
+import { getCurrentUser } from "@/lib/auth";
 import { razorpayEnabled } from "@/lib/razorpay";
 import { CheckoutPaymentForm } from "@/components/CheckoutPaymentForm";
 import { CheckoutSummary, CheckoutSteps } from "@/components/CheckoutSummary";
@@ -11,6 +12,9 @@ export const metadata: Metadata = { title: "Payment | JR INTERIORS Checkout" };
 export default async function PaymentPage() {
   const cart = await getCart();
   if (cart.lines.length === 0) redirect("/cart");
+
+  const user = await getCurrentUser();
+  if (!user) redirect("/account/login?redirect=/checkout/shipping");
 
   return (
     <main className="pt-32 pb-stack-lg min-h-screen">

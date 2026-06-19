@@ -18,8 +18,9 @@ export default function ContactPage() {
           </p>
           <div className="space-y-5">
             <ContactRow icon="mail" label="Email" value="studio@jrinteriors.in" />
-            <ContactRow icon="call" label="Phone" value="+91 98765 43210" />
-            <ContactRow icon="location_on" label="Atelier" value="12 Linking Road, Bandra West, Mumbai 400050" />
+            <ContactRow icon="call" label="Phone" value="+91 96678 64262 / +91 94603 00750 / +91 97840 37887" />
+            <ContactRow icon="location_on" label="Jaipur Atelier" value="Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara, Jaipur 302012" />
+            <ContactRow icon="instagram" label="Instagram" value="@jr_interiors_2024" />
             <ContactRow icon="schedule" label="Hours" value="Mon–Sat · 10am – 7pm IST" />
           </div>
         </div>
@@ -33,11 +34,15 @@ export default function ContactPage() {
   );
 }
 
-function ContactRow({ icon, label, value }: { icon: string; label: string; value: string }) {
+function ContactRow({ icon, label, value, isImage }: { icon: string; label: string; value: string; isImage?: boolean }) {
   return (
     <div className="flex items-start gap-4">
       <span className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
-        <Icon name={icon} className="text-[20px]" />
+        {isImage ? (
+          <img src={icon} alt={label} className="w-5 h-5 object-contain" />
+        ) : (
+          <Icon name={icon} className="text-[20px]" />
+        )}
       </span>
       <div>
         <p className="text-label-xs uppercase tracking-widest text-on-surface-variant">{label}</p>

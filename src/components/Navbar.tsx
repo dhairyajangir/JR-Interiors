@@ -69,29 +69,37 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-6 md:gap-8 text-primary">
-          <Link href="/search" aria-label="Search" className="hover:opacity-70 transition active:scale-95">
+          <Link
+            href="/search"
+            aria-label="Search"
+            className="w-8 h-8 flex items-center justify-center hover:opacity-70 transition active:scale-95"
+          >
             <Icon name="search" className="text-[22px]" />
           </Link>
           <Link
             href="/cart"
             aria-label={`Cart, ${count} items`}
-            className="relative hover:opacity-70 transition active:scale-95"
+            className="relative w-8 h-8 flex items-center justify-center hover:opacity-70 transition active:scale-95"
           >
             <Icon name="shopping_bag" className="text-[22px]" />
             {count > 0 && (
               <span
                 key={count}
-                className="absolute -top-2 -right-2 bg-primary text-on-primary text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center font-bold animate-[scale-in_var(--dur-fast)_var(--ease-out-soft)]"
+                className="absolute -top-1 -right-1 bg-primary text-on-primary text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center font-bold animate-[scale-in_var(--dur-fast)_var(--ease-out-soft)]"
               >
                 {count}
               </span>
             )}
           </Link>
-          <Link href="/account" aria-label="Account" className="hidden sm:inline-flex hover:opacity-70 transition active:scale-95">
+          <Link
+            href="/account"
+            aria-label="Account"
+            className="hidden sm:flex w-8 h-8 items-center justify-center hover:opacity-70 transition active:scale-95"
+          >
             <Icon name="person" className="text-[22px]" />
           </Link>
           <button
-            className="md:hidden hover:opacity-70 transition"
+            className="md:hidden w-8 h-8 flex items-center justify-center hover:opacity-70 transition"
             aria-label="Menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((o) => !o)}

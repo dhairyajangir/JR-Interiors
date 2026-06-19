@@ -29,7 +29,8 @@ export async function register(_prev: AuthState, fd: FormData): Promise<AuthStat
   });
   await startSession(user.id);
   revalidatePath("/", "layout");
-  redirect("/account");
+  const redirectTo = str(fd, "redirectTo") || "/account";
+  redirect(redirectTo);
 }
 
 export async function login(_prev: AuthState, fd: FormData): Promise<AuthState> {
@@ -43,7 +44,8 @@ export async function login(_prev: AuthState, fd: FormData): Promise<AuthState> 
   }
   await startSession(user.id);
   revalidatePath("/", "layout");
-  redirect("/account");
+  const redirectTo = str(fd, "redirectTo") || "/account";
+  redirect(redirectTo);
 }
 
 export async function logout(): Promise<void> {

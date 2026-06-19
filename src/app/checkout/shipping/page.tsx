@@ -15,26 +15,17 @@ export default async function ShippingPage() {
   if (cart.lines.length === 0) redirect("/cart");
 
   const user = await getCurrentUser();
-  const addresses = user
-    ? await prisma.address.findMany({
-        where: { userId: user.id },
-        orderBy: [{ isDefault: "desc" }, { id: "asc" }],
-      })
-    : [];
+  if (!user) redirect("/account/login?redirect=/checkout/shipping");
+
+  const addresses = await prisma.address.findMany({
+    where: { userId: user.id },
+    orderBy: [{ isDefault: "desc" }, { id: "asc" }],
+  });
 
   return (
     <main className="pt-32 pb-stack-lg min-h-screen">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <CheckoutSteps active="shipping" />
-        {!user && (
-          <div className="mb-stack-sm bg-surface-container-low rounded-lg px-4 py-3 text-label-sm text-on-surface-variant">
-            Have an account?{" "}
-            <Link href="/account/login" className="text-primary font-semibold hover:underline">
-              Sign in
-            </Link>{" "}
-            for faster checkout — or continue as a guest below.
-          </div>
-        )}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-stack-md items-start">
           <div className="lg:col-span-2">
             <CheckoutShippingForm

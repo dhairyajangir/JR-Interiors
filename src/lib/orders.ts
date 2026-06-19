@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { getCart } from "@/lib/cart";
 import { getCurrentUser } from "@/lib/auth";
 import { computeTotals } from "@/lib/commerce";
+import { simulateOrderConfirmationNotification } from "@/lib/notifications";
 
 export type CheckoutInput = {
   email: string;
@@ -109,6 +110,16 @@ export async function createOrderFromCart(input: CheckoutInput): Promise<CreateO
   await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
   const store = await cookies();
   store.delete("jr_cart");
+
+  // Trigger simulated email/SMS tracking notifications
+  simulateOrderConfirmationNotification({
+    number,
+    email: input.email || user?.email || "guest@jrinteriors.in",
+    fullName: input.fullName || user?.fullName || "Guest",
+    phone: input.phone || null,
+    totalCents: total,
+    paymentMethod: input.paymentMethod,
+  });
 
   return { ok: true, number, totalCents: total };
 }

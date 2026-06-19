@@ -6,8 +6,13 @@ import { AuthForm } from "@/components/AuthForm";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Create Account | JR INTERIORS" };
 
-export default async function RegisterPage() {
-  if (await getCurrentUser()) redirect("/account");
+type Params = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function RegisterPage({ searchParams }: { searchParams: Params }) {
+  const params = await searchParams;
+  const redirectTo = typeof params.redirect === "string" ? params.redirect : "/account";
+
+  if (await getCurrentUser()) redirect(redirectTo);
   return (
     <main className="pt-32 pb-stack-lg min-h-screen">
       <div className="max-w-md mx-auto px-margin-mobile">
@@ -16,7 +21,7 @@ export default async function RegisterPage() {
           <h1 className="text-headline-section-mobile text-primary">Create your account</h1>
         </div>
         <div className="bg-surface-container-lowest rounded-xl editorial-shadow p-6 md:p-8">
-          <AuthForm mode="register" />
+          <AuthForm mode="register" redirectTo={redirectTo} />
         </div>
       </div>
     </main>

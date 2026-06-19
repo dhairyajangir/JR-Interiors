@@ -36,6 +36,61 @@ export default async function OrderConfirmationPage({ params }: { params: Params
           </p>
         </div>
 
+        {/* Simulated Notifications Panel */}
+        <div className="mb-8 border border-outline-variant/60 rounded-xl p-6 bg-surface-container-low reveal">
+          <div className="flex items-center gap-2 mb-4 text-primary">
+            <Icon name="notifications" className="text-xl" />
+            <h2 className="text-label-sm font-bold uppercase tracking-wider">Simulated Notifications Dispatch (Tracking)</h2>
+          </div>
+          <div className="space-y-4">
+            <div className="border-b border-outline-variant/30 pb-4">
+              <span className="text-label-xs uppercase tracking-widest text-primary/60 font-semibold block mb-1.5 flex items-center gap-1.5">
+                <Icon name="mail" className="text-[14px]" /> Email Notification sent to {order.email}
+              </span>
+              <div className="bg-surface-container-lowest p-4 rounded border text-xs font-mono text-primary/80 whitespace-pre-wrap leading-relaxed">
+                <p className="font-semibold border-b border-outline-variant/20 pb-2 mb-2">Subject: Order Confirmed — {order.number} | JR INTERIORS</p>
+                Dear {order.fullName},<br /><br />
+                Thank you for your order! Your payment via {order.paymentMethod === "razorpay" ? "Online Payment" : "Cash on Delivery"} is confirmed.<br /><br />
+                <strong>Order Number:</strong> {order.number}<br />
+                <strong>Total Amount:</strong> {priceExact(order.totalCents)}<br /><br />
+                Our team is preparing your custom furniture pieces. We will contact you at {order.phone || "your email"} to coordinate the White-Glove delivery (7–14 days).<br /><br />
+                Warm regards,<br />
+                JR Interiors Concierge
+              </div>
+            </div>
+
+            {order.phone && (
+              <div className="border-b border-outline-variant/30 pb-4">
+                <span className="text-label-xs uppercase tracking-widest text-primary/60 font-semibold block mb-1.5 flex items-center gap-1.5">
+                  <Icon name="call" className="text-[14px]" /> SMS Notification sent to {order.phone}
+                </span>
+                <div className="bg-surface-container-lowest p-3 rounded border text-xs font-mono text-primary/80 leading-relaxed">
+                  <strong>JR-INTERIORS</strong>: Hi {order.fullName}, your order {order.number} is confirmed! Amount: {priceExact(order.totalCents)}. Track details here: http://localhost:3000/account
+                </div>
+              </div>
+            )}
+
+            {/* Fulfillments simulation */}
+            {order.items.some((it) => it.itemStatus === "fulfilled") && (
+              <div>
+                <span className="text-label-xs uppercase tracking-widest text-secondary font-semibold block mb-2 flex items-center gap-1.5">
+                  <Icon name="local_shipping" className="text-[14px]" /> Shipment Dispatch Tracking (Simulated)
+                </span>
+                <div className="space-y-2">
+                  {order.items
+                    .filter((it) => it.itemStatus === "fulfilled")
+                    .map((it) => (
+                      <div key={it.id} className="bg-surface-container-lowest p-4 rounded border text-xs font-mono text-secondary-container-foreground leading-relaxed border-secondary-container/40">
+                        <span className="font-semibold block mb-1">📦 Email & SMS Sent: Shipment Dispatch Alert</span>
+                        Dear {order.fullName}, item <strong>&ldquo;{it.name}&rdquo;</strong> from order {order.number} has been crafted and marked as <strong>FULFILLED</strong> by the seller. It is now being dispatched for delivery!
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="bg-surface-container-lowest rounded-xl editorial-shadow p-6 md:p-8 mb-6">
           <div className="flex flex-wrap justify-between gap-4 pb-6 border-b border-outline-variant">
             <div>
