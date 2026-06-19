@@ -6,8 +6,8 @@ export const metadata: Metadata = { title: "Contact & Consultation | JR INTERIOR
 
 export default function ContactPage() {
   return (
-    <main className="pt-32 pb-stack-lg min-h-screen">
-      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-start">
+    <main className="min-h-screen flex items-center pt-28 pb-12">
+      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center w-full">
         <div className="reveal">
           <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-6 block">Get in touch</span>
           <h1 className="font-display-hero text-display-hero-mobile md:text-headline-section text-primary leading-[1.1] mb-6">

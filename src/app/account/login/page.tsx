@@ -14,8 +14,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Params
 
   if (await getCurrentUser()) redirect(redirectTo);
   return (
-    <main className="pt-32 pb-stack-lg min-h-screen">
-      <div className="max-w-md mx-auto px-margin-mobile">
+    <main className="min-h-screen flex items-center justify-center pt-24 pb-12">
+      <div className="w-full max-w-md px-margin-mobile">
         <div className="text-center mb-stack-md">
           <span className="text-label-xs uppercase tracking-[0.2em] text-primary/60 mb-3 block">Welcome back</span>
           <h1 className="text-headline-section-mobile text-primary">Sign in to your account</h1>
