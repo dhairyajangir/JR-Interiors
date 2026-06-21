@@ -40,7 +40,8 @@ function orderNumber(): string {
  */
 export async function createOrderFromCart(input: CheckoutInput): Promise<CreateOrderResult> {
   const cart = await getCart();
-  if (!cart.id || cart.lines.length === 0) return { ok: false, error: "Your cart is empty." };
+  const cartId = cart.id;
+  if (!cartId || cart.lines.length === 0) return { ok: false, error: "Your cart is empty." };
 
   const user = await getCurrentUser();
   const shippingType = input.shippingType || "standard";
@@ -109,7 +110,7 @@ export async function createOrderFromCart(input: CheckoutInput): Promise<CreateO
       }
 
       // Clear cart items
-      await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+      await tx.cartItem.deleteMany({ where: { cartId: cartId } });
     });
   } catch (error) {
     console.error("[Orders] Transaction failed:", error);
