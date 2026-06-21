@@ -56,23 +56,33 @@ export async function addToCart(input: {
 /** Set an exact quantity for a cart line. Quantity 0 removes it. */
 export async function updateLine(itemId: string, quantity: number): Promise<ActionResult> {
   const qty = Math.max(0, Math.min(quantity, 99));
-  if (qty === 0) {
-    await prisma.cartItem.delete({ where: { id: itemId } }).catch(() => {});
-  } else {
-    await prisma.cartItem.update({ where: { id: itemId }, data: { quantity: qty } }).catch(() => {});
+  try {
+    if (qty === 0) {
+      await prisma.cartItem.delete({ where: { id: itemId } });
+    } else {
+      await prisma.cartItem.update({ where: { id: itemId }, data: { quantity: qty } });
+    }
+    revalidatePath("/cart");
+    revalidatePath("/", "layout");
+    const cart = await getCart();
+    return { ok: true, count: cart.count };
+  } catch (error) {
+    console.error("[Cart] Failed to update line:", error);
+    return { ok: false, error: "Failed to update quantity. Please try again." };
   }
-  revalidatePath("/cart");
-  revalidatePath("/", "layout");
-  const cart = await getCart();
-  return { ok: true, count: cart.count };
 }
 
 export async function removeLine(itemId: string): Promise<ActionResult> {
-  await prisma.cartItem.delete({ where: { id: itemId } }).catch(() => {});
-  revalidatePath("/cart");
-  revalidatePath("/", "layout");
-  const cart = await getCart();
-  return { ok: true, count: cart.count };
+  try {
+    await prisma.cartItem.delete({ where: { id: itemId } });
+    revalidatePath("/cart");
+    revalidatePath("/", "layout");
+    const cart = await getCart();
+    return { ok: true, count: cart.count };
+  } catch (error) {
+    console.error("[Cart] Failed to remove line:", error);
+    return { ok: false, error: "Failed to remove item. Please try again." };
+  }
 }
 
 const str = (fd: FormData, k: string) => ((fd.get(k) as string) ?? "").trim();

@@ -73,8 +73,10 @@ export async function endSession(): Promise<void> {
   store.delete(COOKIE);
 }
 
+import { cache } from "react";
+
 /** Current logged-in user, or null. Safe in Server Components. */
-export async function getCurrentUser(): Promise<SafeUser | null> {
+export const getCurrentUser = cache(async (): Promise<SafeUser | null> => {
   const store = await cookies();
   const token = store.get(COOKIE)?.value;
   if (!token) return null;
@@ -95,7 +97,7 @@ export async function getCurrentUser(): Promise<SafeUser | null> {
     sellerId: user.seller?.id ?? null,
     brandName: user.seller?.brandName ?? null,
   };
-}
+});
 
 /** Require a logged-in seller; returns their user + sellerId or null. */
 export async function getSellerUser(): Promise<SafeUser | null> {

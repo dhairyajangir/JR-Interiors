@@ -37,5 +37,23 @@ services:
     ports:
       - "3000:3000"
 
+  admin:
+    build:
+      context: ./jr-admin
+      args:
+        AUTH_SECRET: ${AUTH_SECRET}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL_ADMIN:-postgresql://jr:jr_secret@db:5432/jr_admin?schema=public}
+      AUTH_SECRET: ${AUTH_SECRET}
+      UPI_PAYEE_VPA: ${UPI_PAYEE_VPA}
+      UPI_PAYEE_NAME: ${UPI_PAYEE_NAME}
+      REGISTRATION_FEE_INR: ${REGISTRATION_FEE_INR}
+    ports:
+      - "3001:3001"
+
 volumes:
   jr_pgdata_prod:

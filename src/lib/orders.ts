@@ -48,66 +48,74 @@ export async function createOrderFromCart(input: CheckoutInput): Promise<CreateO
 
   const number = orderNumber();
 
-  await prisma.order.create({
-    data: {
-      number,
-      userId: user?.id ?? null,
-      email: input.email || user?.email || "guest@jrinteriors.in",
-      fullName: input.fullName || user?.fullName || "Guest",
-      phone: input.phone || null,
-      address1: input.address1,
-      address2: input.address2 || null,
-      city: input.city,
-      region: input.region,
-      postalCode: input.postalCode,
-      country: input.country || "India",
-      shippingType,
-      subtotalCents: subtotal,
-      shippingCents: shipping,
-      taxCents: gst,
-      totalCents: total,
-      paymentMethod: input.paymentMethod,
-      paymentStatus: input.paymentStatus ?? (input.paymentMethod === "cod" ? "pending" : "paid"),
-      razorpayOrderId: input.razorpayOrderId ?? null,
-      razorpayPaymentId: input.razorpayPaymentId ?? null,
-      status: "confirmed",
-      items: {
-        create: cart.lines.map((l) => ({
-          productId: l.productId,
-          name: l.name,
-          priceCents: l.priceCents,
-          quantity: l.quantity,
-          finish: l.finish,
-          upholstery: l.upholstery,
-          imageUrl: l.imageUrl,
-          sellerId: l.sellerId,
-        })),
-      },
-    },
-  });
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.order.create({
+        data: {
+          number,
+          userId: user?.id ?? null,
+          email: input.email || user?.email || "guest@jrinteriors.in",
+          fullName: input.fullName || user?.fullName || "Guest",
+          phone: input.phone || null,
+          address1: input.address1,
+          address2: input.address2 || null,
+          city: input.city,
+          region: input.region,
+          postalCode: input.postalCode,
+          country: input.country || "India",
+          shippingType,
+          subtotalCents: subtotal,
+          shippingCents: shipping,
+          taxCents: gst,
+          totalCents: total,
+          paymentMethod: input.paymentMethod,
+          paymentStatus: input.paymentStatus ?? (input.paymentMethod === "cod" ? "pending" : "paid"),
+          razorpayOrderId: input.razorpayOrderId ?? null,
+          razorpayPaymentId: input.razorpayPaymentId ?? null,
+          status: "confirmed",
+          items: {
+            create: cart.lines.map((l) => ({
+              productId: l.productId,
+              name: l.name,
+              priceCents: l.priceCents,
+              quantity: l.quantity,
+              finish: l.finish,
+              upholstery: l.upholstery,
+              imageUrl: l.imageUrl,
+              sellerId: l.sellerId,
+            })),
+          },
+        },
+      });
 
-  // Save address to the user's account if requested
-  if (user && input.saveAddress) {
-    const hasDefault = (await prisma.address.count({ where: { userId: user.id, isDefault: true } })) > 0;
-    await prisma.address.create({
-      data: {
-        userId: user.id,
-        label: "Shipping",
-        fullName: input.fullName || user.fullName,
-        line1: input.address1,
-        line2: input.address2 || null,
-        city: input.city,
-        region: input.region,
-        postalCode: input.postalCode,
-        country: input.country || "India",
-        phone: input.phone || null,
-        isDefault: !hasDefault,
-      },
+      // Save address to the user's account if requested
+      if (user && input.saveAddress) {
+        const hasDefault = (await tx.address.count({ where: { userId: user.id, isDefault: true } })) > 0;
+        await tx.address.create({
+          data: {
+            userId: user.id,
+            label: "Shipping",
+            fullName: input.fullName || user.fullName,
+            line1: input.address1,
+            line2: input.address2 || null,
+            city: input.city,
+            region: input.region,
+            postalCode: input.postalCode,
+            country: input.country || "India",
+            phone: input.phone || null,
+            isDefault: !hasDefault,
+          },
+        });
+      }
+
+      // Clear cart items
+      await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
     });
+  } catch (error) {
+    console.error("[Orders] Transaction failed:", error);
+    return { ok: false, error: "Failed to place order. Please try again." };
   }
 
-  // Clear cart + cookie
-  await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
   const store = await cookies();
   store.delete("jr_cart");
 
