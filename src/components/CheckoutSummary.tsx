@@ -53,17 +53,17 @@ export function CheckoutSummary({ lines }: { lines: CartLine[] }) {
   );
 }
 
-export function CheckoutSteps({ active }: { active: "shipping" | "payment" }) {
+export function CheckoutSteps({ active }: { active: "shipping" | "enquiry" }) {
   const steps = [
     { id: "cart", label: "Cart", done: true },
     { id: "shipping", label: "Shipping" },
-    { id: "payment", label: "Payment" },
+    { id: "enquiry", label: "Enquiry" },
   ];
   return (
     <ol className="flex items-center gap-3 mb-stack-md text-label-sm">
       {steps.map((s, i) => {
         const isActive = s.id === active;
-        const isDone = s.done || (active === "payment" && s.id === "shipping");
+        const isDone = s.done || (active === "enquiry" && s.id === "shipping");
         return (
           <li key={s.id} className="flex items-center gap-3">
             <span

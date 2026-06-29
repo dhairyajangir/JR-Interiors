@@ -8,7 +8,7 @@ import { CheckoutShippingForm } from "@/components/CheckoutShippingForm";
 import { CheckoutSummary, CheckoutSteps } from "@/components/CheckoutSummary";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Shipping | JR INTERIORS Checkout" };
+export const metadata: Metadata = { title: "Shipping | JR INTERIORS Enquiry" };
 
 export default async function ShippingPage() {
   const cart = await getCart();

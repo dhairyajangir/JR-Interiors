@@ -90,19 +90,6 @@ export function CheckoutShippingForm({
 
   return (
     <form onSubmit={submit} className="space-y-stack-md">
-      {/* Responsive Progress Stepper */}
-      <div className="flex items-center justify-center gap-4 py-4 mb-6 border-b border-outline-variant/20 max-w-md mx-auto">
-        <div className="flex items-center gap-2 text-primary font-bold text-label-xs">
-          <span className="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center text-[11px]">1</span>
-          <span>Shipping</span>
-        </div>
-        <div className="w-12 h-[1px] bg-outline-variant/60" />
-        <div className="flex items-center gap-2 text-on-surface-variant/50 font-bold text-label-xs">
-          <span className="w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center text-[11px]">2</span>
-          <span>Payment</span>
-        </div>
-      </div>
-
       {addresses.length > 0 && (
         <fieldset>
           <legend className="text-label-sm uppercase tracking-widest text-primary mb-4 font-bold">Use a saved address</legend>
@@ -227,7 +214,7 @@ export function CheckoutShippingForm({
       )}
 
       <button type="submit" className="w-full bg-primary text-on-primary py-4 rounded-lg font-label-sm hover:opacity-90 transition active:scale-[0.98]">
-        Continue to Payment
+        Request Enquiry
       </button>
     </form>
   );
