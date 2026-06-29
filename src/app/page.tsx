@@ -74,7 +74,7 @@ export default async function HomePage() {
       <StructuredData />
       
       {/* Cinematic Hero */}
-      <section className="relative h-[100svh] min-h-[600px] flex items-center overflow-hidden">
+      <section className="relative flex min-h-[clamp(38rem,88dvh,52rem)] items-center overflow-hidden py-28 md:py-32">
         <div className="absolute inset-0 z-0">
           <Image
             src={HERO}
