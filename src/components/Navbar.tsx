@@ -142,81 +142,78 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Full-Screen Overlay Navigation Menu */}
+      {/* Mobile Slide-Down Drawer Navigation Menu */}
       {menuOpen && (
         <div
           id="mobile-menu"
           role="navigation"
           aria-label="Mobile navigation"
-          className="md:hidden fixed inset-0 z-40 bg-surface/98 backdrop-blur-2xl px-margin-mobile pt-28 pb-12 flex flex-col justify-between overflow-y-auto animate-fade-in"
+          className="md:hidden absolute top-20 left-0 right-0 z-40 bg-surface border-b border-outline-variant/30 px-margin-mobile py-8 shadow-xl flex flex-col gap-6 overflow-y-auto max-h-[calc(80vh)] animate-slide-down scroll-hide"
         >
-          <div className="space-y-8">
-            {/* Search Box in Menu */}
-            <div className="relative mt-4">
-              <Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant" />
-              <input
-                type="search"
-                placeholder="Search the collection..."
-                className="w-full bg-surface-container-low border border-outline-variant/40 rounded-full pl-12 pr-4 py-3.5 text-body-md text-on-surface outline-none focus:border-primary transition"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    const q = e.currentTarget.value.trim();
-                    if (q) {
-                      setMenuOpen(false);
-                      // Use window.location to trigger navigation
-                      window.location.href = `/search?q=${encodeURIComponent(q)}`;
-                    }
+          {/* Search Box in Menu */}
+          <div className="relative">
+            <Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant" />
+            <input
+              type="search"
+              placeholder="Search the collection..."
+              className="w-full bg-surface-container-low border border-outline-variant/40 rounded-full pl-12 pr-4 py-3 text-body-md text-on-surface outline-none focus:border-primary transition"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const q = e.currentTarget.value.trim();
+                  if (q) {
+                    setMenuOpen(false);
+                    window.location.href = `/search?q=${encodeURIComponent(q)}`;
                   }
-                }}
-              />
-            </div>
+                }
+              }}
+            />
+          </div>
 
-            {/* Menu Links */}
-            <div className="flex flex-col gap-6">
-              {LINKS.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={clsx(
-                    "text-subheading uppercase tracking-[0.2em] font-medium transition-colors py-1 block",
-                    isActive(l.href) ? "text-primary font-bold" : "text-on-surface-variant hover:text-primary"
-                  )}
-                >
-                  {l.label}
-                </Link>
-              ))}
+          {/* Menu Links */}
+          <div className="flex flex-col gap-4">
+            {LINKS.map((l) => (
               <Link
-                href="/wishlist"
+                key={l.href}
+                href={l.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-subheading uppercase tracking-[0.2em] font-medium text-on-surface-variant hover:text-primary py-1 block"
+                className={clsx(
+                  "text-body-lg uppercase tracking-[0.15em] font-medium transition-colors py-1.5 block",
+                  isActive(l.href) ? "text-primary font-bold" : "text-on-surface-variant hover:text-primary"
+                )}
               >
-                Wishlist
+                {l.label}
               </Link>
-              <Link
-                href="/account"
-                onClick={() => setMenuOpen(false)}
-                className="text-subheading uppercase tracking-[0.2em] font-medium text-on-surface-variant hover:text-primary py-1 block"
-              >
-                Account
-              </Link>
-            </div>
+            ))}
+            <Link
+              href="/wishlist"
+              onClick={() => setMenuOpen(false)}
+              className="text-body-lg uppercase tracking-[0.15em] font-medium text-on-surface-variant hover:text-primary py-1.5 block"
+            >
+              Wishlist
+            </Link>
+            <Link
+              href="/account"
+              onClick={() => setMenuOpen(false)}
+              className="text-body-lg uppercase tracking-[0.15em] font-medium text-on-surface-variant hover:text-primary py-1.5 block"
+            >
+              Account
+            </Link>
+          </div>
 
-            {/* Book Consultation primary button */}
-            <div className="pt-4">
-              <Link
-                href="/contact"
-                onClick={() => setMenuOpen(false)}
-                className="block w-full text-center bg-primary text-on-primary py-4.5 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-primary/95 transition active:scale-98 shadow-md"
-              >
-                Book Consultation
-              </Link>
-            </div>
+          {/* Consultation CTA button */}
+          <div className="pt-2">
+            <Link
+              href="/contact"
+              onClick={() => setMenuOpen(false)}
+              className="w-full h-12 flex items-center justify-center bg-primary text-on-primary rounded-full font-bold text-label-xs uppercase tracking-widest hover:bg-primary/90 transition shadow-md active:scale-[0.98]"
+            >
+              Book Consultation
+            </Link>
           </div>
 
           {/* Contact details at bottom */}
-          <div className="border-t border-outline-variant/30 pt-6 mt-12 space-y-2">
-            <p className="text-label-xs uppercase tracking-widest text-outline">Jaipur Atelier</p>
+          <div className="border-t border-outline-variant/30 pt-6 mt-2 space-y-1">
+            <p className="text-[10px] uppercase tracking-widest text-outline">Jaipur Atelier</p>
             <p className="text-body-md text-primary font-medium">Ph: +91 94603 00750</p>
             <p className="text-body-md text-primary font-medium">Email: adityajangid1409@gmail.com</p>
           </div>
