@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import { startSession, endSession, getCurrentUser } from "@/lib/auth";
+import { RegistrationSchema, LoginSchema, AddressSchema } from "@/lib/validation";
+import { validateFormSecurity } from "@/lib/security-helpers";
 
 export type AuthState = { error?: string } | undefined;
 
@@ -13,19 +15,30 @@ function str(fd: FormData, key: string): string {
 }
 
 export async function register(_prev: AuthState, fd: FormData): Promise<AuthState> {
-  const email = str(fd, "email").toLowerCase();
+  // 1. Enforce form security
+  const security = await validateFormSecurity(fd, "register", 5, 600_000);
+  if (security.isSpam) return { error: "Security check failed." };
+  if (security.error) return { error: security.error };
+
+  const email = str(fd, "email");
   const fullName = str(fd, "fullName");
   const password = str(fd, "password");
 
-  if (!email || !fullName || !password) return { error: "All fields are required." };
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { error: "Enter a valid email address." };
-  if (password.length < 8) return { error: "Password must be at least 8 characters." };
+  // 2. Schema check
+  const parsed = RegistrationSchema.safeParse({ email, fullName, password });
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message };
+  }
 
-  const existing = await prisma.user.findUnique({ where: { email } });
+  const existing = await prisma.user.findUnique({ where: { email: parsed.data.email } });
   if (existing) return { error: "An account with that email already exists." };
 
   const user = await prisma.user.create({
-    data: { email, fullName, passwordHash: hashPassword(password) },
+    data: {
+      email: parsed.data.email,
+      fullName: parsed.data.fullName,
+      passwordHash: hashPassword(parsed.data.password),
+    },
   });
   await startSession(user.id);
   revalidatePath("/", "layout");
@@ -34,12 +47,21 @@ export async function register(_prev: AuthState, fd: FormData): Promise<AuthStat
 }
 
 export async function login(_prev: AuthState, fd: FormData): Promise<AuthState> {
-  const email = str(fd, "email").toLowerCase();
-  const password = str(fd, "password");
-  if (!email || !password) return { error: "Enter your email and password." };
+  // 1. Enforce form security
+  const security = await validateFormSecurity(fd, "login", 5, 600_000);
+  if (security.isSpam) return { error: "Security check failed." };
+  if (security.error) return { error: security.error };
 
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || !verifyPassword(password, user.passwordHash)) {
+  const email = str(fd, "email");
+  const password = str(fd, "password");
+
+  const parsed = LoginSchema.safeParse({ email, password });
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message };
+  }
+
+  const user = await prisma.user.findUnique({ where: { email: parsed.data.email } });
+  if (!user || !verifyPassword(parsed.data.password, user.passwordHash)) {
     return { error: "Invalid email or password." };
   }
   await startSession(user.id);
@@ -69,8 +91,8 @@ export async function saveAddress(fd: FormData): Promise<void> {
   if (!user) redirect("/account/login");
 
   const makeDefault = fd.get("isDefault") === "on";
-  const data = {
-    userId: user.id,
+  
+  const parsed = AddressSchema.safeParse({
     label: str(fd, "label") || "Home",
     fullName: str(fd, "fullName") || user.fullName,
     line1: str(fd, "line1"),
@@ -78,8 +100,25 @@ export async function saveAddress(fd: FormData): Promise<void> {
     city: str(fd, "city"),
     region: str(fd, "region"),
     postalCode: str(fd, "postalCode"),
-    country: str(fd, "country") || "United States",
+    country: str(fd, "country") || "India",
     phone: str(fd, "phone") || null,
+  });
+
+  if (!parsed.success) {
+    throw new Error(parsed.error.errors[0].message);
+  }
+
+  const data = {
+    userId: user.id,
+    label: parsed.data.label,
+    fullName: parsed.data.fullName,
+    line1: parsed.data.line1,
+    line2: parsed.data.line2,
+    city: parsed.data.city,
+    region: parsed.data.region,
+    postalCode: parsed.data.postalCode,
+    country: parsed.data.country,
+    phone: parsed.data.phone,
     isDefault: makeDefault,
   };
 

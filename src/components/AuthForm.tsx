@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { Icon } from "@/components/Icon";
 import { login, register, type AuthState } from "@/app/auth-actions";
+import { Honeypot } from "@/components/Honeypot";
 
 const FIELD =
   "w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition";
@@ -15,6 +16,7 @@ export function AuthForm({ mode, redirectTo }: { mode: "login" | "register"; red
 
   return (
     <form action={formAction} className="space-y-5">
+      <Honeypot />
       {redirectTo && <input type="hidden" name="redirectTo" value={redirectTo} />}
       {state?.error && (
         <div role="alert" className="flex items-start gap-2 bg-error-container text-on-error-container rounded-lg px-4 py-3 text-label-sm">

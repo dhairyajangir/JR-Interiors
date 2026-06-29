@@ -17,9 +17,11 @@ model User {
   role          String         @default("CUSTOMER") // "CUSTOMER" | "SELLER" | "ADMIN"
   createdAt     DateTime       @default(now())
   addresses     Address[]
+  consultations Consultation[]
   orders        Order[]
   seller        Seller?
   wishlistItems WishlistItem[]
+  auditLogs     AuditLog[]
 
   @@index([role])
 }
@@ -214,4 +216,38 @@ model OrderItem {
 
   @@index([orderId])
   @@index([sellerId])
+}
+
+model Consultation {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name        String
+  email       String
+  phone       String?
+  projectType String
+  message     String?
+  status      String   @default("NEW") // "NEW" | "CONTACTED" | "SCHEDULED" | "COMPLETED"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status, createdAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  entity    String?
+  entityId  String?
+  details   String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([action])
+  @@index([createdAt])
 }

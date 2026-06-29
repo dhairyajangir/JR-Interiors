@@ -1,4 +1,8 @@
 import { PrismaClient } from "@prisma/client";
+import { verifyEnvConfig } from "./config-check";
+
+// Enforce environment validation on bootstrap
+verifyEnvConfig();
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;

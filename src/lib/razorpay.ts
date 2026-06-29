@@ -56,5 +56,6 @@ export function verifyRazorpaySignature(
     .digest("hex");
   const a = Buffer.from(expected);
   const b = Buffer.from(signature);
-  return a.length === b.length && timingSafeEqual(a, b);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
 }

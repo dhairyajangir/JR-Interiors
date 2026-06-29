@@ -4,6 +4,8 @@ import { prisma } from "@/lib/db";
 import { price } from "@/lib/format";
 import { Icon } from "@/components/Icon";
 import { QuickAddButton } from "@/components/AddToCartButton";
+import StructuredData from "@/components/StructuredData";
+import { getAltText } from "@/lib/altText";
 
 export const dynamic = "force-dynamic";
 
@@ -37,12 +39,14 @@ export default async function HomePage() {
 
   return (
     <main>
+      <StructuredData />
+      
       {/* Cinematic Hero */}
       <section className="relative h-[100svh] min-h-[600px] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
             src={HERO}
-            alt="Luxury living room bathed in soft natural light"
+            alt={getAltText("room", "Luxury living room bathed in soft natural light")}
             fill
             priority
             sizes="100vw"
@@ -57,19 +61,21 @@ export default async function HomePage() {
             <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-6 block reveal">
               Artisanal Living
             </span>
-            <h1 className="font-display-hero text-display-hero-mobile md:text-display-hero text-primary mb-8 leading-[1.1] reveal delay-100">
-              Spaces designed <br /> for calm living.
+            <h1 className="font-display-hero text-display-hero-mobile md:text-display-hero text-primary mb-8 leading-[1.1] reveal delay-100" style={{ fontSize: '2.5rem', fontWeight: 700, lineHeight: 1.15 }}>
+              <span>Luxury Furniture India |</span> <br />
+              <span>Spaces Designed for Calm Living</span>
             </h1>
             <p className="text-subheading text-on-surface-variant mb-12 max-w-lg leading-relaxed reveal delay-200">
-              Discover a collection where warmth meets intentional simplicity.
-              Curating sanctuaries for the modern soul.
+              Spaces Designed for Calm Living. Discover luxury furniture India 
+              where warmth meets simple, intentional design. We curate sanctuaries 
+              for the modern home.
             </p>
             <div className="flex flex-wrap items-center gap-8 reveal delay-300">
               <Link
                 href="/furniture"
                 className="bg-primary text-on-primary px-10 py-5 rounded-lg font-label-sm text-label-sm hover:bg-primary/90 transition-all active:scale-95 shadow-md"
               >
-                Explore Collection
+                Explore Luxury Furniture India
               </Link>
               <Link className="group flex items-center gap-2 text-label-sm text-primary font-bold" href="/about">
                 The Atelier Story
@@ -101,12 +107,65 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Why Choose Us Section */}
+      <section className="py-20 px-margin-mobile md:px-24 bg-surface-container-lowest border-b border-outline-variant/30" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <h2 className="text-headline-section-mobile md:text-headline-section font-bold text-primary mb-12 text-center" style={{ fontSize: '1.75rem' }}>
+          Why Choose JR Interiors for Luxury Furniture India
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div>
+            <h3 className="text-label-sm font-bold text-primary mb-3" style={{ fontSize: '1.1rem' }}>
+              Handcrafted Locally in Jaipur
+            </h3>
+            <p className="text-body-md text-on-surface-variant leading-relaxed" style={{ fontSize: '0.95rem' }}>
+              Every piece of luxury furniture India customers love is built at our Jaipur atelier 
+              by master craftsmen with generations of expertise. We do not mass-produce. 
+              Each piece is made to order, ensuring your home receives a one-of-a-kind creation.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-label-sm font-bold text-primary mb-3" style={{ fontSize: '1.1rem' }}>
+              Premium Furniture, Sustainably Sourced
+            </h3>
+            <p className="text-body-md text-on-surface-variant leading-relaxed" style={{ fontSize: '0.95rem' }}>
+              Our materials — FSC-certified timber, soy-based foam, and natural textiles — 
+              are chosen for both beauty and environmental responsibility. 
+              Luxury should never come at the planet's expense.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-label-sm font-bold text-primary mb-3" style={{ fontSize: '1.1rem' }}>
+              White-Glove Service, End to End
+            </h3>
+            <p className="text-body-md text-on-surface-variant leading-relaxed" style={{ fontSize: '0.95rem' }}>
+              From your first complimentary design consultation to in-home delivery and setup, 
+              our team handles every detail. Our furniture arrives fully assembled, 
+              placed, and ready to live in.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-label-sm font-bold text-primary mb-3" style={{ fontSize: '1.1rem' }}>
+              Custom Interior Design — Your Vision, Realised
+            </h3>
+            <p className="text-body-md text-on-surface-variant leading-relaxed" style={{ fontSize: '0.95rem' }}>
+              Working with our in-house designers, you can configure any piece to your 
+              exact dimensions, fabric, and finish. Custom interior design is not a premium — 
+              it is the standard at JR Interiors.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Room browser */}
       <section className="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6 reveal">
           <div className="max-w-xl">
             <h2 className="text-headline-section-mobile md:text-headline-section font-bold text-primary mb-4">
-              Inhabiting the Home
+              Inhabiting the Home — Functional Art & Calm Living
             </h2>
             <p className="text-body-lg text-on-surface-variant">
               Functional art for every corner of your life.
@@ -153,7 +212,7 @@ export default async function HomePage() {
               The Signature Pieces
             </span>
             <h2 className="text-headline-section-mobile md:text-headline-section font-bold text-primary">
-              Icons of Craft
+              Icons of Craft — Craftsmanship & Premium Luxury Pieces
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -163,7 +222,7 @@ export default async function HomePage() {
                   <Link href={`/product/${p.slug}`}>
                     <Image
                       src={p.imageUrl}
-                      alt={p.name}
+                      alt={getAltText("product", p.name, p.tagline || p.material)}
                       fill
                       sizes="(max-width:640px) 100vw, 25vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -200,7 +259,7 @@ export default async function HomePage() {
       <section className="py-stack-lg bg-surface">
         <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-16 reveal text-center">
           <h2 className="text-headline-section-mobile md:text-headline-section font-bold text-primary">
-            Living with JR
+            Living with JR — Insights into Calm Living Spaces
           </h2>
           <p className="text-on-surface-variant mt-2">Glimpses into spaces that breathe.</p>
         </div>
@@ -208,7 +267,7 @@ export default async function HomePage() {
           <div className="col-span-12 md:col-span-7 h-[400px] md:h-full relative group overflow-hidden rounded-lg">
             <Image
               src={G(ZEN)}
-              alt="The Zen Attic — functional minimalism in raw textures"
+              alt={getAltText("room", "The Zen Attic — functional minimalism in raw textures")}
               fill
               sizes="(max-width:768px) 100vw, 58vw"
               className="object-cover grayscale-[0.2] transition-transform duration-[2s] group-hover:scale-110"
@@ -224,11 +283,11 @@ export default async function HomePage() {
           </div>
           <div className="col-span-12 md:col-span-5 flex flex-col gap-gutter h-full">
             <div className="flex-1 h-[250px] md:h-auto relative overflow-hidden rounded-lg group">
-              <Image src={G(NOOK)} alt="Reading nook" fill sizes="(max-width:768px) 100vw, 42vw" className="object-cover transition-transform duration-1000 group-hover:scale-105" />
+              <Image src={G(NOOK)} alt={getAltText("room", "Reading nook")} fill sizes="(max-width:768px) 100vw, 42vw" className="object-cover transition-transform duration-1000 group-hover:scale-105" />
               <div className="absolute inset-0 bg-black/10" />
             </div>
             <div className="flex-1 h-[250px] md:h-auto relative overflow-hidden rounded-lg group">
-              <Image src={G(HALL)} alt="Hallway detail" fill sizes="(max-width:768px) 100vw, 42vw" className="object-cover transition-transform duration-1000 group-hover:scale-105" />
+              <Image src={G(HALL)} alt={getAltText("room", "Hallway detail")} fill sizes="(max-width:768px) 100vw, 42vw" className="object-cover transition-transform duration-1000 group-hover:scale-105" />
             </div>
           </div>
         </div>
@@ -251,7 +310,7 @@ export default async function HomePage() {
               <div className="flex flex-col items-center gap-4">
                 <Image
                   src={G(AVATAR)}
-                  alt="Ananya Rao"
+                  alt={getAltText("customer", "Ananya Rao")}
                   width={64}
                   height={64}
                   className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
@@ -270,23 +329,31 @@ export default async function HomePage() {
       <section className="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto reveal">
         <div className="bg-primary rounded-lg p-12 md:p-20 flex flex-col md:flex-row items-center gap-16 overflow-hidden relative">
           <div className="flex-1 z-10">
-            <h2 className="text-headline-section-mobile md:text-headline-section text-white mb-6">
-              Ready to find your calm?
+            <h2 className="text-headline-section-mobile md:text-headline-section text-white mb-4" style={{ fontSize: '1.75rem' }}>
+              Ready to Design Your Calm Space?
             </h2>
-            <p className="text-white/70 text-body-lg mb-10 max-w-md leading-relaxed">
-              Book a complimentary design consultation to start your journey
-              towards a more balanced home.
+            <p className="text-white/70 text-body-lg mb-8 max-w-md leading-relaxed" style={{ fontSize: '1rem' }}>
+              Schedule a complimentary design consultation with an expert from the 
+              JR Atelier — in-home or virtual. No obligation. Limited slots this month.
             </p>
             <Link
               href="/contact"
               className="inline-block bg-white text-primary px-10 py-5 rounded-lg font-bold text-label-sm hover:bg-surface-bright transition-all shadow-xl"
+              style={{ padding: '14px 28px', fontSize: '1rem', fontWeight: 600 }}
             >
-              Book Your Consultation
+              Book Your Design Consultation
             </Link>
+
+            {/* Trust signals below button */}
+            <div className="mt-6 flex flex-wrap gap-6 text-white/70 text-body-sm" style={{ fontSize: '0.9rem' }}>
+              <span>✓ Expert designers with 10+ years in luxury interiors</span>
+              <span>✓ Free consultation, no commitment</span>
+              <span>✓ Trusted by 200+ homes across India</span>
+            </div>
           </div>
           <div className="flex-1 w-full z-10">
             <div className="aspect-video rounded-lg overflow-hidden shadow-2xl relative">
-              <Image src={G(CONSULT)} alt="Design consultation" fill sizes="(max-width:768px) 100vw, 40vw" className="object-cover" />
+              <Image src={G(CONSULT)} alt={getAltText("atelier", "Design consultation")} fill sizes="(max-width:768px) 100vw, 40vw" className="object-cover" />
             </div>
           </div>
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/felt.png')]" />
@@ -313,7 +380,7 @@ function RoomCard({
 }) {
   return (
     <Link href={href} className={`relative rounded-lg overflow-hidden group reveal block ${className ?? ""}`}>
-      <Image src={image} alt={title} fill sizes={large ? "66vw" : "33vw"} className="object-cover transition-transform duration-1000 group-hover:scale-105" />
+      <Image src={image} alt={getAltText("room", title)} fill sizes={large ? "66vw" : "33vw"} className="object-cover transition-transform duration-1000 group-hover:scale-105" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex flex-col justify-end p-8 md:p-12">
         <h3 className={`text-white font-light ${large ? "text-3xl mb-2" : "text-2xl"}`}>{title}</h3>
         {subtitle && <p className="text-white/80 text-label-sm">{subtitle}</p>}

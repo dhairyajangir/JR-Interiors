@@ -7,9 +7,9 @@ import { getUpiConfig } from "@/lib/upi";
 export const dynamic = "force-dynamic";
 
 const highlights = [
-  "Completely separate from storefront ecommerce flow",
-  "Dedicated product listing workspace with CRUD only",
-  "Direct UPI onboarding for registration payments",
+  "Platform admin with direct bridge into storefront data",
+  "Separate seller registration and billing workspace",
+  "Demo-ready login flow for pre-deployment testing",
 ];
 
 export default async function HomePage() {
@@ -24,7 +24,7 @@ export default async function HomePage() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="eyebrow">JR Admin</p>
-            <p className="mt-2 text-sm text-steel">Separate product service. No ecommerce coupling.</p>
+            <p className="mt-2 text-sm text-steel">Admin workspace with storefront bridge and seller onboarding.</p>
           </div>
           <div className="flex gap-3">
             <Link href="/login" className="rounded-full border border-line px-5 py-3 text-sm font-semibold text-steel transition hover:border-ink hover:text-ink">
@@ -40,11 +40,11 @@ export default async function HomePage() {
           <div>
             <p className="eyebrow">Fresh visual language</p>
             <h1 className="mt-4 max-w-4xl text-5xl font-semibold tracking-tight text-ink md:text-7xl">
-              Run product listings from{" "}
-              <span className="font-serif italic text-coral">another service</span>, not from the ecommerce app.
+              Run store ops, seller onboarding, and live moderation from{" "}
+              <span className="font-serif italic text-coral">one admin surface</span>.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-steel">
-              This admin is shaped like a focused catalog console. Create accounts, pay registration with UPI, and manage product listings with add, update, and delete actions in one isolated workspace.
+              This admin now covers platform overview, orders, customers, sellers, consultations, and admin-owned listings while keeping seller onboarding and registration billing in the same secure workspace.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">

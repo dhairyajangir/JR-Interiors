@@ -24,7 +24,7 @@ export default async function EditProductPage({
   if (!product) redirect("/dashboard");
 
   return (
-    <DashboardShell user={user} currentPath="/dashboard">
+    <DashboardShell user={user} currentPath="/dashboard/products">
       <section className="panel p-6 md:p-8">
         <p className="eyebrow">Edit listing</p>
         <h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink">{product.title}</h1>

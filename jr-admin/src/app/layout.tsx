@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Fraunces, Space_Grotesk } from "next/font/google";
+import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const sans = Space_Grotesk({
+const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-const serif = Fraunces({
+const serif = Playfair_Display({
   subsets: ["latin"],
   style: ["normal", "italic"],
   variable: "--font-serif",

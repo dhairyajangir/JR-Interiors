@@ -8,6 +8,7 @@ import { AddToCart } from "@/components/AddToCartButton";
 import { priceExact } from "@/lib/format";
 import { clsx } from "@/lib/clsx";
 import { WishlistButton } from "@/components/WishlistButton";
+import { getAltText } from "@/lib/altText";
 
 type Finish = { name: string; hex: string };
 type ReviewT = { id: string; author: string; initials: string; rating: number; body: string };
@@ -65,12 +66,12 @@ export function ProductView({
                     activeImg === img ? "ring-1 ring-primary p-0.5" : "hover:opacity-80"
                   )}
                 >
-                  <Image src={img} alt={`${product.name} view ${i + 1}`} fill sizes="80px" className="object-cover rounded-md" />
+                  <Image src={img} alt={getAltText("product", `${product.name} view ${i + 1}`, product.material)} fill sizes="80px" className="object-cover rounded-md" />
                 </button>
               ))}
             </div>
             <div className="flex-1 rounded-xl overflow-hidden bg-surface-container relative group min-h-[360px] md:min-h-[560px]">
-              <Image src={activeImg} alt={product.name} fill sizes="(max-width:1024px) 100vw, 58vw" priority className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              <Image src={activeImg} alt={getAltText("product", product.name, product.material)} fill sizes="(max-width:1024px) 100vw, 58vw" priority className="object-cover transition-transform duration-700 group-hover:scale-105" />
               <WishlistButton productId={product.id} initialSaved={initialSaved} className="absolute right-4 top-4" />
             </div>
           </div>
@@ -197,7 +198,7 @@ export function ProductView({
                 </ul>
               </div>
               <div className="rounded-xl overflow-hidden h-80 bg-surface-container relative">
-                <Image src={product.images[product.images.length > 1 ? 1 : 0]} alt="Craftsmanship" fill sizes="(max-width:768px) 100vw, 40vw" className="object-cover" />
+                <Image src={product.images[product.images.length > 1 ? 1 : 0]} alt={getAltText("atelier", "Craftsmanship detail of " + product.name)} fill sizes="(max-width:768px) 100vw, 40vw" className="object-cover" />
               </div>
             </div>
           )}

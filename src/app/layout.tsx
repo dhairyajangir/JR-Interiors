@@ -9,9 +9,8 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getCartCount } from "@/lib/cart";
+import SkipToContent from "@/components/SkipToContent";
 
-// Self-hosted by Next.js → renders identically on iOS, Android, and desktop
-// (no reliance on the device's system font).
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -19,23 +18,24 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = "https://jrinteriors.in";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "JR Interiors | Calm Luxury Furniture & Interior Design in India",
+    default: "JR Interiors | Luxury Furniture India — Spaces Designed for Calm Living",
     template: "%s | JR Interiors",
   },
   description:
-    "Artisanal furniture and interior design for the modern Indian home. Handcrafted pieces in warm, natural materials — delivered across India with white-glove service.",
+    "Discover premium luxury furniture India handcrafted for calm, elegant living. Artisanal pieces, white-glove delivery, custom design consultations. Shop now.",
   keywords: [
     "luxury furniture India",
-    "designer furniture",
-    "interior design",
+    "premium furniture Jaipur",
+    "artisanal home decor",
+    "custom furniture design",
+    "interior design services",
+    "calm living spaces",
     "handcrafted furniture",
-    "premium home decor",
-    "JR Interiors",
   ],
   applicationName: "JR Interiors",
   authors: [{ name: "JR Interiors" }],
@@ -44,30 +44,51 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     siteName: "JR Interiors",
-    title: "JR Interiors | Calm Luxury Furniture & Interior Design",
+    title: "JR Interiors | Luxury Furniture India — Spaces Designed for Calm Living",
     description:
-      "Artisanal furniture and interior design for the modern Indian home.",
+      "Discover premium handcrafted luxury furniture India. Artisanal pieces, white-glove delivery, free design consultations.",
     url: siteUrl,
+    images: [
+      {
+        url: `${siteUrl}/og-image-1200x630.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "JR Interiors | Luxury Furniture India — Spaces Designed for Calm Living",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "JR Interiors | Calm Luxury Furniture",
+    title: "JR Interiors | Luxury Furniture India",
     description:
-      "Artisanal furniture and interior design for the modern Indian home.",
+      "Premium handcrafted furniture for calm, elegant living. Free design consultations.",
+    images: [`${siteUrl}/og-image-1200x630.jpg`],
+    creator: "@jr_interiors_2024",
   },
   robots: {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
-  icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
+  icons: {
+    icon: [
+      { url: "/favicon.svg" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   manifest: "/manifest.webmanifest",
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#fbf9f8",
+  themeColor: "#1C1C1E",
 };
 
 export default async function RootLayout({
@@ -86,10 +107,13 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-surface font-sans text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+        <SkipToContent />
         <CartProvider initialCount={cartCount}>
           <ScrollProgress />
           <Navbar />
-          {children}
+          <div id="main-content" className="outline-none" tabIndex={-1}>
+            {children}
+          </div>
           <Footer />
         </CartProvider>
         <RevealObserver />
