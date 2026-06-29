@@ -33,6 +33,21 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [transparentStart]);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   const isActive = (href: string) =>
     href === "/furniture" ? pathname.startsWith("/furniture") : pathname === href;
 
@@ -41,8 +56,12 @@ export function Navbar() {
       role="navigation"
       aria-label="Main navigation"
       className={clsx(
-        "fixed top-0 w-full z-50 transition-all duration-500",
-        scrolled ? "scrolled-nav shadow-sm" : "glass-nav"
+        "fixed top-0 w-full z-[100] transition-all duration-300",
+        menuOpen
+          ? "bg-surface text-primary border-b border-outline-variant/30"
+          : scrolled
+          ? "scrolled-nav shadow-sm"
+          : "glass-nav"
       )}
     >
       {/* Main Top Header Bar */}

@@ -51,7 +51,6 @@ body {
   transform: translateY(24px);
   transition: opacity var(--dur-slow) var(--ease-out-soft),
     transform var(--dur-slow) var(--ease-out-soft);
-  will-change: opacity, transform;
 }
 .reveal.active {
   opacity: 1;
@@ -61,6 +60,12 @@ body {
 .reveal.delay-200 { transition-delay: 0.16s; }
 .reveal.delay-300 { transition-delay: 0.24s; }
 .reveal.delay-400 { transition-delay: 0.32s; }
+
+/* Smooth touch momentum scrolling on mobile */
+.overflow-y-auto,
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
 
 /* Auto-stagger children of an active group */
 .reveal-group.active > * {
