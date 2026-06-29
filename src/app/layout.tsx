@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
-import { FloatingConsultationButton } from "@/components/FloatingConsultationButton";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/components/CartProvider";
 import { RevealObserver } from "@/components/RevealObserver";
@@ -16,6 +15,14 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-dm-sans",
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -100,7 +107,7 @@ export default async function RootLayout({
   const cartCount = await getCartCount();
 
   return (
-    <html lang="en" className={`${dmSans.variable} scroll-smooth`}>
+    <html lang="en" className={`${dmSans.variable} ${cormorant.variable} scroll-smooth`}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
@@ -112,8 +119,7 @@ export default async function RootLayout({
         <CartProvider initialCount={cartCount}>
           <ScrollProgress />
           <Navbar />
-          <FloatingConsultationButton />
-          <div id="main-content" className="outline-none mb-16 md:mb-0" tabIndex={-1}>
+          <div id="main-content" className="outline-none" tabIndex={-1}>
             {children}
           </div>
           <Footer />

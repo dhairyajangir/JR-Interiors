@@ -44,7 +44,7 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
     <main className="pt-32 pb-stack-lg min-h-screen">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <div className="text-center mb-stack-md">
-          <h1 className="text-headline-section-mobile md:text-headline-section text-primary mb-6 font-bold">Search</h1>
+          <h1 className="text-headline-section-mobile md:text-headline-section text-primary mb-6">Search</h1>
           <SearchBox />
         </div>
 
@@ -59,7 +59,7 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
                 <Link href="/furniture" className="text-primary underline">Browse the full collection</Link>
               </div>
             ) : (
-              <div className="reveal-group grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-gutter">
+              <div className="reveal-group grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-gutter">
                 {results.map((p) => (
                   <ProductCard
                     key={p.id}
@@ -71,59 +71,18 @@ export default async function SearchPage({ searchParams }: { searchParams: SP })
             )}
           </>
         ) : (
-          <div className="space-y-12">
-            {/* Trending & Categories Suggestions */}
-            <div className="max-w-2xl mx-auto space-y-8 text-left">
-              <div>
-                <h3 className="text-label-xs uppercase tracking-widest text-on-surface-variant/80 mb-3.5 font-bold">Trending Searches</h3>
-                <div className="flex flex-wrap gap-2.5">
-                  {["Walnut", "Sofa", "Leather", "Oak", "Dining Table", "Brushed Brass"].map((term) => (
-                    <Link
-                      key={term}
-                      href={`/search?q=${encodeURIComponent(term)}`}
-                      className="px-4 py-2 bg-surface-container-low hover:bg-surface-container text-body-md rounded-full text-primary border border-outline-variant/20 hover:border-primary/45 transition min-h-[44px] flex items-center"
-                    >
-                      {term}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-label-xs uppercase tracking-widest text-on-surface-variant/80 mb-3.5 font-bold">Shop by Category</h3>
-                <div className="flex flex-wrap gap-2.5">
-                  {[
-                    { label: "Seating", type: "Seating" },
-                    { label: "Tables", type: "Tables" },
-                    { label: "Bedroom", type: "Bedroom" },
-                    { label: "Lighting", type: "Lighting" },
-                    { label: "Decor", type: "Decor" }
-                  ].map((cat) => (
-                    <Link
-                      key={cat.label}
-                      href={`/furniture?type=${encodeURIComponent(cat.type)}`}
-                      className="px-4 py-2 bg-primary/5 hover:bg-primary hover:text-on-primary text-body-md font-semibold text-primary rounded-full transition min-h-[44px] flex items-center"
-                    >
-                      {cat.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
+          <>
+            <p className="text-label-xs uppercase tracking-widest text-on-surface-variant text-center mb-8">Signature Pieces</p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-gutter">
+              {popular.map((p) => (
+                <ProductCard
+                  key={p.id}
+                  initialSaved={savedIds.has(p.id)}
+                  product={{ id: p.id, slug: p.slug, name: p.name, tagline: p.tagline, priceCents: p.priceCents, imageUrl: p.imageUrl, colorHexes: p.colorHexes }}
+                />
+              ))}
             </div>
-
-            <div>
-              <p className="text-label-xs uppercase tracking-widest text-on-surface-variant text-center mb-6 font-semibold">Signature Masterpieces</p>
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-gutter">
-                {popular.map((p) => (
-                  <ProductCard
-                    key={p.id}
-                    initialSaved={savedIds.has(p.id)}
-                    product={{ id: p.id, slug: p.slug, name: p.name, tagline: p.tagline, priceCents: p.priceCents, imageUrl: p.imageUrl, colorHexes: p.colorHexes }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+          </>
         )}
       </div>
     </main>

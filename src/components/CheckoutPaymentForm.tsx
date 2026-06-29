@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { placeOrder } from "@/app/actions";
 import { clsx } from "@/lib/clsx";
@@ -107,7 +107,7 @@ export function CheckoutPaymentForm({ razorpayReady }: { razorpayReady: boolean 
 
   return (
     <div className="space-y-stack-md">
-      {/* Premium Progress Tracker */}
+      {/* Responsive Progress Stepper */}
       <div className="flex items-center justify-center gap-4 py-4 mb-6 border-b border-outline-variant/20 max-w-md mx-auto">
         <Link href="/checkout/shipping" className="flex items-center gap-2 text-on-surface-variant/80 hover:text-primary font-bold text-label-xs">
           <span className="w-6 h-6 rounded-full bg-secondary text-on-secondary flex items-center justify-center text-[11px]"><Icon name="check" className="text-[14px]" /></span>

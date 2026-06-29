@@ -7,8 +7,8 @@ export function Footer() {
       <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
         <div>
           <h3 className="text-2xl font-bold mb-8">JR Interiors</h3>
-          <p className="text-on-primary/60 mb-6 leading-relaxed max-w-xs">
-            Elevating modern living through custom furniture, ACP work, signage boards, name plates, and logos since 2024.
+          <p className="text-on-primary/60 mb-6 leading-relaxed max-w-xs text-sm">
+            Crafting modern sanctuaries and artisanal furniture designed to become part of your story.
           </p>
           <div className="flex gap-6 mb-6">
             <a href="https://instagram.com/jr_interiors_2024" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-on-primary/40 hover:text-on-primary transition-colors flex items-center gap-2 text-sm">
@@ -28,9 +28,9 @@ export function Footer() {
             Navigation
           </h5>
           <ul className="space-y-4">
-            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/furniture">Our Collection</Link></li>
+            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/furniture">Curated Collections</Link></li>
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/collections">Collections</Link></li>
-            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/services">Design Services</Link></li>
+            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/services">Design Experiences</Link></li>
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/about">About Us</Link></li>
           </ul>
         </div>
@@ -41,9 +41,9 @@ export function Footer() {
           </h5>
           <ul className="space-y-4">
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/services">White Glove Delivery</Link></li>
-            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/contact">Book a Consultation</Link></li>
+            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/contact">Schedule a Design Call</Link></li>
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/about">Sustainability</Link></li>
-            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/contact">Contact Us</Link></li>
+            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/contact">Let's Create Your Space</Link></li>
           </ul>
         </div>
 
@@ -52,8 +52,7 @@ export function Footer() {
             Newsletter
           </h5>
           <p className="text-on-primary/60 text-sm mb-6">
-            Join our circle for exclusive seasonal releases and interior
-            inspiration.
+            Subscribe to the Atelier circle for seasonal collection releases and spatial design inspiration.
           </p>
           <form className="flex border-b border-on-primary/20 pb-2">
             <input

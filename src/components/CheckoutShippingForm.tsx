@@ -90,7 +90,7 @@ export function CheckoutShippingForm({
 
   return (
     <form onSubmit={submit} className="space-y-stack-md">
-      {/* Premium Progress Tracker */}
+      {/* Responsive Progress Stepper */}
       <div className="flex items-center justify-center gap-4 py-4 mb-6 border-b border-outline-variant/20 max-w-md mx-auto">
         <div className="flex items-center gap-2 text-primary font-bold text-label-xs">
           <span className="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center text-[11px]">1</span>
@@ -106,7 +106,7 @@ export function CheckoutShippingForm({
       {addresses.length > 0 && (
         <fieldset>
           <legend className="text-label-sm uppercase tracking-widest text-primary mb-4 font-bold">Use a saved address</legend>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {addresses.map((a) => {
               const selected = isAddressSelected(a);
               return (
@@ -115,17 +115,15 @@ export function CheckoutShippingForm({
                   type="button"
                   onClick={() => applyAddress(a)}
                   className={clsx(
-                    "text-left border rounded-xl p-4 transition-all flex justify-between items-start min-h-[76px] active:scale-[0.98]",
+                    "text-left border rounded-xl p-4 transition flex justify-between items-start min-h-[76px] active:scale-[0.98]",
                     selected 
                       ? "border-primary bg-primary/5 ring-1 ring-primary" 
-                      : "border-outline-variant/60 hover:bg-surface-container-low bg-surface"
+                      : "border-outline-variant hover:bg-surface-container-low bg-surface"
                   )}
                 >
                   <div className="pr-2">
-                    <p className="text-label-sm font-bold text-primary flex items-center gap-1.5">
-                      {a.label}
-                    </p>
-                    <p className="text-[12px] text-on-surface-variant/80 mt-1 leading-normal">
+                    <p className="text-label-sm font-bold text-primary">{a.label}</p>
+                    <p className="text-[12px] text-on-surface-variant mt-1">
                       {a.fullName} · {a.line1}, {a.city} {a.region}
                     </p>
                   </div>

@@ -1,9 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
-import { price } from "@/lib/format";
 import { Icon } from "@/components/Icon";
-import { QuickAddButton } from "@/components/AddToCartButton";
+import { ProductCard } from "@/components/ProductCard";
 import StructuredData from "@/components/StructuredData";
 import { getAltText } from "@/lib/altText";
 
@@ -18,10 +17,43 @@ const NOOK =
   "AB6AXuB6aWZrCuVF_yf5h-aqEJdzXwyEQ319SZYbw0W7PwJ9A36EicqVGSG7r8YWDXwWxcBaH1vvPaQKEnmZu1mDyqlTKJPVDTNdXyVa4WpxfaTV7tUsJNssOp7xhA4USHokrhvjeD23VfQNDYO2UFsH5pRFtkMm3VqryDJuS99dqKkhYspofSsnjY8TRpfbIcXvr6m-T_pLloSC9_mwn36IVc8mTS1jnuxXuArTh-zs8xKr7PGSBtZinDKM5aKXCAWX5R5nVnPQctF4SI55";
 const HALL =
   "AB6AXuD0PRwbpCLcbsXX79d4TFr7LNRJmCPXM-fBoYOuy2krlAB0lGsSmGECDNfNBR4ljz4DDRKRdN1Kq3AP2MvJDUbizLE52YAaeIaIucfe_7QZjNG4sn7mvgUAvDKC3v9pP4XCRrRZQjYlyAjNpcdwCloMMAkWHIMHha1424fNS-ka_JNlrsjYMds6gJkRd1KzwKTpB98O6_7krX6S3GzoYQR1yVN2nJOoVLtON9WQZALJNpoY9FWBPcTzZOUEif9x7A59xOQneIVVsj48";
-const AVATAR =
-  "AB6AXuD6BtFcmhIpHz77b6QzvGT4BTKbm3Ae3wbLudFdOwfuesxiEBw69FtO954dKROsK28AGdO_f4wpE9SR31wF0hKS9NJnavP8aDA8w-Mddncp6A7z9GCu50xLbktISgbAJD2bZY9hnWMF4JnuNGz-0IEWAPnwxOQugqsztyyo-jMj-jDmXhD11R_o8xzWXyvCTZmss-l3CnLBFUC5kdgT6kI6OMc-FlLWWyIFwACx6SK7kzQZbInZNxA94z3M-dMlRbihzlDXPP_fq-gE";
 const CONSULT =
   "AB6AXuBDZI4IUtfnvmNOBcHcK-yrjKXGbSpESO4hEb_YsslCx4VW2se4BWJNmumZutJ9nsTEaiGfzn2ge3voj9ytDzBanxV_EkfNptXBT5lwlfltKkli5LPi8xrHRKRAngbhblJ5-cnBHPkDvQ9MrmlLZgdw7Z4gEBypg8BlM-98VrxMFvTEeeENs-cArFQiGIv7BMfL_AmmOmeUq-QvwEeFeR-YUFJIuP9GTTBNCEne5d-VFlQyByltJjAD4lisMCCC4pQ_y_rvHiof_Jt-";
+
+const TESTIMONIALS = [
+  {
+    rating: 5,
+    quote: "Designed our dream home. The team captured exactly the warmth and serenity we wanted for the villa. The craftsmanship is flawless.",
+    project: "3200 sq ft Villa",
+    location: "Jaipur, RJ",
+    completed: "2025",
+    author: "Priya Sharma",
+  },
+  {
+    rating: 5,
+    quote: "Every piece of furniture tells a story. The Sloane armchairs have transformed our study into a quiet sanctuary where time slows down.",
+    project: "Premium Apartment",
+    location: "Bengaluru, KA",
+    completed: "2024",
+    author: "Ananya Rao",
+  },
+  {
+    rating: 5,
+    quote: "Our experience with JR Interiors was seamless from concept to completion. The white-glove setup was immaculate, and the solid walnut table is a masterpiece.",
+    project: "2400 sq ft Penthouse",
+    location: "New Delhi, DL",
+    completed: "2025",
+    author: "Vikram Malhotra",
+  },
+  {
+    rating: 5,
+    quote: "The Japanese minimalist aesthetic combined with Indian craftsmanship is exceptional. Our living room feels incredibly calm and grounded.",
+    project: "Modern Duplex",
+    location: "Mumbai, MH",
+    completed: "2024",
+    author: "Meera Patel",
+  }
+];
 
 export default async function HomePage() {
   const [signature, rooms] = await Promise.all([
@@ -38,11 +70,11 @@ export default async function HomePage() {
   const dining = rooms.find((r) => r.slug === "dining-room");
 
   return (
-    <main className="overflow-x-hidden">
+    <main className="bg-surface overflow-x-hidden">
       <StructuredData />
       
       {/* Cinematic Hero */}
-      <section className="relative h-[100svh] min-h-[580px] flex items-center overflow-hidden">
+      <section className="relative h-[100svh] min-h-[600px] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
             src={HERO}
@@ -50,423 +82,361 @@ export default async function HomePage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover brightness-90 ken-burns"
+            className="object-cover brightness-[0.9] ken-burns"
           />
-          {/* Scrims */}
-          <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/65 to-surface/10 md:via-surface/50 md:to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-surface/90 via-surface/30 to-transparent md:hidden" />
+          {/* Legibility scrim — strong cream on the left (text column), clearing to the image on the right. */}
+          <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface/50 to-transparent md:hidden" />
         </div>
-        
-        <div className="relative z-10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full pt-10">
-          <div className="max-w-3xl md:text-left text-center">
-            <span className="text-[10px] md:text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-4 block reveal font-semibold">
-              Artisanal Living
+        <div className="relative z-10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
+          <div className="max-w-3xl">
+            <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-6 block reveal font-medium">
+              Artisanal Atelier
             </span>
-            <h1 className="font-display-hero text-[34px] md:text-[64px] text-primary mb-6 leading-[1.15] font-bold reveal delay-100 max-w-xl md:max-w-none mx-auto">
-              Luxury Furniture India & Spaces Designed for Calm Living
+            <h1 className="font-serif text-display-hero-mobile md:text-display-hero text-primary mb-8 leading-[1.05] reveal delay-100">
+              Spaces Designed <br />
+              for Calm Living.
             </h1>
-            <p className="text-[16px] md:text-subheading text-on-surface-variant mb-10 max-w-lg leading-relaxed reveal delay-200 mx-auto md:mx-0">
-              Where warmth meets intentional, minimalist design. Handcrafted in Jaipur to curate sanctuaries for the modern home.
+            <p className="text-body-lg text-on-surface-variant mb-12 max-w-md leading-relaxed reveal delay-200">
+              Discover luxury handcrafted furniture and custom interior designs. We create architectural sanctuaries tailored to your story.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-5 reveal delay-300">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6 reveal delay-300 max-w-md sm:max-w-none">
               <Link
                 href="/furniture"
-                className="w-full sm:w-auto text-center bg-primary text-on-primary px-10 py-5 rounded-full font-semibold text-label-sm hover:bg-primary/95 transition-all active:scale-95 shadow-md"
+                className="bg-primary text-on-primary text-center px-10 py-5 rounded-full font-bold text-label-xs uppercase tracking-widest hover:opacity-95 transition-all active:scale-95 shadow-md"
               >
-                Explore the Catalog
+                Explore Curated Collections
               </Link>
-              <Link 
-                className="group flex items-center gap-2 text-label-sm text-primary font-bold py-2" 
-                href="/about"
-              >
-                The Atelier Story
+              <Link className="group flex items-center justify-center sm:justify-start gap-2 text-label-xs uppercase tracking-widest text-primary font-bold py-3" href="/about">
+                Our Atelier Heritage
                 <Icon name="arrow_forward" className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
         </div>
-
-        {/* Swipe Hint */}
-        <div className="absolute bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 opacity-70 animate-[bounce_2s_infinite]">
-          <span className="text-[9px] uppercase tracking-[0.25em] text-primary font-semibold">Swipe Down</span>
-          <Icon name="keyboard_arrow_down" className="text-primary text-[20px]" />
-        </div>
       </section>
 
-      {/* Trust strip - Swipable on mobile */}
-      <section className="py-8 border-b border-outline-variant bg-surface-container-lowest overflow-hidden">
-        <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-          <div className="flex md:grid md:grid-cols-4 gap-6 md:gap-gutter overflow-x-auto scroll-hide touch-momentum snap-x snap-mandatory">
-            {[
-              { icon: "verified", label: "Artisan Quality", desc: "Generations of craftsmanship" },
-              { icon: "local_shipping", label: "White Glove Delivery", desc: "In-home assembly & placement" },
-              { icon: "architecture", label: "Expert Curation", desc: "Designed for elegant spaces" },
-              { icon: "handyman", label: "Custom Crafted", desc: "Tailored to your preferences" },
-            ].map((t, i) => (
-              <div 
-                key={t.label} 
-                className="flex items-center gap-3.5 shrink-0 w-[72vw] md:w-auto snap-start p-3 bg-surface-container-low/30 md:bg-transparent rounded-xl reveal"
-              >
-                <div className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary">
-                  <Icon name={t.icon} className="text-xl" />
-                </div>
-                <div>
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-primary">{t.label}</p>
-                  <p className="text-[11px] text-on-surface-variant/80">{t.desc}</p>
-                </div>
-              </div>
-            ))}
+      {/* Featured Case Study (Before/After & Storytelling) */}
+      <section className="py-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-b border-outline-variant/20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          <div className="lg:col-span-5 reveal">
+            <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-4 block font-medium">
+              Featured Success Story
+            </span>
+            <h2 className="text-headline-section-mobile md:text-headline-section font-serif text-primary mb-6 leading-tight">
+              The Jaipur Villa
+            </h2>
+            <p className="text-body-lg text-primary italic font-light mb-8">
+              "Transforming a 3200 sq ft concrete frame into a warm, grounded sanctuary that breathes."
+            </p>
+            <div className="space-y-6 text-body-md text-on-surface-variant leading-relaxed">
+              <p>
+                <strong>The Challenge:</strong> The client wanted a space that felt open and connected to nature, avoiding the cold, cluttered feel of modern city apartments.
+              </p>
+              <p>
+                <strong>The Response:</strong> We curated a material palette of solid local teakwood, hand-finished natural oils, and raw stone tiles. By implementing custom-crafted low-profile seating and architectural room separators, we created distinct functional zones while maintaining a fluid, airy layout.
+              </p>
+            </div>
+            <div className="mt-10">
+              <Link href="/services" className="inline-flex items-center gap-2 text-label-xs font-bold text-primary uppercase tracking-widest hover:opacity-75 transition-opacity">
+                Explore Our Design Experiences
+                <Icon name="arrow_forward" />
+              </Link>
+            </div>
+          </div>
+          <div className="lg:col-span-7 reveal delay-150">
+            <div className="aspect-[16/10] rounded-2xl overflow-hidden relative shadow-xl bg-surface-container">
+              <Image
+                src={G(ZEN)}
+                alt="High-fidelity photograph of the completed Jaipur Villa living space"
+                fill
+                sizes="(max-width: 1024px) 100vw, 55vw"
+                className="object-cover hover:scale-102 transition-transform duration-1000"
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="py-16 px-margin-mobile md:px-24 bg-surface-container-lowest border-b border-outline-variant/30 max-w-[1240px] mx-auto">
-        <h2 className="text-[24px] md:text-headline-section font-bold text-primary mb-10 text-center">
-          Why Choose JR Interiors
-        </h2>
-        
-        {/* Swipable cards on mobile, 4 cols on desktop */}
-        <div className="flex md:grid md:grid-cols-4 gap-6 overflow-x-auto scroll-hide touch-momentum snap-x snap-mandatory pb-4">
-          {[
-            {
-              title: "Handcrafted in Jaipur",
-              desc: "Every piece of luxury furniture is built at our Jaipur atelier by master craftsmen with generations of expertise. We do not mass-produce; each piece is made to order."
-            },
-            {
-              title: "Sustainably Sourced",
-              desc: "Our materials — FSC-certified timber, soy-based foam, and natural textiles — are chosen for both beauty and responsibility. Luxury should never compromise our planet."
-            },
-            {
-              title: "White-Glove Assembly",
-              desc: "From your complimentary design consultation to in-home setup, our team handles every detail. Our furniture arrives fully assembled, placed exactly where you want it."
-            },
-            {
-              title: "Custom Tailored",
-              desc: "Working with our in-house designers, you can configure any piece to your exact dimensions, fabric, and finish. Custom design is standard, not a premium extra."
-            }
-          ].map((item, idx) => (
-            <div 
-              key={idx}
-              className="shrink-0 w-[80vw] md:w-auto snap-start bg-surface-container-low/40 p-6 rounded-2xl border border-outline-variant/20 flex flex-col justify-between"
-            >
-              <div>
-                <span className="text-[28px] font-serif text-primary/10 font-bold block mb-2">0{idx + 1}</span>
-                <h3 className="text-label-sm font-bold text-primary mb-3 text-[16px]">
-                  {item.title}
-                </h3>
-                <p className="text-[13px] text-on-surface-variant leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
+      {/* Trust Metrics Section */}
+      <section className="py-24 bg-surface-container-low border-b border-outline-variant/20">
+        <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-12 text-center lg:text-left">
+            <div className="reveal">
+              <h3 className="text-4xl font-serif text-primary mb-2 font-light">300+</h3>
+              <p className="text-label-xs uppercase tracking-widest text-on-surface-variant/80">Sanctuaries Designed</p>
             </div>
-          ))}
+            <div className="reveal delay-100">
+              <h3 className="text-4xl font-serif text-primary mb-2 font-light">20+</h3>
+              <p className="text-label-xs uppercase tracking-widest text-on-surface-variant/80">Years of Craft Heritage</p>
+            </div>
+            <div className="reveal delay-200">
+              <h3 className="text-4xl font-serif text-primary mb-2 font-light">500+</h3>
+              <p className="text-label-xs uppercase tracking-widest text-on-surface-variant/80">Atelier Pieces Delivered</p>
+            </div>
+            <div className="reveal delay-300">
+              <h3 className="text-4xl font-serif text-primary mb-2 font-light">India</h3>
+              <p className="text-label-xs uppercase tracking-widest text-on-surface-variant/80">White-Glove Delivery</p>
+            </div>
+            <div className="reveal delay-400 col-span-2 lg:col-span-1">
+              <h3 className="text-4xl font-serif text-primary mb-2 font-light">Lifetime</h3>
+              <p className="text-label-xs uppercase tracking-widest text-on-surface-variant/80">Structural Guarantee</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Room Browser - Swipable Carousel on Mobile */}
-      <section className="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-        <div className="flex justify-between items-end mb-8 reveal">
+      {/* Curated Collections Room Browser */}
+      <section className="py-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6 reveal">
           <div className="max-w-xl">
-            <span className="text-[10px] uppercase tracking-widest text-primary/60 mb-2 block font-semibold">
-              Shop by Space
+            <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-4 block font-medium">
+              Curated Collections
             </span>
-            <h2 className="text-[24px] md:text-headline-section font-bold text-primary">
+            <h2 className="text-headline-section-mobile md:text-headline-section font-serif text-primary leading-tight">
               Inhabiting the Home
             </h2>
           </div>
           <Link
             href="/furniture"
-            className="text-label-sm font-bold text-primary border-b border-primary/20 pb-0.5 hover:border-primary transition-all shrink-0"
+            className="text-label-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 pb-1 hover:border-primary transition-all"
           >
-            All Rooms
+            Full Collection Catalog →
           </Link>
         </div>
-
-        {/* Mobile View: Horizontal Scroll */}
-        <div className="flex md:hidden gap-5 overflow-x-auto scroll-hide touch-momentum snap-x snap-mandatory pb-4">
-          <RoomCardMobile
-            href={living ? `/furniture?room=Living` : "/furniture"}
-            image={living?.imageUrl ?? G(ZEN)}
-            title="Living Room"
-            subtitle={living ? `${living.itemCount} Items` : undefined}
-          />
-          <RoomCardMobile
-            href="/furniture?room=Bedroom"
-            image={bedroom?.imageUrl ?? G(NOOK)}
-            title="Bedroom"
-            subtitle={bedroom ? `${bedroom.itemCount} Items` : undefined}
-          />
-          <RoomCardMobile
-            href="/furniture?room=Dining"
-            image={dining?.imageUrl ?? G(HALL)}
-            title="Dining Room"
-            subtitle={dining ? `${dining.itemCount} Items` : undefined}
-          />
-        </div>
-
-        {/* Desktop View: Grid */}
-        <div className="hidden md:grid grid-cols-12 gap-8 h-[750px]">
+        <div className="grid grid-cols-12 gap-8 md:h-[760px]">
           <RoomCard
-            className="col-span-8 h-full"
+            className="col-span-12 md:col-span-8 h-[400px] md:h-auto"
             href={living ? `/furniture?room=Living` : "/furniture"}
             image={living?.imageUrl ?? G(ZEN)}
             title="Living Room"
-            subtitle={living ? `${living.itemCount} Items in Collection` : undefined}
+            subtitle={living ? `${living.itemCount} Curated Pieces` : undefined}
             large
           />
-          <div className="col-span-4 flex flex-col gap-8">
+          <div className="col-span-12 md:col-span-4 flex flex-col gap-8">
             <RoomCard
-              className="flex-1"
+              className="flex-1 h-[300px] md:h-auto"
               href="/furniture?room=Bedroom"
               image={bedroom?.imageUrl ?? G(NOOK)}
               title="Bedroom"
-              subtitle={bedroom ? `${bedroom.itemCount} Items` : undefined}
             />
             <RoomCard
-              className="flex-1"
+              className="flex-1 h-[300px] md:h-auto"
               href="/furniture?room=Dining"
               image={dining?.imageUrl ?? G(HALL)}
               title="Dining Room"
-              subtitle={dining ? `${dining.itemCount} Items` : undefined}
             />
           </div>
         </div>
       </section>
 
-      {/* Signature pieces - Carousel on Mobile */}
-      <section className="py-16 bg-surface-container-low border-y border-outline-variant/20">
+      {/* Signature Pieces Grid (Selections) */}
+      <section className="py-32 bg-surface-container-low border-y border-outline-variant/20">
         <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-          <div className="text-center mb-10 reveal">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-primary/60 mb-2 block font-semibold">
-              Curated Masterpieces
+          <div className="text-center mb-20 reveal">
+            <span className="text-label-xs uppercase tracking-[0.2em] text-primary/60 mb-4 block font-medium">
+              The Signature Pieces
             </span>
-            <h2 className="text-[24px] md:text-headline-section font-bold text-primary">
-              Signature Creations
+            <h2 className="text-headline-section-mobile md:text-headline-section font-serif text-primary">
+              Icons of Craft
             </h2>
           </div>
-
-          {/* Mobile swipe feed */}
-          <div className="flex md:grid md:grid-cols-4 gap-6 overflow-x-auto scroll-hide touch-momentum snap-x snap-mandatory pb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
             {signature.map((p, i) => (
-              <div 
-                key={p.id} 
-                className="shrink-0 w-[78vw] md:w-auto snap-start group bg-surface-bright p-3 rounded-2xl border border-outline-variant/15 reveal"
-              >
-                <div className="aspect-[4/5] rounded-xl overflow-hidden mb-4 bg-white relative">
-                  <Link href={`/product/${p.slug}`}>
-                    <Image
-                      src={p.imageUrl}
-                      alt={getAltText("product", p.name, p.tagline || p.material)}
-                      fill
-                      sizes="(max-width:768px) 78vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                  </Link>
-                  <QuickAddButton productId={p.id} />
-                </div>
-                <div className="flex justify-between items-start px-1">
-                  <div>
-                    <Link href={`/product/${p.slug}`}>
-                      <h4 className="text-label-sm font-bold text-primary mb-1 hover:underline text-[14px] line-clamp-1">
-                        {p.name}
-                      </h4>
-                    </Link>
-                    <p className="text-on-surface-variant text-[14px] font-semibold">{price(p.priceCents)}</p>
-                  </div>
-                  <div className="flex gap-1.5 mt-1">
-                    {p.colorHexes.slice(0, 2).map((hex) => (
-                      <span
-                        key={hex}
-                        className="w-3.5 h-3.5 rounded-full border border-outline-variant/60"
-                        style={{ backgroundColor: hex }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <ProductCard key={p.id} product={p} priority={i === 0} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Editorial gallery - Carousel on Mobile */}
-      <section className="py-16 bg-surface">
-        <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-8 reveal text-center">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-primary/60 mb-2 block font-semibold">Inspiration</span>
-          <h2 className="text-[24px] md:text-headline-section font-bold text-primary">
-            Spaces that Breathe
-          </h2>
-        </div>
-
-        {/* Mobile Swipe Feed */}
-        <div className="flex md:hidden gap-5 overflow-x-auto scroll-hide touch-momentum snap-x snap-mandatory px-margin-mobile pb-4">
-          <div className="shrink-0 w-[84vw] snap-start relative h-[360px] rounded-2xl overflow-hidden group">
-            <Image
-              src={G(ZEN)}
-              alt="Zen Attic"
-              fill
-              sizes="84vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent flex flex-col justify-end p-6" />
-            <div className="absolute bottom-6 left-6 right-6 text-white z-10">
-              <h4 className="text-xl font-medium mb-1">The Zen Attic</h4>
-              <p className="text-[12px] text-white/80 font-light leading-relaxed line-clamp-2">
-                A masterclass in functional minimalism, using raw textures to connect to nature.
-              </p>
-            </div>
-          </div>
-
-          <div className="shrink-0 w-[84vw] snap-start relative h-[360px] rounded-2xl overflow-hidden group">
-            <Image
-              src={G(NOOK)}
-              alt="Reading nook"
-              fill
-              sizes="84vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6" />
-            <div className="absolute bottom-6 left-6 text-white z-10">
-              <h4 className="text-xl font-medium">The Solitude Nook</h4>
-            </div>
-          </div>
-
-          <div className="shrink-0 w-[84vw] snap-start relative h-[360px] rounded-2xl overflow-hidden group">
-            <Image
-              src={G(HALL)}
-              alt="Hallway detail"
-              fill
-              sizes="84vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6" />
-            <div className="absolute bottom-6 left-6 text-white z-10">
-              <h4 className="text-xl font-medium">Atelier Entryway</h4>
-            </div>
-          </div>
-        </div>
-
-        {/* Desktop grid */}
-        <div className="hidden md:grid px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid-cols-12 gap-gutter h-[800px] reveal">
-          <div className="col-span-7 h-full relative group overflow-hidden rounded-xl">
-            <Image
-              src={G(ZEN)}
-              alt={getAltText("room", "The Zen Attic — functional minimalism in raw textures")}
-              fill
-              sizes="58vw"
-              className="object-cover grayscale-[0.1] transition-transform duration-[2s] group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/15" />
-            <div className="absolute bottom-12 left-12 max-w-sm text-white">
-              <h4 className="text-2xl font-light mb-4">The Zen Attic</h4>
-              <p className="text-white/80 font-light leading-relaxed">
-                A masterclass in functional minimalism, using raw textures to
-                create warmth and a deep connection to nature.
-              </p>
-            </div>
-          </div>
-          <div className="col-span-5 flex flex-col gap-gutter h-full">
-            <div className="flex-1 relative overflow-hidden rounded-xl group">
-              <Image src={G(NOOK)} alt={getAltText("room", "Reading nook")} fill sizes="42vw" className="object-cover transition-transform duration-1000 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-black/10" />
-            </div>
-            <div className="flex-1 relative overflow-hidden rounded-xl group">
-              <Image src={G(HALL)} alt={getAltText("room", "Hallway detail")} fill sizes="42vw" className="object-cover transition-transform duration-1000 group-hover:scale-105" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 bg-surface-container-low border-y border-outline-variant/30">
-        <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto reveal">
-          <div className="max-w-4xl mx-auto text-center">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-primary/60 mb-6 block font-semibold">
-              Voices of the Atelier
-            </span>
-            <div className="relative px-4 md:px-24">
-              <Icon name="format_quote" className="absolute -top-6 left-0 text-primary/10 text-[80px]" />
-              <p className="text-[18px] md:text-2xl font-light text-primary italic leading-relaxed mb-8">
-                &ldquo;The quality of the Sloane armchair is beyond what we
-                expected. It has transformed our living room into a serene
-                sanctuary where time seems to slow down.&rdquo;
-              </p>
-              <div className="flex flex-col items-center gap-3">
+      {/* Craftsmanship & Heritage Section */}
+      <section className="py-32 bg-surface border-b border-outline-variant/20">
+        <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            <div className="lg:col-span-7 order-last lg:order-first reveal">
+              <div className="aspect-[16/10] rounded-2xl overflow-hidden relative shadow-xl bg-surface-container">
                 <Image
-                  src={G(AVATAR)}
-                  alt={getAltText("customer", "Ananya Rao")}
-                  width={56}
-                  height={56}
-                  className="w-14 h-14 rounded-full object-cover border border-outline-variant shadow-sm"
+                  src={G(CONSULT)}
+                  alt="Master craftsman hand finishing custom timber joints at our Jaipur atelier"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  className="object-cover hover:scale-102 transition-transform duration-1000"
                 />
-                <div>
-                  <p className="text-label-sm font-bold text-primary">Ananya Rao</p>
-                  <p className="text-[11px] text-on-surface-variant/80">Bengaluru, KA</p>
-                </div>
+              </div>
+            </div>
+            <div className="lg:col-span-5 reveal">
+              <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-4 block font-medium">
+                Artisanal Provenance
+              </span>
+              <h2 className="text-headline-section-mobile md:text-headline-section font-serif text-primary mb-6 leading-tight">
+                Handcrafted in Jaipur
+              </h2>
+              <div className="space-y-6 text-body-md text-on-surface-variant leading-relaxed">
+                <p>
+                  Every piece of JR Interiors furniture is designed and hand-built at our Jaipur atelier by master woodworkers with generations of experience. We do not believe in mass production.
+                </p>
+                <p>
+                  Our workshop merges traditional joinery techniques with modern structural refinement. We hand-select every piece of timber, matching the wood grains to ensure each item is a unique work of art.
+                </p>
+              </div>
+              <div className="mt-10">
+                <Link href="/about" className="inline-flex items-center gap-2 text-label-xs font-bold text-primary uppercase tracking-widest hover:opacity-75 transition-opacity">
+                  Read The Atelier Story
+                  <Icon name="arrow_forward" />
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Final Consultation CTA */}
-      <section className="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto reveal">
-        <div className="bg-primary rounded-2xl p-8 md:p-16 flex flex-col lg:flex-row items-center gap-10 overflow-hidden relative">
-          <div className="flex-1 z-10 text-center lg:text-left">
-            <h2 className="text-[26px] md:text-headline-section text-white mb-4 font-bold">
-              Ready to Design Your Calm Space?
+      {/* Material Library Macro Explorer */}
+      <section className="py-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-b border-outline-variant/20">
+        <div className="text-center mb-20 reveal">
+          <span className="text-label-xs uppercase tracking-[0.2em] text-primary/60 mb-4 block font-medium">
+            Atelier Resources
+          </span>
+          <h2 className="text-headline-section-mobile md:text-headline-section font-serif text-primary">
+            The Material Library
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="reveal">
+            <h3 className="text-subheading font-serif text-primary mb-3">Sustainably Sourced Wood</h3>
+            <p className="text-body-md text-on-surface-variant leading-relaxed">
+              We exclusively use FSC-certified solid teak and American walnut. Every log is verified for ethical harvesting, selected for structural integrity, and hand-finished with natural oils to reveal its deep, organic grain.
+            </p>
+          </div>
+          <div className="reveal delay-100">
+            <h3 className="text-subheading font-serif text-primary mb-3">Natural Quarried Stone</h3>
+            <p className="text-body-md text-on-surface-variant leading-relaxed">
+              Our table surfaces and accents feature locally quarried Indian marble and slate. We celebrate the natural fissures and color variations that make every slab completely unique.
+            </p>
+          </div>
+          <div className="reveal delay-200">
+            <h3 className="text-subheading font-serif text-primary mb-3">Tactile Upholstery</h3>
+            <p className="text-body-md text-on-surface-variant leading-relaxed">
+              Our textiles are woven from 100% natural Belgian linen, raw cotton fibers, and premium bouclé. Free from harsh chemical backings, they breathe naturally and wear beautifully over time.
+            </p>
+          </div>
+          <div className="reveal delay-300">
+            <h3 className="text-subheading font-serif text-primary mb-3">Bespoke Finishes</h3>
+            <p className="text-body-md text-on-surface-variant leading-relaxed">
+              From matte hardware detailing to hand-rubbed zero-VOC wood seals, our finishes are chosen for longevity and health, ensuring your pieces are safe for generations.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* GPU Horizontal Testimonials Loop */}
+      <section className="py-32 bg-surface-container-lowest border-b border-outline-variant/20 overflow-hidden">
+        <div className="text-center mb-20 reveal">
+          <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-4 block font-medium">
+            Project Success Stories
+          </span>
+          <h2 className="text-headline-section-mobile md:text-headline-section font-serif text-primary">
+            Voices of the Atelier
+          </h2>
+        </div>
+        
+        <div className="marquee-container py-4">
+          <div className="marquee-content">
+            {TESTIMONIALS.map((t, idx) => (
+              <TestimonialCard key={`t1-${idx}`} testimonial={t} />
+            ))}
+          </div>
+          <div className="marquee-content" aria-hidden="true">
+            {TESTIMONIALS.map((t, idx) => (
+              <TestimonialCard key={`t2-${idx}`} testimonial={t} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* The Design Experience (Process) */}
+      <section className="py-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-b border-outline-variant/20">
+        <div className="text-center mb-20 reveal">
+          <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-4 block font-medium">
+            Spatial Journey
+          </span>
+          <h2 className="text-headline-section-mobile md:text-headline-section font-serif text-primary">
+            From Concept to Completion
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {[
+            { step: "01", title: "Atelier Consultation", desc: "We host a complimentary call or showroom visit to understand your architectural layout, aesthetic goals, and lifestyle requirements." },
+            { step: "02", title: "Bespoke Moodboards", desc: "Our team generates tailored material layouts, spatial floorplans, and fabric swatch sets matching the lighting conditions of your home." },
+            { step: "03", title: "Atelier Crafting", desc: "Each piece is hand-built to order by our master craftsmen in Jaipur. We share occasional crafting updates directly from the workbench." },
+            { step: "04", title: "White-Glove Placement", desc: "Our dedicated delivery team transports, installs, and styles each piece in your space, disposing of all packing material." }
+          ].map((item, idx) => (
+            <div key={idx} className="p-8 bg-surface-container-low rounded-2xl border border-outline-variant/25 reveal">
+              <span className="text-label-xs font-serif text-primary/40 block mb-4 font-bold">{item.step}</span>
+              <h3 className="text-subheading font-serif text-primary mb-2">{item.title}</h3>
+              <p className="text-body-md text-on-surface-variant/80 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ Accordion Section */}
+      <section className="py-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <div className="text-center mb-20 reveal">
+          <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-4 block font-medium">
+            Frequently Asked Questions
+          </span>
+          <h2 className="text-headline-section-mobile md:text-headline-section font-serif text-primary">
+            Design & Curation Inquiries
+          </h2>
+        </div>
+        <div className="max-w-3xl mx-auto space-y-6">
+          {[
+            { q: "What materials does JR Interiors use for luxury furniture?", a: "We use solid teakwood and American walnut, combined with natural Belgian linens, custom organic finishes, and locally sourced stone. All materials are responsibly harvested and built to last generations." },
+            { q: "Do you offer custom furniture design services in Jaipur?", a: "Yes. Custom interior design is standard at our atelier. We offer complete custom configurations for dimensions, finishes, and fabric materials to fit your specific room requirements." },
+            { q: "How long does delivery take for luxury furniture orders?", a: "Standard delivery for ready-made atelier selections is 7–14 business days across India. Custom bespoke commissions require 4–6 weeks for handcrafting and finishing." },
+            { q: "Can I visit the JR Interiors showroom in Jaipur?", a: "Yes. Our Jaipur Atelier is located at Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara, Jaipur. We recommend booking a complimentary showroom consultation in advance." }
+          ].map((faq, idx) => (
+            <div key={idx} className="border-b border-outline-variant/20 pb-6 reveal">
+              <h3 className="text-body-md text-primary font-bold mb-2">{faq.q}</h3>
+              <p className="text-body-md text-on-surface-variant leading-relaxed">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Final CTA (Invitation to Begin a Project) */}
+      <section className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto reveal">
+        <div className="bg-primary rounded-2xl p-8 md:p-20 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 overflow-hidden relative text-center lg:text-left">
+          <div className="flex-1 z-10 w-full">
+            <h2 className="text-headline-section-mobile md:text-headline-section text-white font-serif mb-4">
+              Let's Create Your Space.
             </h2>
-            <p className="text-white/80 text-[14px] md:text-body-lg mb-8 max-w-md leading-relaxed mx-auto lg:mx-0">
-              Schedule a complimentary design consultation with an expert from the JR Atelier — in-home or virtual. Limited slots available this month.
+            <p className="text-white/80 text-body-lg mb-8 max-w-md leading-relaxed mx-auto lg:mx-0 font-light">
+              Schedule a complimentary design consultation with an expert from the JR Atelier — in-home, showroom, or virtual.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
               <Link
                 href="/contact"
-                className="w-full sm:w-auto text-center bg-white text-primary px-10 py-5 rounded-full font-bold text-label-sm hover:bg-surface-bright transition-all shadow-xl active:scale-95"
+                className="w-full sm:w-auto text-center bg-white text-primary px-10 py-5 rounded-full font-bold text-label-xs uppercase tracking-widest hover:bg-surface-bright transition-all shadow-xl active:scale-95"
               >
                 Book Your Design Consultation
               </Link>
             </div>
-            
-            <div className="mt-6 flex flex-col sm:flex-row gap-4 text-white/70 text-[12px] items-center justify-center lg:justify-start">
-              <span>✓ Expert interior curation</span>
-              <span>✓ Complimentary, no commitment</span>
+            <div className="mt-8 flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 text-white/70 text-[12px] leading-normal font-light">
+              <span>✓ Expert designers (10+ years in luxury)</span>
+              <span>✓ Free consultation, no commitment</span>
+              <span>✓ Trusted by 200+ homes across India</span>
             </div>
           </div>
-          
           <div className="flex-1 w-full z-10">
-            <div className="aspect-video rounded-xl overflow-hidden shadow-xl relative max-w-lg mx-auto lg:max-w-none">
-              <Image src={G(CONSULT)} alt={getAltText("atelier", "Design consultation")} fill sizes="(max-width:768px) 100vw, 40vw" className="object-cover" />
+            <div className="aspect-video rounded-xl overflow-hidden shadow-2xl relative max-w-lg mx-auto lg:max-w-none">
+              <Image src={G(CONSULT)} alt="A spatial interior designer walking through material selections with a client" fill sizes="(max-width:768px) 100vw, 40vw" className="object-cover" />
             </div>
           </div>
-          <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/felt.png')]" />
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/felt.png')]" />
         </div>
       </section>
     </main>
-  );
-}
-
-function RoomCardMobile({
-  href,
-  image,
-  title,
-  subtitle,
-}: {
-  href: string;
-  image: string;
-  title: string;
-  subtitle?: string;
-}) {
-  return (
-    <Link href={href} className="shrink-0 w-[78vw] snap-start relative h-[280px] rounded-2xl overflow-hidden block">
-      <Image src={image} alt={title} fill sizes="78vw" className="object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent flex flex-col justify-end p-6" />
-      <div className="absolute bottom-6 left-6 text-white z-10">
-        <h3 className="text-xl font-medium mb-1">{title}</h3>
-        {subtitle && <p className="text-white/80 text-[12px]">{subtitle}</p>}
-      </div>
-    </Link>
   );
 }
 
@@ -486,13 +456,36 @@ function RoomCard({
   className?: string;
 }) {
   return (
-    <Link href={href} className={`relative rounded-xl overflow-hidden group reveal block ${className ?? ""}`}>
+    <Link href={href} className={`relative rounded-lg overflow-hidden group reveal block ${className ?? ""}`}>
       <Image src={image} alt={getAltText("room", title)} fill sizes={large ? "66vw" : "33vw"} className="object-cover transition-transform duration-1000 group-hover:scale-105" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent flex flex-col justify-end p-8 md:p-12" />
-      <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 text-white z-10">
-        <h3 className={`font-light ${large ? "text-3xl mb-2" : "text-2xl"}`}>{title}</h3>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex flex-col justify-end p-8 md:p-12">
+        <h3 className={`text-white font-serif font-light ${large ? "text-3xl mb-2" : "text-2xl"}`}>{title}</h3>
         {subtitle && <p className="text-white/80 text-label-sm">{subtitle}</p>}
       </div>
     </Link>
+  );
+}
+
+function TestimonialCard({ testimonial }: { testimonial: typeof TESTIMONIALS[number] }) {
+  return (
+    <div className="w-[380px] sm:w-[440px] shrink-0 bg-surface-container-low p-8 rounded-2xl border border-outline-variant/20 flex flex-col justify-between h-[280px]">
+      <div>
+        <div className="flex gap-0.5 text-primary mb-4">
+          {Array.from({ length: testimonial.rating }).map((_, i) => (
+            <Icon key={i} name="star" fill className="text-sm" />
+          ))}
+        </div>
+        <p className="text-body-md text-primary italic font-light leading-relaxed mb-6">
+          &ldquo;{testimonial.quote}&rdquo;
+        </p>
+      </div>
+      <div className="flex justify-between items-end border-t border-outline-variant/20 pt-4 text-label-xs">
+        <div>
+          <p className="text-primary font-bold">{testimonial.author}</p>
+          <p className="text-on-surface-variant/70 mt-0.5">{testimonial.project} · {testimonial.location}</p>
+        </div>
+        <span className="text-on-surface-variant/50 uppercase tracking-widest text-[9px]">Completed {testimonial.completed}</span>
+      </div>
+    </div>
   );
 }
