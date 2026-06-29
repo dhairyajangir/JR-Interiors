@@ -17,9 +17,9 @@ export default function ContactPage() {
             Whether you&rsquo;re furnishing a single corner or reimagining an entire home, our designers would love to help. Book a complimentary consultation or reach us directly.
           </p>
           <div className="space-y-5">
-            <ContactRow icon="mail" label="Email" value="studio@jrinteriors.in" href="mailto:studio@jrinteriors.in" />
-            <ContactRow icon="call" label="Phone" value="+91 96678 64262" href="tel:+919667864262" />
-            <ContactRow icon="chat" label="WhatsApp Chat" value="+91 96678 64262 (Click to Chat)" href="https://wa.me/919667864262" />
+            <ContactRow icon="mail" label="Email" value="adityajangid1409@gmail.com" href="mailto:adityajangid1409@gmail.com" />
+            <ContactRow icon="call" label="Phone" value="+91 94603 00750" href="tel:+919460300750" />
+            <ContactRow icon="chat" label="WhatsApp Chat" value="+91 94603 00750 (Click to Chat)" href="https://wa.me/919460300750" />
             <ContactRow icon="location_on" label="Jaipur Atelier" value="Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara, Jaipur 302012" href="https://maps.google.com/?q=Pno.+251+Nirmal+Vihar,+Dadi+Ka+Phatak,+Jhotwara,+Jaipur+302012" />
             <ContactRow icon="instagram" label="Instagram" value="@jr_interiors_2024" href="https://instagram.com/jr_interiors_2024" />
             <ContactRow icon="schedule" label="Hours" value="Mon–Sat · 10am – 7pm IST" />

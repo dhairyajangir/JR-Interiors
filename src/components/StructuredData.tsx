@@ -10,7 +10,7 @@ export default function StructuredData() {
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "Customer Service",
-      "telephone": "+91-96678-64262",
+      "telephone": "+91-94603-00750",
       "areaServed": "IN",
       "availableLanguage": ["English", "Hindi"]
     },
@@ -27,7 +27,7 @@ export default function StructuredData() {
     "image": "https://jrinteriors.in/atelier-hero.jpg",
     "description": "Luxury furniture and interior design showroom in Jaipur, Rajasthan. Handcrafted artisanal pieces with custom design services.",
     "url": "https://jrinteriors.in",
-    "telephone": "+91-96678-64262",
+    "telephone": "+91-94603-00750",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara",
@@ -106,7 +106,7 @@ export default function StructuredData() {
         "name": "Can I visit the JR Interiors showroom in Jaipur?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Our Jaipur Atelier is located at Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara, Jaipur, Rajasthan 302012. Call +91 96678 64262 or visit our website to book a consultation."
+          "text": "Yes. Our Jaipur Atelier is located at Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara, Jaipur, Rajasthan 302012. Call +91 94603 00750 or visit our website to book a consultation."
         }
       },
       {

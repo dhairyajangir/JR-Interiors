@@ -19,7 +19,7 @@ export function Footer() {
             <p className="font-bold uppercase tracking-wider mb-1">Jaipur Atelier</p>
             <p>Pno. 251 Nirmal Vihar, Dadi Ka Phatak,</p>
             <p>Jhotwara, Jaipur, Rajasthan 302012</p>
-            <p className="mt-2">Ph: +91 96678 64262, +91 94603 00750</p>
+            <p className="mt-2">Ph: +91 94603 00750</p>
           </div>
         </div>
 

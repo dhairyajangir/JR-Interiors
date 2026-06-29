@@ -36,7 +36,7 @@ async function main() {
         data: {
           fullName: "JR Interiors Demo Admin",
           businessName: "JR Interiors Demo Workspace",
-          phone: "+91 96678 64262",
+          phone: "+91 94603 00750",
           passwordHash: hashPassword(password),
           status: "ACTIVE",
           isAdmin: true,
@@ -49,7 +49,7 @@ async function main() {
           email,
           fullName: "JR Interiors Demo Admin",
           businessName: "JR Interiors Demo Workspace",
-          phone: "+91 96678 64262",
+          phone: "+91 94603 00750",
           passwordHash: hashPassword(password),
           status: "ACTIVE",
           isAdmin: true,

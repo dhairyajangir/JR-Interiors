@@ -79,7 +79,7 @@ export function Navbar() {
           <div className="flex items-center gap-4 md:gap-8 text-primary">
             {/* Quick Contact Icons (Mobile Only) */}
             <a
-              href="https://wa.me/919667864262"
+              href="https://wa.me/919460300750"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp Contact"
