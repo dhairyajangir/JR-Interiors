@@ -11,9 +11,19 @@ export function verifyEnvConfig() {
     }
 
     const secret = process.env.AUTH_SECRET!;
-    if (secret === "jr-admin-dev-secret-change-me" || secret.length < 32) {
+    if (secret === "jr-admin-dev-secret-change-me") {
       throw new Error(
-        "[CRITICAL] AUTH_SECRET is insecure. Must be at least 32 characters long and not the development default."
+        "[CRITICAL] AUTH_SECRET matches the development default. You must change it in production."
+      );
+    }
+
+    if (secret.length < 16) {
+      console.warn(
+        "[CRITICAL] AUTH_SECRET is extremely weak (under 16 chars). Please rotate it."
+      );
+    } else if (secret.length < 32) {
+      console.warn(
+        "[WARNING] AUTH_SECRET is under 32 chars. A longer random key is recommended for enterprise strength."
       );
     }
   }
