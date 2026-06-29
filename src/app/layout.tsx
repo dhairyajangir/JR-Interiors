@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
+import { FloatingConsultationButton } from "@/components/FloatingConsultationButton";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/components/CartProvider";
 import { RevealObserver } from "@/components/RevealObserver";
@@ -111,7 +112,8 @@ export default async function RootLayout({
         <CartProvider initialCount={cartCount}>
           <ScrollProgress />
           <Navbar />
-          <div id="main-content" className="outline-none" tabIndex={-1}>
+          <FloatingConsultationButton />
+          <div id="main-content" className="outline-none mb-16 md:mb-0" tabIndex={-1}>
             {children}
           </div>
           <Footer />

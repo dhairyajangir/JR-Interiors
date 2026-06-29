@@ -17,10 +17,11 @@ export default function ContactPage() {
             Whether you&rsquo;re furnishing a single corner or reimagining an entire home, our designers would love to help. Book a complimentary consultation or reach us directly.
           </p>
           <div className="space-y-5">
-            <ContactRow icon="mail" label="Email" value="studio@jrinteriors.in" />
-            <ContactRow icon="call" label="Phone" value="+91 96678 64262 / +91 94603 00750 / +91 97840 37887" />
-            <ContactRow icon="location_on" label="Jaipur Atelier" value="Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara, Jaipur 302012" />
-            <ContactRow icon="instagram" label="Instagram" value="@jr_interiors_2024" />
+            <ContactRow icon="mail" label="Email" value="studio@jrinteriors.in" href="mailto:studio@jrinteriors.in" />
+            <ContactRow icon="call" label="Phone" value="+91 96678 64262" href="tel:+919667864262" />
+            <ContactRow icon="chat" label="WhatsApp Chat" value="+91 96678 64262 (Click to Chat)" href="https://wa.me/919667864262" />
+            <ContactRow icon="location_on" label="Jaipur Atelier" value="Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara, Jaipur 302012" href="https://maps.google.com/?q=Pno.+251+Nirmal+Vihar,+Dadi+Ka+Phatak,+Jhotwara,+Jaipur+302012" />
+            <ContactRow icon="instagram" label="Instagram" value="@jr_interiors_2024" href="https://instagram.com/jr_interiors_2024" />
             <ContactRow icon="schedule" label="Hours" value="Mon–Sat · 10am – 7pm IST" />
           </div>
         </div>
@@ -34,7 +35,19 @@ export default function ContactPage() {
   );
 }
 
-function ContactRow({ icon, label, value, isImage }: { icon: string; label: string; value: string; isImage?: boolean }) {
+function ContactRow({ 
+  icon, 
+  label, 
+  value, 
+  href,
+  isImage 
+}: { 
+  icon: string; 
+  label: string; 
+  value: string; 
+  href?: string;
+  isImage?: boolean 
+}) {
   return (
     <div className="flex items-start gap-4">
       <span className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
@@ -46,7 +59,18 @@ function ContactRow({ icon, label, value, isImage }: { icon: string; label: stri
       </span>
       <div>
         <p className="text-label-xs uppercase tracking-widest text-on-surface-variant">{label}</p>
-        <p className="text-body-md text-primary">{value}</p>
+        {href ? (
+          <a 
+            href={href} 
+            target={href.startsWith("http") ? "_blank" : undefined}
+            rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+            className="text-body-md text-primary font-bold hover:underline hover:text-primary/80 transition-colors"
+          >
+            {value}
+          </a>
+        ) : (
+          <p className="text-body-md text-primary font-bold">{value}</p>
+        )}
       </div>
     </div>
   );

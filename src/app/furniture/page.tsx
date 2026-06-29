@@ -60,7 +60,7 @@ export default async function FurniturePage({ searchParams }: { searchParams: SP
     <main className="pt-32 pb-stack-lg">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <div className="mb-stack-md reveal">
-          <h1 className="text-headline-section-mobile md:text-headline-section text-primary mb-4">
+          <h1 className="text-headline-section-mobile md:text-headline-section text-primary mb-4 font-bold">
             The Furniture Collection
           </h1>
           <p className="text-body-lg text-on-surface-variant max-w-2xl">
@@ -88,7 +88,7 @@ export default async function FurniturePage({ searchParams }: { searchParams: SP
                 <p>Try removing a filter to see more of the collection.</p>
               </div>
             ) : (
-              <div className="reveal-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+              <div className="reveal-group grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-gutter">
                 {products.map((p) => (
                   <ProductCard
                     key={p.id}

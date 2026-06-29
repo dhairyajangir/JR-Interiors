@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { INDIAN_STATES, PIN_PATTERN } from "@/lib/india";
+import { clsx } from "@/lib/clsx";
+import { Icon } from "@/components/Icon";
 
 const KEY = "jr_checkout";
 
@@ -76,25 +78,66 @@ export function CheckoutShippingForm({
     router.push("/checkout/payment");
   }
 
+  const isAddressSelected = (a: SavedAddress) => {
+    return (
+      v.fullName === a.fullName &&
+      v.address1 === a.line1 &&
+      v.city === a.city &&
+      v.region === a.region &&
+      v.postalCode === a.postalCode
+    );
+  };
+
   return (
     <form onSubmit={submit} className="space-y-stack-md">
+      {/* Premium Progress Tracker */}
+      <div className="flex items-center justify-center gap-4 py-4 mb-6 border-b border-outline-variant/20 max-w-md mx-auto">
+        <div className="flex items-center gap-2 text-primary font-bold text-label-xs">
+          <span className="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center text-[11px]">1</span>
+          <span>Shipping</span>
+        </div>
+        <div className="w-12 h-[1px] bg-outline-variant/60" />
+        <div className="flex items-center gap-2 text-on-surface-variant/50 font-bold text-label-xs">
+          <span className="w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center text-[11px]">2</span>
+          <span>Payment</span>
+        </div>
+      </div>
+
       {addresses.length > 0 && (
         <fieldset>
-          <legend className="text-subheading text-primary mb-4">Use a saved address</legend>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {addresses.map((a) => (
-              <button
-                key={a.id}
-                type="button"
-                onClick={() => applyAddress(a)}
-                className="text-left border border-outline-variant rounded-lg p-4 hover:border-primary hover:bg-surface-container-low transition"
-              >
-                <p className="text-label-sm font-semibold text-primary">{a.label}</p>
-                <p className="text-label-xs text-on-surface-variant">
-                  {a.fullName} · {a.line1}, {a.city} {a.region}
-                </p>
-              </button>
-            ))}
+          <legend className="text-label-sm uppercase tracking-widest text-primary mb-4 font-bold">Use a saved address</legend>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {addresses.map((a) => {
+              const selected = isAddressSelected(a);
+              return (
+                <button
+                  key={a.id}
+                  type="button"
+                  onClick={() => applyAddress(a)}
+                  className={clsx(
+                    "text-left border rounded-xl p-4 transition-all flex justify-between items-start min-h-[76px] active:scale-[0.98]",
+                    selected 
+                      ? "border-primary bg-primary/5 ring-1 ring-primary" 
+                      : "border-outline-variant/60 hover:bg-surface-container-low bg-surface"
+                  )}
+                >
+                  <div className="pr-2">
+                    <p className="text-label-sm font-bold text-primary flex items-center gap-1.5">
+                      {a.label}
+                    </p>
+                    <p className="text-[12px] text-on-surface-variant/80 mt-1 leading-normal">
+                      {a.fullName} · {a.line1}, {a.city} {a.region}
+                    </p>
+                  </div>
+                  <div className="shrink-0 pt-0.5">
+                    <Icon 
+                      name={selected ? "radio_button_checked" : "radio_button_unchecked"} 
+                      className={clsx("text-[18px]", selected ? "text-primary" : "text-outline-variant")} 
+                    />
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </fieldset>
       )}
