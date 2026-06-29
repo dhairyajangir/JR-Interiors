@@ -71,7 +71,7 @@ export default async function HomePage() {
             <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-5 reveal delay-300">
               <Link
                 href="/furniture"
-                className="w-full sm:w-auto text-center bg-primary text-on-primary px-8 py-4.5 rounded-full font-semibold text-label-sm hover:bg-primary/95 transition-all active:scale-95 shadow-md"
+                className="w-full sm:w-auto text-center bg-primary text-on-primary px-10 py-5 rounded-full font-semibold text-label-sm hover:bg-primary/95 transition-all active:scale-95 shadow-md"
               >
                 Explore the Catalog
               </Link>
@@ -423,7 +423,7 @@ export default async function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
               <Link
                 href="/contact"
-                className="w-full sm:w-auto text-center bg-white text-primary px-8 py-4.5 rounded-full font-bold text-label-sm hover:bg-surface-bright transition-all shadow-xl active:scale-95"
+                className="w-full sm:w-auto text-center bg-white text-primary px-10 py-5 rounded-full font-bold text-label-sm hover:bg-surface-bright transition-all shadow-xl active:scale-95"
               >
                 Book Your Design Consultation
               </Link>
