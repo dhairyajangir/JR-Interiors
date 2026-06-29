@@ -43,7 +43,7 @@ export function CartView({ lines: initial }: { lines: CartLine[] }) {
     return (
       <div className="py-stack-lg text-center">
         <Icon name="shopping_bag" className="text-6xl text-outline-variant mb-6" />
-        <h2 className="text-subheading text-primary mb-2">Your cart is empty</h2>
+        <h2 className="text-subheading text-primary mb-2">Your selections are empty</h2>
         <p className="text-on-surface-variant mb-8">Curated pieces you add will appear here.</p>
         <Link href="/furniture" className="inline-block bg-primary text-on-primary px-10 py-4 rounded-lg font-label-sm hover:opacity-90 transition">
           Explore the Collection
@@ -112,7 +112,7 @@ export function CartView({ lines: initial }: { lines: CartLine[] }) {
           Proceed to Checkout
         </Link>
         <Link href="/furniture" className="block w-full text-center text-label-sm text-on-surface-variant mt-4 hover:text-primary transition">
-          Continue Shopping
+          Continue Exploring
         </Link>
         <div className="flex items-center gap-2 justify-center mt-6 text-label-xs text-on-surface-variant">
           <Icon name="lock" className="text-[16px]" />

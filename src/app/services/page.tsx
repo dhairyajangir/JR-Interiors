@@ -66,10 +66,10 @@ export default function ServicesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter mt-stack-md">
           {[
             { icon: "chair", title: "Custom Furniture", body: "Bespoke residential and office furniture, custom-designed to optimize space, ergonomics, and aesthetic cohesion." },
-            { icon: "dashboard", title: "ACP Panel Work", body: "All types of Aluminium Composite Panel (ACP) installations, offering premium exterior facades and clean interior cladding." },
-            { icon: "featured_play_list", title: "Signage & Acrylic Logos", body: "High-quality advertising signage boards, company logos, and custom name plates crafted from premium acrylic and metal." },
-            { icon: "grid_view", title: "Steel Railings", body: "Modern steel railings designed and installed for staircases, balconies, and commercial properties with structural integrity." },
-            { icon: "style", title: "Custom Decor Items", body: "Laser-cut home decor, custom name plates, and accent pieces created from acrylic, MDF, and fine hardwoods." },
+            { icon: "dashboard", title: "Architectural Facades", body: "Premium exterior cladding and architectural facade systems designed for modern structures." },
+            { icon: "featured_play_list", title: "Atelier Signage", body: "Custom metalwork, luxury identifiers, and spatial signage boards that integrate with branding." },
+            { icon: "grid_view", title: "Fine Metalwork", body: "Structural steel and brass railings detailed to add character and integrity to staircases and balconies." },
+            { icon: "style", title: "Custom Decor", body: "Selected decorative pieces, curated name plaques, and handcrafted accents that breathe life into your space." },
             { icon: "architecture", title: "Turnkey Interiors", body: "From initial layout designs to site surveys, measurements, cost estimation, civil execution, and final handover." },
           ].map((item) => (
             <div key={item.title} className="bg-surface-container-low p-8 rounded-xl border border-outline-variant/30 reveal">

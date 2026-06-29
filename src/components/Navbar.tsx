@@ -56,7 +56,7 @@ export function Navbar() {
       role="navigation"
       aria-label="Main navigation"
       className={clsx(
-        "fixed top-0 w-full z-[100] transition-all duration-300",
+        "fixed top-0 w-full z-[100] transition-all duration-500 ease-[var(--ease-out-soft)]",
         menuOpen
           ? "bg-surface text-primary border-b border-outline-variant/30"
           : scrolled
@@ -215,7 +215,7 @@ export function Navbar() {
           <div className="border-t border-outline-variant/30 pt-6 mt-2 space-y-1">
             <p className="text-[10px] uppercase tracking-widest text-outline">Jaipur Atelier</p>
             <p className="text-body-md text-primary font-medium">Ph: +91 94603 00750</p>
-            <p className="text-body-md text-primary font-medium">Email: adityajangid1409@gmail.com</p>
+            <p className="text-body-md text-primary font-medium">Email: concierge@jrinteriors.in</p>
           </div>
         </div>
       )}

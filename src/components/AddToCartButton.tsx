@@ -29,7 +29,7 @@ export function QuickAddButton({ productId }: { productId: string }) {
       type="button"
       onClick={add}
       disabled={pending}
-      aria-label="Add to cart"
+      aria-label="Add to selections"
       className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 w-11 h-11 sm:w-12 sm:h-12 bg-primary text-on-primary rounded-full flex items-center justify-center opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 shadow-md hover:scale-105 active:scale-90 disabled:opacity-60"
     >
       <Icon name={done ? "check" : "add"} className="text-[20px]" />
@@ -79,7 +79,7 @@ export function AddToCart({
     >
       {added ? (
         <>
-          <Icon name="check" className="text-[18px]" /> Added to Cart
+          <Icon name="check" className="text-[18px]" /> Added to Selections
         </>
       ) : pending ? (
         "Adding…"

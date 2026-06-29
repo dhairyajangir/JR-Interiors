@@ -155,24 +155,25 @@ export function ProductView({
             <div className="flex flex-col gap-4 w-full">
               <Link
                 href="/contact"
-                className="w-full bg-primary text-on-primary py-4 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:opacity-95 transition-all active:scale-[0.98] text-center shadow-md"
+                className="w-full bg-primary text-on-primary py-4 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:opacity-95 transition-all active:scale-[0.98] text-center shadow-md animate-fade-in"
               >
                 Book Complimentary Design Consultation
               </Link>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-                <Link
-                  href={`/contact?product=${encodeURIComponent(product.name)}`}
-                  className="border border-outline text-primary py-4 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-surface-container-low transition-all active:scale-[0.98] text-center"
-                >
-                  Enquire Now
-                </Link>
+              <Link
+                href={`/contact?product=${encodeURIComponent(product.name)}`}
+                className="w-full border border-outline text-primary py-4 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-surface-container-low transition-all active:scale-[0.98] text-center"
+              >
+                Enquire About This Piece
+              </Link>
+
+              <div className="flex justify-center mt-2">
                 <AddToCart 
                   productId={product.id} 
                   finish={finish?.name ?? null} 
                   upholstery={uph} 
-                  label="Add to Selections"
-                  className="border border-outline-variant bg-transparent text-primary hover:bg-surface-container-low hover:opacity-100"
+                  label="Save to Atelier Selections"
+                  className="bg-transparent text-primary/80 hover:text-primary border-none hover:bg-transparent shadow-none py-2 hover:underline active:scale-100 font-bold text-label-xs uppercase tracking-widest w-auto"
                 />
               </div>
             </div>

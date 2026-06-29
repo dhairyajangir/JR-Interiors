@@ -21,7 +21,7 @@ export default function AboutPage() {
             Craft as a quiet act of devotion.
           </h1>
           <p className="text-subheading text-on-surface-variant leading-relaxed">
-            Established in 2024, JR Interiors has pursued a single belief: that the spaces we live and work in should be functional, beautiful, and made with intention. Based in Jaipur, we specialize in high-quality furniture design, custom signages, acrylic company logos, steel railings, and premium ACP panel work.
+            Established in 2024, JR Interiors has pursued a single belief: that the spaces we live and work in should be functional, beautiful, and made with intention. Based in Jaipur, we specialize in custom furniture design, architectural facades, bespoke metalwork, and turnkey luxury interior transformations.
           </p>
         </div>
       </section>
@@ -54,7 +54,7 @@ export default function AboutPage() {
           <div>
             <h2 className="text-headline-section-mobile md:text-headline-section text-primary mb-6">The Atelier</h2>
             <p className="text-body-md text-on-surface-variant leading-relaxed mb-6">
-              Every commission begins as a conversation and ends as a custom solution for your space. Located in Jaipur, our design studio and workshop sit under one roof, allowing us to seamlessly manage everything from custom residential name plates and MDF decor to major commercial ACP installations.
+              Every commission begins as a conversation and ends as a custom solution for your space. Located in Jaipur, our design studio and workshop sit under one roof, allowing us to seamlessly manage everything from custom residential decor and fine metal finishes to major architectural design installations.
             </p>
             <Link href="/contact" className="inline-flex items-center gap-2 text-label-sm font-bold text-primary border-b border-primary/30 pb-1 hover:border-primary transition">
               Book a Consultation <Icon name="arrow_forward" className="text-[18px]" />
