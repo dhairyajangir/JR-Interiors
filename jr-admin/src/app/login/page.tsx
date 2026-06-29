@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/LoginForm";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, isDemoModeEnabled } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +32,7 @@ export default async function LoginPage() {
           <h2 className="mt-4 text-3xl font-semibold text-ink">Sign in</h2>
           <p className="mt-3 text-sm leading-6 text-steel">Use your admin-service account. This is not tied to the ecommerce customer login.</p>
           <div className="mt-8">
-            <LoginForm />
+            <LoginForm demoEnabled={isDemoModeEnabled()} />
           </div>
         </section>
       </div>

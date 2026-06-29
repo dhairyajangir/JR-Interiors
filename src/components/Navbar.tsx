@@ -38,6 +38,8 @@ export function Navbar() {
 
   return (
     <nav
+      role="navigation"
+      aria-label="Main navigation"
       className={clsx(
         "fixed top-0 w-full z-50 transition-all duration-500",
         scrolled ? "scrolled-nav shadow-sm" : "glass-nav"
@@ -51,22 +53,24 @@ export function Navbar() {
           JR INTERIORS
         </Link>
 
-        <div className="hidden md:flex items-center gap-10">
+        <ul id="main-menu" role="menubar" className="hidden md:flex items-center gap-10">
           {LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={clsx(
-                "text-label-xs uppercase tracking-widest transition-colors",
-                isActive(l.href)
-                  ? "text-primary font-bold border-b border-primary/40 pb-1"
-                  : "text-on-surface-variant hover:text-primary link-underline"
-              )}
-            >
-              {l.label}
-            </Link>
+            <li key={l.href} role="none">
+              <Link
+                href={l.href}
+                role="menuitem"
+                className={clsx(
+                  "text-label-xs uppercase tracking-widest transition-colors",
+                  isActive(l.href)
+                    ? "text-primary font-bold border-b border-primary/40 pb-1"
+                    : "text-on-surface-variant hover:text-primary link-underline"
+                )}
+              >
+                {l.label}
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
 
         <div className="flex items-center gap-6 md:gap-8 text-primary">
           <Link
@@ -109,6 +113,7 @@ export function Navbar() {
             className="md:hidden w-8 h-8 flex items-center justify-center hover:opacity-70 transition"
             aria-label="Menu"
             aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
             onClick={() => setMenuOpen((o) => !o)}
           >
             <Icon name={menuOpen ? "close" : "menu"} className="text-[22px]" />
@@ -118,7 +123,12 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-surface-container-lowest border-t border-outline-variant px-margin-mobile py-6 space-y-4 shadow-md">
+        <div
+          id="mobile-menu"
+          role="navigation"
+          aria-label="Mobile navigation"
+          className="md:hidden bg-surface-container-lowest border-t border-outline-variant px-margin-mobile py-6 space-y-4 shadow-md"
+        >
           {LINKS.map((l) => (
             <Link
               key={l.href}

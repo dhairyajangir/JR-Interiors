@@ -430,6 +430,7 @@ async function main() {
   console.log("Clearing existing data…");
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
+  await prisma.consultation.deleteMany();
   await prisma.cartItem.deleteMany();
   await prisma.cart.deleteMany();
   await prisma.review.deleteMany();
@@ -446,6 +447,7 @@ async function main() {
       passwordHash: hashPassword("password123"),
       fullName: "Aarav Sharma",
       phone: "9876543210",
+      role: "ADMIN",
       addresses: {
         create: [
           {
@@ -576,6 +578,76 @@ async function main() {
       categoryId: catByRoom.get("Living") ?? null,
     },
   });
+
+  console.log("Seeding sample orders and consultations...");
+  const sampleUser = await prisma.user.findUnique({
+    where: { email: "demo@jrinteriors.in" },
+  });
+  const publishedProducts = await prisma.product.findMany({
+    where: { status: "PUBLISHED" },
+    take: 2,
+    orderBy: { createdAt: "asc" },
+  });
+
+  if (sampleUser && publishedProducts.length >= 2) {
+    await prisma.order.create({
+      data: {
+        number: `JR-${new Date().getFullYear()}-110001`,
+        userId: sampleUser.id,
+        email: sampleUser.email,
+        fullName: sampleUser.fullName,
+        phone: sampleUser.phone,
+        address1: "12 Bandra Heights, Linking Road",
+        address2: "Bandra West",
+        city: "Mumbai",
+        region: "Maharashtra",
+        postalCode: "400050",
+        country: "India",
+        shippingType: "standard",
+        subtotalCents: publishedProducts[0].priceCents + publishedProducts[1].priceCents,
+        shippingCents: 0,
+        taxCents: 0,
+        totalCents: publishedProducts[0].priceCents + publishedProducts[1].priceCents,
+        status: "processing",
+        paymentMethod: "razorpay",
+        paymentStatus: "paid",
+        items: {
+          create: publishedProducts.map((product, index) => ({
+            productId: product.id,
+            name: product.name,
+            priceCents: product.priceCents,
+            quantity: 1,
+            imageUrl: product.imageUrl,
+            sellerId: product.sellerId,
+            itemStatus: index === 0 ? "fulfilled" : "pending",
+          })),
+        },
+      },
+    });
+
+    await prisma.consultation.createMany({
+      data: [
+        {
+          userId: sampleUser.id,
+          name: sampleUser.fullName,
+          email: sampleUser.email,
+          phone: sampleUser.phone,
+          projectType: "Whole home",
+          message: "Need help planning living and dining spaces before festive season.",
+          status: "NEW",
+        },
+        {
+          userId: sampleUser.id,
+          name: "Naina Kapoor",
+          email: "naina@example.com",
+          phone: "9810012345",
+          projectType: "Single room",
+          message: "Looking for bedroom refresh with custom storage and warm lighting.",
+          status: "CONTACTED",
+        },
+      ],
+    });
+  }
 
   console.log("Updating category counts…");
   for (const [room, id] of catByRoom) {

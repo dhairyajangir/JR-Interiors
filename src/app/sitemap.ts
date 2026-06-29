@@ -1,29 +1,59 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/db";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticRoutes = ["", "/furniture", "/collections", "/about", "/services", "/contact", "/search"].map(
-    (path) => ({
-      url: `${siteUrl}${path}`,
-      changeFrequency: "weekly" as const,
-      priority: path === "" ? 1 : 0.7,
-    })
-  );
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL &&
+    process.env.NEXT_PUBLIC_SITE_URL !== "http://localhost:3000"
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : "https://jrinteriors.in";
 
-  let productRoutes: MetadataRoute.Sitemap = [];
+  // Static pages
+  const staticPages = [
+    { url: siteUrl, changeFrequency: "weekly" as const, priority: 1.0 },
+    {
+      url: `${siteUrl}/furniture`,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    },
+    {
+      url: `${siteUrl}/collections`,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/services`,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/about`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/contact`,
+      changeFrequency: "never" as const,
+      priority: 0.6,
+    },
+  ];
+
+  // Fetch products dynamically using database directly
+  let productPages: MetadataRoute.Sitemap = [];
   try {
-    const products = await prisma.product.findMany({ where: { status: "PUBLISHED" }, select: { slug: true, createdAt: true } });
-    productRoutes = products.map((p) => ({
-      url: `${siteUrl}/product/${p.slug}`,
-      lastModified: p.createdAt,
+    const products = await prisma.product.findMany({
+      where: { status: "PUBLISHED" },
+      select: { slug: true, createdAt: true },
+    });
+    productPages = products.map((product) => ({
+      url: `${siteUrl}/product/${product.slug}`,
       changeFrequency: "weekly" as const,
       priority: 0.8,
+      lastModified: product.createdAt,
     }));
-  } catch {
-    // DB unavailable at build/runtime — return static routes only.
+  } catch (error) {
+    console.error("Failed to fetch products for sitemap:", error);
   }
 
-  return [...staticRoutes, ...productRoutes];
+  return [...staticPages, ...productPages];
 }

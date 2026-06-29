@@ -38,22 +38,41 @@ function sign(value: string): string {
   return createHmac("sha256", SECRET).update(value).digest("base64url");
 }
 
-/** token = base64url(userId).expiryMs.signature */
-function makeToken(userId: string): string {
-  const payload = `${Buffer.from(userId).toString("base64url")}.${Date.now() + MAX_AGE * 1000}`;
+const ABSOLUTE_TIMEOUT = 1000 * 60 * 60 * 24 * 30; // 30 days
+const IDLE_TIMEOUT = 1000 * 60 * 60 * 24 * 7; // 7 days
+
+/** token = base64url(userId).createdAtMs.lastActiveMs.signature */
+function makeToken(userId: string, createdAt = Date.now(), lastActive = Date.now()): string {
+  const payload = `${Buffer.from(userId).toString("base64url")}.${createdAt}.${lastActive}`;
   return `${payload}.${sign(payload)}`;
 }
 
-function readToken(token: string): string | null {
+type TokenPayload = {
+  userId: string;
+  createdAt: number;
+  lastActive: number;
+};
+
+function readToken(token: string): TokenPayload | null {
   const parts = token.split(".");
-  if (parts.length !== 3) return null;
-  const payload = `${parts[0]}.${parts[1]}`;
+  if (parts.length !== 4) return null;
+  const payload = `${parts[0]}.${parts[1]}.${parts[2]}`;
   const expected = sign(payload);
-  const got = parts[2];
-  if (expected.length !== got.length) return null;
-  if (!timingSafeEqual(Buffer.from(expected), Buffer.from(got))) return null;
-  if (Date.now() > Number(parts[1])) return null;
-  return Buffer.from(parts[0], "base64url").toString("utf8");
+  const got = parts[3];
+  const a = Buffer.from(expected);
+  const b = Buffer.from(got);
+  if (a.length !== b.length) return null;
+  if (!timingSafeEqual(a, b)) return null;
+
+  const createdAt = Number(parts[1]);
+  const lastActive = Number(parts[2]);
+  const now = Date.now();
+
+  if (now - createdAt > ABSOLUTE_TIMEOUT) return null;
+  if (now - lastActive > IDLE_TIMEOUT) return null;
+
+  const userId = Buffer.from(parts[0], "base64url").toString("utf8");
+  return { userId, createdAt, lastActive };
 }
 
 /** Set the session cookie. Call from a Server Action / Route Handler. */
@@ -80,10 +99,26 @@ export const getCurrentUser = cache(async (): Promise<SafeUser | null> => {
   const store = await cookies();
   const token = store.get(COOKIE)?.value;
   if (!token) return null;
-  const userId = readToken(token);
-  if (!userId) return null;
+  const decoded = readToken(token);
+  if (!decoded) return null;
+
+  // Session rotation: if active for over 15 minutes, update lastActive timestamp
+  if (Date.now() - decoded.lastActive > 15 * 60 * 1000) {
+    try {
+      store.set(COOKIE, makeToken(decoded.userId, decoded.createdAt, Date.now()), {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        maxAge: MAX_AGE,
+      });
+    } catch {
+      // Ignore set-cookie failures in read-only render contexts
+    }
+  }
+
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { id: decoded.userId },
     include: { seller: true },
   });
   if (!user) return null;
