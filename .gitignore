@@ -16,3 +16,6 @@ dev.log
 gen.log
 
 .vercel
+.agents
+.codex
+.code-review-graph

@@ -52,7 +52,7 @@ const nextConfig = {
       { protocol: "https", hostname: "www.transparenttextures.com" },
     ],
   },
-  serverExternalPackages: ["@prisma/client", "prisma"],
+  serverExternalPackages: ["@prisma/client", "prisma", "@prisma/client-storefront"],
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

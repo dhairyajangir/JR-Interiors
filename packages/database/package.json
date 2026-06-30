@@ -1,0 +1,19 @@
+{
+  "name": "@jr/database",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./client.ts",
+  "types": "./client.ts",
+  "dependencies": {
+    "@prisma/client": "^6.19.3"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.3",
+    "typescript": "^5.5.4"
+  },
+  "scripts": {
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev"
+  }
+}
