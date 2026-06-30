@@ -10,15 +10,40 @@ import { getCurrentUser } from "@/lib/auth";
 import { getWishlistProductIds } from "@/lib/wishlist";
 import { getAltText } from "@/lib/altText";
 
+import { unstable_cache } from "next/cache";
+
 export const dynamic = "force-dynamic";
 
 type Params = Promise<{ slug: string }>;
 
 type Finish = { name: string; hex: string };
 
+const getCachedProduct = unstable_cache(
+  async (slug: string) => {
+    return prisma.product.findFirst({
+      where: { slug, status: "PUBLISHED" },
+      include: { reviews: { orderBy: { createdAt: "asc" } }, category: true, seller: true },
+    });
+  },
+  ["product-detail"],
+  { revalidate: 3600, tags: ["products"] }
+);
+
+const getCachedRelated = unstable_cache(
+  async (room: string, productId: string) => {
+    return prisma.product.findMany({
+      where: { room, id: { not: productId }, status: "PUBLISHED" },
+      take: 4,
+      orderBy: { reviewCount: "desc" },
+    });
+  },
+  ["product-related"],
+  { revalidate: 3600, tags: ["products"] }
+);
+
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const product = await prisma.product.findFirst({ where: { slug, status: "PUBLISHED" } });
+  const product = await getCachedProduct(slug);
   if (!product) return { title: "Not found | JR INTERIORS" };
   return {
     title: `${product.name} | JR INTERIORS`,
@@ -60,17 +85,10 @@ function generateProductSchema(product: any) {
 
 export default async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const product = await prisma.product.findFirst({
-    where: { slug, status: "PUBLISHED" },
-    include: { reviews: { orderBy: { createdAt: "asc" } }, category: true, seller: true },
-  });
+  const product = await getCachedProduct(slug);
   if (!product) notFound();
 
-  const related = await prisma.product.findMany({
-    where: { room: product.room, id: { not: product.id }, status: "PUBLISHED" },
-    take: 4,
-    orderBy: { reviewCount: "desc" },
-  });
+  const related = await getCachedRelated(product.room, product.id);
   const user = await getCurrentUser();
   const savedIds = await getWishlistProductIds(user?.id, [product.id]);
 

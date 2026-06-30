@@ -6,8 +6,8 @@ import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/components/CartProvider";
 import { RevealObserver } from "@/components/RevealObserver";
 import { ScrollProgress } from "@/components/ScrollProgress";
-import { AnalyticsWrapper } from "@/components/AnalyticsWrapper";
-import { CookieConsent } from "@/components/CookieConsent";
+
+import { ClientOnlyComponents } from "@/components/ClientOnlyComponents";
 import { getCartCount } from "@/lib/cart";
 import SkipToContent from "@/components/SkipToContent";
 import { ContactWidget } from "@/components/ContactWidget";
@@ -126,8 +126,7 @@ export default async function RootLayout({
           <Footer />
         </CartProvider>
         <RevealObserver />
-        <AnalyticsWrapper />
-        <CookieConsent />
+        <ClientOnlyComponents />
         <ContactWidget />
       </body>
     </html>

@@ -71,10 +71,14 @@ export function CookieConsent() {
         </div>
         <div>
           <h3 id="cookie-consent-title" className="text-label-sm font-bold uppercase tracking-wider text-on-primary">
-            Cookie Consent
+            Cookie Consent & DPDP Privacy
           </h3>
           <p id="cookie-consent-desc" className="text-xs text-on-primary/70 leading-relaxed mt-1">
-            We use cookies to enhance your browsing experience, protect forms against spam, and analyze traffic. Review our{" "}
+            In compliance with the DPDP Act (India), we use cookies to provide secure forms, enhance your browsing experience, and analyze traffic. Data is retained for 365 days. You have the right to access, update, or request erasure of your data by contacting our Grievance Officer at{" "}
+            <a href="mailto:concierge@jrinteriors.in" className="underline font-semibold hover:text-on-primary transition-colors">
+              concierge@jrinteriors.in
+            </a>{" "}
+            or calling +91 94603 00750. Review our{" "}
             <Link href="/legal/cookies" className="underline font-semibold hover:text-on-primary transition-colors">
               Cookie Policy
             </Link>{" "}
@@ -125,36 +129,46 @@ export function CookieConsent() {
 
       <div className="flex flex-col gap-2.5">
         {showPrefs ? (
-          <button
-            onClick={handleSavePrefs}
-            className="w-full bg-white text-primary py-3 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-surface-bright transition active:scale-[0.98]"
-          >
-            Save Preferences
-          </button>
-        ) : (
-          <div className="flex gap-2.5">
+          <div className="flex flex-col gap-2">
             <button
-              onClick={handleAcceptAll}
-              className="flex-1 bg-white text-primary py-3 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-surface-bright transition active:scale-[0.98]"
+              onClick={handleSavePrefs}
+              className="w-full bg-white text-primary py-3 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-surface-bright transition active:scale-[0.98]"
             >
-              Accept All
+              Save Preferences
             </button>
             <button
-              onClick={handleRejectAll}
-              className="flex-1 border border-on-primary/20 text-on-primary py-3 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-on-primary/5 transition active:scale-[0.98]"
+              onClick={() => setShowPrefs(false)}
+              className="w-full border border-on-primary/20 text-on-primary py-3 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-on-primary/5 transition active:scale-[0.98]"
             >
-              Reject Extra
+              Back
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2.5">
+              <button
+                onClick={handleAcceptAll}
+                className="flex-1 bg-white text-primary py-3 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-surface-bright transition active:scale-[0.98]"
+              >
+                Accept All
+              </button>
+              <button
+                onClick={handleRejectAll}
+                className="flex-1 border border-on-primary/20 text-on-primary py-3 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-on-primary/5 transition active:scale-[0.98]"
+              >
+                Reject Non-Essential
+              </button>
+            </div>
+            <button
+              onClick={() => setShowPrefs(true)}
+              className="w-full border border-on-primary/20 text-on-primary py-3 rounded-lg font-bold text-label-xs uppercase tracking-widest hover:bg-on-primary/5 transition active:scale-[0.98]"
+            >
+              Customize Preferences
             </button>
           </div>
         )}
-
-        <button
-          onClick={() => setShowPrefs(!showPrefs)}
-          className="text-center text-[10px] uppercase tracking-widest text-on-primary/50 hover:text-on-primary transition-colors py-1"
-        >
-          {showPrefs ? "Back to consent" : "Customize Preferences"}
-        </button>
       </div>
     </div>
   );
 }
+

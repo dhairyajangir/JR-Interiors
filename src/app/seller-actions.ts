@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getSellerUser } from "@/lib/auth";
@@ -71,6 +71,7 @@ export async function createSellerProduct(fd: FormData): Promise<void> {
       upholstery: [],
     },
   });
+  revalidateTag("products", "default");
   revalidatePath("/seller");
   redirect("/seller?created=1");
 }
@@ -93,6 +94,7 @@ export async function updateSellerProduct(fd: FormData): Promise<void> {
       reviewNote: null,
     },
   });
+  revalidateTag("products", "default");
   revalidatePath("/seller");
   redirect("/seller?updated=1");
 }
@@ -102,6 +104,7 @@ export async function deleteSellerProduct(fd: FormData): Promise<void> {
   if (!seller?.sellerId) redirect("/account/login");
   const id = str(fd, "id");
   await prisma.product.deleteMany({ where: { id, sellerId: seller.sellerId } });
+  revalidateTag("products", "default");
   revalidatePath("/seller");
 }
 

@@ -6,11 +6,12 @@ import { ProductCard } from "@/components/ProductCard";
 import StructuredData from "@/components/StructuredData";
 import { getAltText } from "@/lib/altText";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 const HERO =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBciBzPaTq6kbG9gSV_q5irWYt3iDOu7ESbw38f8KsrmxZ0jPB33hBDty-7Bf7fpJOT6TcmSV42LksFZUlhyusS2Kg1GF24SXGC9lsOXKN-NDB2tbkVjf7mCpPP67YVQURg8XxqMK92GzU-Z-WOo9W3yAj_V4p94rIw-hHRiGqsfWMdpVnpVbZQ-HqM_zgyVCOCjqvPqcn2aqOcJm9KlqB0on6YbO9o6OcupxZlkl3aqrlontZzaP6ucT7ypQ-3ITsiiNf31pbbvLqB";
 const G = (id: string) => `https://lh3.googleusercontent.com/aida-public/${id}`;
+const BLUR_DATA_URL = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNGNUYyRUIiLz48L3N2Zz4=";
 const ZEN =
   "AB6AXuB4EbdvSwyaKR2QfPs2u5qrjs91YmlM_N3JAAlyQZBMHZ3euTFotdcRRHL37r6wGjNEZ-DQVPGG3mZZRdOJZDzvn7L0w3EqI7ZfCH82Cc59HURVlQwadxLD8S3UWmthqiobBPv2mB7wrZLzNNJDhh8oVHJpEA679Owllht7lAk8kcyIRh4zgt5oE7D9L8myTAuinUWad81_PoWUARk3kjL2Hwj9eoli9K_2Vgeui9rZKWhHN2U-aCbySKRLXBRPokUOfkksROWXojSV";
 const NOOK =
@@ -83,6 +84,8 @@ export default async function HomePage() {
             priority
             sizes="100vw"
             className="object-cover brightness-[0.9] ken-burns"
+            placeholder="blur"
+            blurDataURL={BLUR_DATA_URL}
           />
           {/* Legibility scrim — strong cream on the left (text column), clearing to the image on the right. */}
           <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/60 to-transparent" />
@@ -152,6 +155,8 @@ export default async function HomePage() {
                 fill
                 sizes="(max-width: 1024px) 100vw, 55vw"
                 className="object-cover hover:scale-102 transition-transform duration-1000"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
               />
             </div>
           </div>
@@ -261,6 +266,8 @@ export default async function HomePage() {
                   fill
                   sizes="(max-width: 1024px) 100vw, 55vw"
                   className="object-cover hover:scale-102 transition-transform duration-1000"
+                  placeholder="blur"
+                  blurDataURL={BLUR_DATA_URL}
                 />
               </div>
             </div>
@@ -430,7 +437,7 @@ export default async function HomePage() {
           </div>
           <div className="flex-1 w-full z-10">
             <div className="aspect-video rounded-xl overflow-hidden shadow-2xl relative max-w-lg mx-auto lg:max-w-none">
-              <Image src={G(CONSULT)} alt="A spatial interior designer walking through material selections with a client" fill sizes="(max-width:768px) 100vw, 40vw" className="object-cover" />
+              <Image src={G(CONSULT)} alt="A spatial interior designer walking through material selections with a client" fill sizes="(max-width:768px) 100vw, 40vw" className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
             </div>
           </div>
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/felt.png')]" />
@@ -457,7 +464,7 @@ function RoomCard({
 }) {
   return (
     <Link href={href} className={`relative rounded-lg overflow-hidden group reveal block ${className ?? ""}`}>
-      <Image src={image} alt={getAltText("room", title)} fill sizes={large ? "66vw" : "33vw"} className="object-cover transition-transform duration-1000 group-hover:scale-105" />
+      <Image src={image} alt={getAltText("room", title)} fill sizes={large ? "66vw" : "33vw"} className="object-cover transition-transform duration-1000 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex flex-col justify-end p-8 md:p-12">
         <h3 className={`text-white font-serif font-light ${large ? "text-3xl mb-2" : "text-2xl"}`}>{title}</h3>
         {subtitle && <p className="text-white/80 text-label-sm">{subtitle}</p>}

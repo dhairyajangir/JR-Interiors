@@ -1,4 +1,8 @@
-/** @type {import('next').NextConfig} */
+import withBundleAnalyzer from "@next/bundle-analyzer";
+
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 // Content Security Policy — allows the app's own assets plus the third parties
 // it genuinely needs: Google Fonts, the design image CDN, and Razorpay Checkout.
@@ -61,4 +65,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default bundleAnalyzer(nextConfig);

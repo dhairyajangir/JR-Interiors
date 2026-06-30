@@ -48,6 +48,62 @@ export function Navbar() {
     };
   }, [menuOpen]);
 
+  // ESC key to close mobile menu
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        const toggleBtn = document.getElementById("mobile-menu-toggle");
+        toggleBtn?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
+
+  // Focus trap inside mobile menu drawer
+  useEffect(() => {
+    if (!menuOpen) return;
+    const menuEl = document.getElementById("mobile-menu");
+    if (!menuEl) return;
+
+    const focusableSelector = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
+    const focusable = Array.from(menuEl.querySelectorAll(focusableSelector)) as HTMLElement[];
+    if (focusable.length > 0) {
+      // Defer focus slightly to ensure menu is fully visible and rendered
+      setTimeout(() => {
+        focusable[0].focus();
+      }, 50);
+    }
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+
+      const active = document.activeElement;
+      const elements = Array.from(menuEl.querySelectorAll(focusableSelector)) as HTMLElement[];
+      if (elements.length === 0) return;
+
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+
+      if (e.shiftKey) {
+        if (active === first) {
+          last.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (active === last) {
+          first.focus();
+          e.preventDefault();
+        }
+      }
+    };
+
+    menuEl.addEventListener("keydown", handleTab);
+    return () => menuEl.removeEventListener("keydown", handleTab);
+  }, [menuOpen]);
+
   const isActive = (href: string) =>
     href === "/furniture" ? pathname.startsWith("/furniture") : pathname === href;
 
@@ -131,6 +187,7 @@ export function Navbar() {
             <Icon name="person" className="text-[22px]" />
           </Link>
           <button
+            id="mobile-menu-toggle"
             className="md:hidden w-8 h-8 flex items-center justify-center hover:opacity-70 transition"
             aria-label="Menu"
             aria-expanded={menuOpen}
@@ -146,8 +203,9 @@ export function Navbar() {
       {menuOpen && (
         <div
           id="mobile-menu"
-          role="navigation"
-          aria-label="Mobile navigation"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation menu"
           className="md:hidden absolute top-20 left-0 right-0 z-40 bg-surface border-b border-outline-variant/30 px-margin-mobile py-8 shadow-xl flex flex-col gap-6 overflow-y-auto max-h-[calc(80vh)] animate-slide-down scroll-hide"
         >
           {/* Search Box in Menu */}

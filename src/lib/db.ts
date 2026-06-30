@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client-storefront";
 import { verifyEnvConfig } from "./config-check";
 
 // Enforce environment validation on bootstrap

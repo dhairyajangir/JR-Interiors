@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { demoWritesAllowed, endSession, getCurrentUser, isDemoModeEnabled, requireAdmin, requireUser, startSession } from "@/lib/auth";
+import { demoWritesAllowed, endSession, getCurrentUser, isDemoModeEnabled, requireAdmin, requireUser, startSession, makeTempLoginToken, verifyTempLoginToken, verifyTOTP, generateBase32Secret, getOTPAuthURI } from "@/lib/auth";
+import QRCode from "qrcode";
 import { logAudit } from "@/lib/audit";
 import { slugify } from "@/lib/catalog";
 import { hashPassword, verifyPassword } from "@/lib/password";
@@ -12,7 +13,7 @@ import { enforceRateLimit, enforceSameOrigin, getRequestMeta } from "@/lib/secur
 import { buildPaymentReference, buildUpiLink, getUpiConfig } from "@/lib/upi";
 import { isSafeUrl } from "@/lib/ssrf-check";
 
-export type FormState = { error?: string } | undefined;
+export type FormState = { error?: string; twoFactorRequired?: boolean; tempToken?: string } | undefined;
 
 function str(fd: FormData, key: string): string {
   return ((fd.get(key) as string) ?? "").trim();
@@ -193,10 +194,16 @@ export async function login(_prev: FormState, fd: FormData): Promise<FormState> 
     select: {
       id: true,
       passwordHash: true,
+      twoFactorEnabled: true,
     },
   });
   if (!user || !verifyPassword(password, user.passwordHash)) {
     return { error: "Invalid email or password." };
+  }
+
+  if (user.twoFactorEnabled) {
+    const tempToken = makeTempLoginToken(user.id);
+    return { twoFactorRequired: true, tempToken };
   }
 
   const meta = await getRequestMeta();
@@ -209,6 +216,95 @@ export async function login(_prev: FormState, fd: FormData): Promise<FormState> 
 
   revalidatePath("/", "layout");
   redirect("/dashboard");
+}
+
+export async function verify2FAAndLogin(tempToken: string, code: string): Promise<{ error?: string } | undefined> {
+  await enforceSameOrigin();
+  await rateLimitAuth("verify-2fa");
+
+  const userId = verifyTempLoginToken(tempToken);
+  if (!userId) {
+    return { error: "Login session expired. Please sign in again." };
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      twoFactorSecret: true,
+    },
+  });
+
+  if (!user || !user.twoFactorSecret) {
+    return { error: "Two-factor authentication not configured." };
+  }
+
+  const ok = verifyTOTP(code, user.twoFactorSecret);
+  if (!ok) {
+    return { error: "Invalid two-factor code." };
+  }
+
+  const meta = await getRequestMeta();
+  await startSession(user.id);
+  await logAudit(user.id, "LOGIN", {
+    description: "Dashboard login (2FA verified)",
+    ipAddress: meta.ipAddress ?? undefined,
+    userAgent: meta.userAgent ?? undefined,
+  });
+
+  revalidatePath("/", "layout");
+  redirect("/dashboard");
+}
+
+export async function enable2FA(secret: string, code: string): Promise<{ error?: string; success?: boolean } | undefined> {
+  const user = await ensureMutationAllowed();
+
+  const ok = verifyTOTP(code, secret);
+  if (!ok) {
+    return { error: "Invalid verification code. Please try again." };
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      twoFactorSecret: secret,
+      twoFactorEnabled: true,
+    },
+  });
+
+  await logAudit(user.id, "SETTINGS_UPDATE", {
+    description: "Enabled two-factor authentication",
+  });
+
+  revalidatePath("/dashboard/settings");
+  return { success: true };
+}
+
+export async function disable2FA(): Promise<{ error?: string; success?: boolean } | undefined> {
+  const user = await ensureMutationAllowed();
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      twoFactorSecret: null,
+      twoFactorEnabled: false,
+    },
+  });
+
+  await logAudit(user.id, "SETTINGS_UPDATE", {
+    description: "Disabled two-factor authentication",
+  });
+
+  revalidatePath("/dashboard/settings");
+  return { success: true };
+}
+
+export async function prepare2FASetup(): Promise<{ secret: string; qrDataUrl: string }> {
+  const user = await ensureMutationAllowed();
+  const secret = generateBase32Secret();
+  const uri = getOTPAuthURI(user.email, secret);
+  const qrDataUrl = await QRCode.toDataURL(uri);
+  return { secret, qrDataUrl };
 }
 
 export async function demoLogin(): Promise<FormState> {

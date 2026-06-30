@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { demoLogin, login } from "@/app/actions";
 import { SubmitButton } from "@/components/SubmitButton";
 
@@ -11,6 +12,13 @@ const fieldClass =
 export function LoginForm({ demoEnabled }: { demoEnabled: boolean }) {
   const [state, action] = useActionState(login, undefined);
   const [demoState, demoAction] = useActionState(demoLogin, undefined);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state?.twoFactorRequired && state?.tempToken) {
+      router.push(`/login/2fa?token=${encodeURIComponent(state.tempToken)}`);
+    }
+  }, [state, router]);
 
   return (
     <form action={action} className="space-y-4">

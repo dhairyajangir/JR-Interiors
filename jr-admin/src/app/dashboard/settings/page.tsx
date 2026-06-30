@@ -1,6 +1,7 @@
 import { updateAdminProfile } from "@/app/actions";
 import { DashboardShell } from "@/components/DashboardShell";
 import { PasswordChangeForm } from "@/components/PasswordChangeForm";
+import { TwoFactorSettings } from "@/components/TwoFactorSettings";
 import { requireDashboardAdmin } from "@/lib/dashboard";
 import { getUpiConfig } from "@/lib/upi";
 import { SubmitButton } from "@/components/SubmitButton";
@@ -68,6 +69,13 @@ export default async function SettingsPage({
           <section className="panel p-6">
             <h2 className="text-xl font-semibold text-ink">Password</h2>
             <PasswordChangeForm />
+          </section>
+
+          <section className="panel p-6">
+            <h2 className="text-xl font-semibold text-ink">Two-Factor Authentication</h2>
+            <div className="mt-5">
+              <TwoFactorSettings initialEnabled={user.twoFactorEnabled} />
+            </div>
           </section>
         </div>
 

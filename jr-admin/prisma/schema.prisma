@@ -1,6 +1,8 @@
 // JR Admin standalone service. Prices stored in whole INR.
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+  output          = "../node_modules/@prisma/client-admin"
 }
 
 datasource db {
@@ -23,6 +25,8 @@ model User {
   isAdmin      Boolean               @default(false)
   createdAt    DateTime              @default(now())
   updatedAt    DateTime              @updatedAt
+  twoFactorSecret String?
+  twoFactorEnabled Boolean           @default(false)
   products     Product[]
   payments     RegistrationPayment[]
   auditLogs    AuditLog[]
