@@ -150,6 +150,9 @@ export function ProductView({
                   <p className="text-label-xs text-on-surface-variant">Estimated arrival: 7–14 business days</p>
                 </div>
               </div>
+              <p className="text-[10px] text-on-surface-variant/60 leading-normal font-light">
+                * Note: Natural variations in wood grain, color, and texture are inherent features of artisanal solid-wood furniture. Visualizations are for illustrative purposes. Sizing and options can be customized during your design call.
+              </p>
             </div>
 
             <div className="flex flex-col gap-4 w-full">

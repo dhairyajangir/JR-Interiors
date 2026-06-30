@@ -109,12 +109,34 @@ export async function createOrderFromCart(input: CheckoutInput): Promise<CreateO
         });
       }
 
+      // Check and update stock for each cart item
+      for (const l of cart.lines) {
+        const prod = await tx.product.findUnique({
+          where: { id: l.productId },
+          select: { name: true, stock: true },
+        });
+        if (!prod) {
+          throw new Error(`Product "${l.name}" no longer exists.`);
+        }
+        if (prod.stock < l.quantity) {
+          throw new Error(`Insufficient stock for "${l.name}". Available: ${prod.stock}, requested: ${l.quantity}.`);
+        }
+        const nextStock = prod.stock - l.quantity;
+        await tx.product.update({
+          where: { id: l.productId },
+          data: {
+            stock: nextStock,
+            inStock: nextStock > 0,
+          },
+        });
+      }
+
       // Clear cart items
       await tx.cartItem.deleteMany({ where: { cartId: cartId } });
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("[Orders] Transaction failed:", error);
-    return { ok: false, error: "Failed to place order. Please try again." };
+    return { ok: false, error: error.message || "Failed to place order. Please try again." };
   }
 
   const store = await cookies();

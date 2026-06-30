@@ -6,10 +6,11 @@ import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/components/CartProvider";
 import { RevealObserver } from "@/components/RevealObserver";
 import { ScrollProgress } from "@/components/ScrollProgress";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { AnalyticsWrapper } from "@/components/AnalyticsWrapper";
+import { CookieConsent } from "@/components/CookieConsent";
 import { getCartCount } from "@/lib/cart";
 import SkipToContent from "@/components/SkipToContent";
+import { ContactWidget } from "@/components/ContactWidget";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -125,8 +126,9 @@ export default async function RootLayout({
           <Footer />
         </CartProvider>
         <RevealObserver />
-        <Analytics />
-        <SpeedInsights />
+        <AnalyticsWrapper />
+        <CookieConsent />
+        <ContactWidget />
       </body>
     </html>
   );

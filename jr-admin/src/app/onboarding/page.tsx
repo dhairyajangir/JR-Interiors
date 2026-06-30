@@ -113,14 +113,54 @@ export default async function OnboardingPage({
             <div className="rounded-[24px] border border-line bg-white/80 p-5 shadow-card">
               <p className="text-xs font-semibold text-steel/70">Current state</p>
               <p className="mt-1 text-2xl font-bold text-mint">{payment.status}</p>
-              <p className="mt-2 text-xs leading-relaxed text-steel font-semibold">Created {formatDate(payment.createdAt)}. After transfer via UPI, mark the payment here so it moves into review.</p>
+              <p className="mt-2 text-xs leading-relaxed text-steel font-semibold">Created {formatDate(payment.createdAt)}. After transfer via UPI, enter the 12-digit UTR/Transaction ID below to report your payment.</p>
             </div>
 
-            <form action={reportPayment} className="space-y-3">
+            {params.error === "invalid-utr" && (
+              <div className="rounded-xl bg-red-50 p-4 text-xs font-semibold text-red-600 border border-red-200">
+                Invalid UTR. Please enter a valid 12-digit UPI Transaction Reference number.
+              </div>
+            )}
+
+            <form action={reportPayment} className="space-y-4">
               <input type="hidden" name="paymentId" value={payment.id} />
+              
+              <div className="space-y-1.5">
+                <label htmlFor="utrNumber" className="text-xs font-semibold text-steel">
+                  UPI Transaction ID (12-digit UTR) *
+                </label>
+                <input
+                  type="text"
+                  id="utrNumber"
+                  name="utrNumber"
+                  placeholder="e.g. 601234567890"
+                  required
+                  pattern="\d{12}"
+                  maxLength={12}
+                  disabled={payment.status === "REPORTED" || payment.status === "CONFIRMED"}
+                  defaultValue={payment.screenshot || ""}
+                  className="w-full rounded-full border border-line bg-white px-4 py-2.5 text-sm text-ink placeholder-steel/50 focus:border-mint focus:outline-none disabled:bg-mist disabled:text-steel/50"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label htmlFor="screenshot" className="text-xs font-semibold text-steel">
+                  Upload Payment Screenshot (Mocked)
+                </label>
+                <input
+                  type="file"
+                  id="screenshot"
+                  name="screenshot"
+                  accept="image/*"
+                  disabled={payment.status === "REPORTED" || payment.status === "CONFIRMED"}
+                  className="w-full text-xs text-steel file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-mist file:text-ink hover:file:bg-line cursor-pointer disabled:opacity-50"
+                />
+              </div>
+
               <SubmitButton
-                label={payment.status === "REPORTED" || payment.status === "CONFIRMED" ? "Payment reported" : "Mark payment as reported"}
-                pendingLabel="Updating status..."
+                label={payment.status === "REPORTED" || payment.status === "CONFIRMED" ? "Payment reported" : "Submit Payment details"}
+                pendingLabel="Submitting status..."
+                disabled={payment.status === "REPORTED" || payment.status === "CONFIRMED"}
                 className="w-full rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-mint disabled:opacity-70"
               />
             </form>

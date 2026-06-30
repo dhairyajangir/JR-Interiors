@@ -65,7 +65,7 @@ export default async function OrdersPage() {
                 <input type="hidden" name="id" value={order.id} />
                 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-steel">Status:</span>
+                  <label htmlFor={`status-${order.id}`} className="text-xs font-semibold text-steel">Status:</label>
                   <select id={`status-${order.id}`} name="status" defaultValue={order.status} className="rounded-full border border-line bg-white px-3 py-1 text-xs text-ink outline-none transition focus:border-mint">
                     <option value="pending">Pending</option>
                     <option value="confirmed">Confirmed</option>
@@ -73,6 +73,15 @@ export default async function OrdersPage() {
                     <option value="shipped">Shipped</option>
                     <option value="delivered">Delivered</option>
                     <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <label htmlFor={`paymentStatus-${order.id}`} className="text-xs font-semibold text-steel">Payment:</label>
+                  <select id={`paymentStatus-${order.id}`} name="paymentStatus" defaultValue={order.paymentStatus} className="rounded-full border border-line bg-white px-3 py-1 text-xs text-ink outline-none transition focus:border-mint">
+                    <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
+                    <option value="failed">Failed</option>
                   </select>
                 </div>
                 

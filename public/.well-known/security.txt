@@ -1,0 +1,7 @@
+Contact: mailto:concierge@jrinteriors.in
+Contact: tel:+91-94603-00750
+Expires: 2027-06-30T12:00:00.000Z
+Preferred-Languages: en, hi
+Canonical: https://jrinteriors.in/.well-known/security.txt
+Policy: https://jrinteriors.in/legal/privacy
+Acknowledgement: https://jrinteriors.in/about

@@ -5,10 +5,12 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { ensureCart, getCart } from "@/lib/cart";
 import { createOrderFromCart } from "@/lib/orders";
+import { EmailSchema } from "@/lib/validation";
+import { validateFormSecurity } from "@/lib/security-helpers";
+
 
 export type ActionResult = { ok: boolean; count?: number; error?: string };
 
-/** Add a product to the cart. Merges with an existing identical line. */
 export async function addToCart(input: {
   productId: string;
   quantity?: number;
@@ -29,6 +31,16 @@ export async function addToCart(input: {
       upholstery: input.upholstery ?? null,
     },
   });
+
+  const currentCartQty = existing?.quantity ?? 0;
+  if (product.stock < currentCartQty + qty) {
+    return {
+      ok: false,
+      error: product.stock === 0 
+        ? "This item is out of stock." 
+        : `Only ${product.stock} items left in stock. You have ${currentCartQty} in cart.`,
+    };
+  }
 
   if (existing) {
     await prisma.cartItem.update({
@@ -60,6 +72,14 @@ export async function updateLine(itemId: string, quantity: number): Promise<Acti
     if (qty === 0) {
       await prisma.cartItem.delete({ where: { id: itemId } });
     } else {
+      const item = await prisma.cartItem.findUnique({
+        where: { id: itemId },
+        include: { product: true },
+      });
+      if (!item) return { ok: false, error: "Cart item not found" };
+      if (item.product.stock < qty) {
+        return { ok: false, error: `Only ${item.product.stock} items left in stock.` };
+      }
       await prisma.cartItem.update({ where: { id: itemId }, data: { quantity: qty } });
     }
     revalidatePath("/cart");
@@ -109,3 +129,42 @@ export async function placeOrder(formData: FormData): Promise<void> {
   revalidatePath("/", "layout");
   redirect(`/order/${result.number}`);
 }
+
+export async function subscribeNewsletter(
+  _prev: ActionResult | undefined,
+  formData: FormData
+): Promise<ActionResult> {
+  const security = await validateFormSecurity(formData, "newsletter", 3, 60_000);
+  if (security.isSpam) {
+    return { ok: true };
+  }
+  if (security.error) {
+    return { ok: false, error: security.error };
+  }
+
+  const emailRaw = str(formData, "email");
+  const parsed = EmailSchema.safeParse(emailRaw);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.errors[0].message };
+  }
+
+  const email = parsed.data;
+
+  try {
+    const existing = await prisma.newsletterSubscriber.findUnique({
+      where: { email },
+    });
+    if (existing) {
+      return { ok: true };
+    }
+
+    await prisma.newsletterSubscriber.create({
+      data: { email },
+    });
+    return { ok: true };
+  } catch (error) {
+    console.error("[Newsletter] Subscription failed:", error);
+    return { ok: false, error: "Something went wrong. Please try again." };
+  }
+}
+

@@ -1,0 +1,17 @@
+/* TEAM */
+Team: JR Interiors
+Location: Jaipur, Rajasthan, India
+Contact: concierge@jrinteriors.in
+
+/* SITE */
+Last Updated: 2026-06-30
+Standards: HTML5, CSS3, ES2022
+Technology Stack:
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- Prisma Client
+- Supabase (PostgreSQL)
+- Upstash Redis (Rate limiting)
+- Cloudflare Turnstile (Spam protection)
+- Vercel Analytics & Speed Insights

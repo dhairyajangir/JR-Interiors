@@ -49,6 +49,9 @@ export function CheckoutSummary({ lines }: { lines: CartLine[] }) {
         <span className="text-label-sm uppercase tracking-widest text-primary">Total</span>
         <span className="text-subheading font-bold text-primary tabular-nums">{priceExact(total)}</span>
       </div>
+      <p className="text-[10px] text-on-surface-variant/60 leading-normal mt-6">
+        Disclaimer: Pricing figures are starting estimations. Natural wood grain, finishes, and colors may vary. A finalized quotation will be provided upon studio review.
+      </p>
     </div>
   );
 }

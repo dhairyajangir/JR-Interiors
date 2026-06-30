@@ -137,7 +137,7 @@ export default async function ProductsPage() {
                   <input type="hidden" name="id" value={product.id} />
                   
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-steel">Moderation:</span>
+                    <label htmlFor={`status-${product.id}`} className="text-xs font-semibold text-steel">Moderation:</label>
                     <select
                       id={`status-${product.id}`}
                       name="status"
@@ -151,7 +151,7 @@ export default async function ProductsPage() {
                   </div>
 
                   <div className="flex flex-1 min-w-[200px] items-center gap-2">
-                    <span className="text-xs font-semibold text-steel">Review note:</span>
+                    <label htmlFor={`reviewNote-${product.id}`} className="text-xs font-semibold text-steel">Review note:</label>
                     <input
                       id={`reviewNote-${product.id}`}
                       name="reviewNote"

@@ -36,6 +36,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "never" as const,
       priority: 0.6,
     },
+    // Legal Compliance Pages
+    { url: `${siteUrl}/legal/privacy`, changeFrequency: "monthly" as const, priority: 0.4 },
+    { url: `${siteUrl}/legal/terms`, changeFrequency: "monthly" as const, priority: 0.4 },
+    { url: `${siteUrl}/legal/cookies`, changeFrequency: "monthly" as const, priority: 0.4 },
+    { url: `${siteUrl}/legal/refund`, changeFrequency: "monthly" as const, priority: 0.4 },
+    { url: `${siteUrl}/legal/cancellation`, changeFrequency: "monthly" as const, priority: 0.4 },
+    { url: `${siteUrl}/legal/disclaimer`, changeFrequency: "monthly" as const, priority: 0.4 },
+    { url: `${siteUrl}/legal/copyright`, changeFrequency: "monthly" as const, priority: 0.4 },
+    { url: `${siteUrl}/legal/accessibility`, changeFrequency: "monthly" as const, priority: 0.4 },
   ];
 
   // Fetch products dynamically using database directly

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
+import { NewsletterForm } from "@/components/NewsletterForm";
+
 
 export function Footer() {
   return (
@@ -54,26 +56,17 @@ export function Footer() {
           <p className="text-on-primary/60 text-sm mb-6">
             Subscribe to the Atelier circle for seasonal collection releases and spatial design inspiration.
           </p>
-          <form className="flex border-b border-on-primary/20 pb-2">
-            <input
-              className="bg-transparent border-none focus:ring-0 w-full placeholder:text-on-primary/30 text-on-primary p-0 text-sm"
-              placeholder="Email Address"
-              type="email"
-              aria-label="Email address"
-            />
-            <button aria-label="Subscribe" className="text-on-primary/40 hover:text-on-primary transition-colors" type="submit">
-              <Icon name="arrow_forward" />
-            </button>
-          </form>
+          <NewsletterForm />
         </div>
       </div>
 
       <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto pt-8 border-t border-on-primary/10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-on-primary/30 uppercase tracking-widest">
         <p>© 2024 JR Interiors. Crafted for a Life in Balance.</p>
-        <div className="flex gap-10">
-          <a className="hover:text-on-primary transition-colors" href="#">Privacy</a>
-          <a className="hover:text-on-primary transition-colors" href="#">Terms</a>
-          <a className="hover:text-on-primary transition-colors" href="#">Accessibility</a>
+        <div className="flex flex-wrap gap-x-8 gap-y-2">
+          <Link className="hover:text-on-primary transition-colors" href="/legal/privacy">Privacy Policy</Link>
+          <Link className="hover:text-on-primary transition-colors" href="/legal/terms">Terms of Service</Link>
+          <Link className="hover:text-on-primary transition-colors" href="/legal/cookies">Cookie Policy</Link>
+          <Link className="hover:text-on-primary transition-colors" href="/legal/accessibility">Accessibility Statement</Link>
         </div>
       </div>
     </footer>

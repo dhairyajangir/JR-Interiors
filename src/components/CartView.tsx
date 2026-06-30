@@ -118,6 +118,9 @@ export function CartView({ lines: initial }: { lines: CartLine[] }) {
           <Icon name="lock" className="text-[16px]" />
           Secure white-glove checkout
         </div>
+        <p className="text-[10px] text-on-surface-variant/60 leading-normal text-center mt-6">
+          Note: Prices listed are estimates for standard configurations. Materials, finishes, and colors may vary. A final tailored quotation will be issued by our Jaipur studio upon review.
+        </p>
       </div>
     </div>
   );

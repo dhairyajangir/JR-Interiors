@@ -292,7 +292,12 @@ export async function reportPayment(fd: FormData): Promise<void> {
   const meta = await getRequestMeta();
 
   const paymentId = str(fd, "paymentId");
-  const utrNumber = str(fd, "utrNumber") || null;
+  const utrNumber = str(fd, "utrNumber");
+
+  if (!utrNumber || !/^\d{12}$/.test(utrNumber)) {
+    redirect("/onboarding?error=invalid-utr");
+  }
+
   const payment = await prisma.registrationPayment.findFirst({
     where: { id: paymentId, userId: user.id },
   });
@@ -308,8 +313,7 @@ export async function reportPayment(fd: FormData): Promise<void> {
     where: { id: payment.id },
     data: {
       status: "REPORTED",
-      // Store UTR as the screenshot field (text reference)
-      screenshot: utrNumber ?? payment.screenshot,
+      screenshot: utrNumber,
     },
   });
 

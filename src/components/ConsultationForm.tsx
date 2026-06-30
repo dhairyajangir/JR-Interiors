@@ -1,9 +1,11 @@
 "use client";
 
 import { useActionState } from "react";
+import Link from "next/link";
 import { requestConsultation } from "@/app/contact-actions";
 import { Icon } from "@/components/Icon";
 import { Honeypot } from "@/components/Honeypot";
+
 
 const FIELD =
   "w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-3 text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition";
@@ -72,6 +74,23 @@ export function ConsultationForm() {
       <div>
         <label className={LABEL} htmlFor="message">Tell us about your space</label>
         <textarea id="message" name="message" rows={4} placeholder="A few words about the room, the feeling you want, and your timeline..." className={FIELD} />
+      </div>
+      <div className="flex items-start gap-2 py-2">
+        <input
+          id="consent"
+          name="consent"
+          type="checkbox"
+          required
+          aria-required="true"
+          className="mt-1 text-primary focus:ring-primary rounded border-outline-variant"
+        />
+        <label htmlFor="consent" className="text-label-xs text-on-surface-variant leading-normal cursor-pointer">
+          I consent to JR Interiors collecting and processing my details to arrange this design consultation in accordance with the{" "}
+          <Link href="/legal/privacy" className="text-primary underline font-semibold hover:opacity-85 transition-opacity">
+            Privacy Policy
+          </Link>
+          .
+        </label>
       </div>
       {state?.error ? (
         <p className="rounded-lg bg-error-container/50 px-4 py-3 text-label-sm text-on-error-container">

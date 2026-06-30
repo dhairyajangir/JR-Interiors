@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/Icon";
+import { placeOrder } from "@/app/actions";
+
 
 const KEY = "jr_checkout";
 
@@ -68,20 +70,32 @@ export function CheckoutPaymentForm() {
         </ul>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
+      <form action={placeOrder} className="flex flex-col sm:flex-row gap-3">
+        <input type="hidden" name="email" value={shipping.email || ""} />
+        <input type="hidden" name="fullName" value={shipping.fullName || ""} />
+        <input type="hidden" name="phone" value={shipping.phone || ""} />
+        <input type="hidden" name="address1" value={shipping.address1 || ""} />
+        <input type="hidden" name="address2" value={shipping.address2 || ""} />
+        <input type="hidden" name="city" value={shipping.city || ""} />
+        <input type="hidden" name="region" value={shipping.region || ""} />
+        <input type="hidden" name="postalCode" value={shipping.postalCode || ""} />
+        <input type="hidden" name="country" value={shipping.country || "India"} />
+        <input type="hidden" name="shippingType" value={shipping.shippingType || "standard"} />
+        <input type="hidden" name="saveAddress" value={shipping.saveAddress || ""} />
+
         <Link
           href="/checkout/shipping"
           className="w-full sm:w-auto flex-1 text-center border border-outline-variant rounded-lg py-4 font-semibold text-primary hover:bg-surface-container-low transition"
         >
           Edit enquiry details
         </Link>
-        <Link
-          href="/contact"
-          className="w-full sm:w-auto flex-1 text-center bg-primary text-on-primary rounded-lg py-4 font-semibold hover:opacity-90 transition"
+        <button
+          type="submit"
+          className="w-full sm:w-auto flex-1 text-center bg-primary text-on-primary rounded-lg py-4 font-semibold hover:opacity-90 transition active:scale-[0.98]"
         >
           Send enquiry to team
-        </Link>
-      </div>
+        </button>
+      </form>
     </div>
   );
 }
