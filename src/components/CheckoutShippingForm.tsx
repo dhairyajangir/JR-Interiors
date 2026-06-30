@@ -136,7 +136,7 @@ export function CheckoutShippingForm({
           </div>
           <div>
             <label className={LABEL} htmlFor="phone">Mobile number</label>
-            <input id="phone" type="tel" required autoComplete="tel" inputMode="numeric" pattern="[6-9][0-9]{9}" maxLength={10} placeholder="98765 43210" className={FIELD} value={v.phone ?? ""} onChange={set("phone")} />
+            <input id="phone" type="tel" required autoComplete="tel" inputMode="numeric" pattern="[6-9][0-9]{9}" maxLength={10} placeholder="9876543210" className={FIELD} value={v.phone ?? ""} onChange={set("phone")} />
           </div>
         </div>
       </fieldset>

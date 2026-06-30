@@ -15,12 +15,24 @@ export const EmailSchema = z
   })
   .transform((v) => normalizeString(v).toLowerCase());
 
+export function cleanIndianPhone(v: string): string {
+  const normalized = normalizeString(v);
+  if (!normalized) return "";
+  let cleaned = normalized.replace(/\D/g, "");
+  if (cleaned.length === 12 && cleaned.startsWith("91")) {
+    cleaned = cleaned.slice(2);
+  } else if (cleaned.length === 11 && cleaned.startsWith("0")) {
+    cleaned = cleaned.slice(1);
+  }
+  return cleaned;
+}
+
 export const PhoneSchema = z
   .string()
+  .transform((v) => cleanIndianPhone(v))
   .refine((v) => /^[6-9]\d{9}$/.test(v) || v === "", {
     message: "Indian mobile number must be exactly 10 digits starting with 6-9.",
   })
-  .transform((v) => normalizeString(v))
   .nullable();
 
 export const PasswordSchema = z

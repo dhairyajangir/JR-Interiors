@@ -44,7 +44,7 @@ export function ConsultationForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label className={LABEL} htmlFor="phone">Phone (optional)</label>
-          <input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="(555) 000-0000" className={FIELD} />
+          <input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="9876543210" className={FIELD} />
         </div>
         <div>
           <label className={LABEL} htmlFor="type">Project type</label>
