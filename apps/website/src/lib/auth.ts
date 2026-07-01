@@ -6,15 +6,20 @@ import { prisma } from "@/lib/db";
 const COOKIE = "jr_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const DEV_FALLBACK = "dev-insecure-secret-change-me";
-const SECRET = process.env.AUTH_SECRET || DEV_FALLBACK;
+const isProduction = process.env.NODE_ENV === "production";
+const isBuild = process.env.NEXT_PHASE?.includes("build") || process.env.CI === "true";
+const SECRET = process.env.AUTH_SECRET || (isProduction && !isBuild ? "" : DEV_FALLBACK);
 
-if (process.env.NODE_ENV === "production") {
-  if (!process.env.AUTH_SECRET) {
+if (isProduction && !process.env.AUTH_SECRET) {
+  if (isBuild) {
+    console.warn("[auth] AUTH_SECRET is not set during build; using a temporary fallback for compilation.");
+  } else {
     throw new Error("AUTH_SECRET is required in production. Set a long random value.");
   }
-  if (SECRET === DEV_FALLBACK || SECRET.length < 16) {
-    console.warn("[auth] AUTH_SECRET is weak — use a long random string in production.");
-  }
+}
+
+if (isProduction && SECRET && (SECRET === DEV_FALLBACK || SECRET.length < 16)) {
+  console.warn("[auth] AUTH_SECRET is weak — use a long random string in production.");
 }
 
 export type SafeUser = {
