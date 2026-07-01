@@ -8,6 +8,7 @@ const config: Config = {
       colors: {
         base: "#F7F6F2",
         panel: "#FFFFFF",
+        sidebar: "#F4F2EB",
         muted: "#EAE7E1",
         heavy: "#D4CECE",
         bronze: "#9C6644",

@@ -1,5 +1,5 @@
 {
-  "name": "@jr/auth",
+  "name": "@jr/command",
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",
@@ -7,5 +7,12 @@
   "dependencies": {
     "@jr/types": "workspace:*",
     "@jr/validation": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }

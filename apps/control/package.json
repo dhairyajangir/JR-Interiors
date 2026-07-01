@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "prisma generate --schema=../../packages/database/prisma/schema.prisma && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "react": "^19.2.7",
@@ -20,9 +20,11 @@
     "@hookform/resolvers": "^3.10.0",
     "sonner": "^1.7.2",
     "lucide-react": "^0.475.0",
+    "@jr/auth": "workspace:*",
     "@jr/database": "workspace:*",
     "@jr/types": "workspace:*",
-    "@jr/validation": "workspace:*"
+    "@jr/validation": "workspace:*",
+    "@jr/command": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.9.3",

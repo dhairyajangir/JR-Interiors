@@ -23,6 +23,12 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.80.0(react@19.2.7))
+      '@jr/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
+      '@jr/command':
+        specifier: workspace:*
+        version: link:../../packages/command
       '@jr/database':
         specifier: workspace:*
         version: link:../../packages/database
@@ -178,7 +184,30 @@ importers:
 
   packages/api: {}
 
-  packages/auth: {}
+  packages/auth:
+    dependencies:
+      '@jr/types':
+        specifier: workspace:*
+        version: link:../types
+      '@jr/validation':
+        specifier: workspace:*
+        version: link:../validation
+
+  packages/command:
+    dependencies:
+      '@jr/types':
+        specifier: workspace:*
+        version: link:../types
+      '@jr/validation':
+        specifier: workspace:*
+        version: link:../validation
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.17
+      react:
+        specifier: ^19.0.0
+        version: 19.2.7
 
   packages/config: {}
 

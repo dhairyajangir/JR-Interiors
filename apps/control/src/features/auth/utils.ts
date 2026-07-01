@@ -3,20 +3,17 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { createServerClientInstance } from "../../lib/supabase/server";
 import { prisma } from "@jr/database";
-import type { User } from "./types";
-import { ROLE_PERMISSIONS, type Permission } from "@jr/validation/permissions";
-import type { UserRole } from "@jr/types";
+import type { User, UserRole } from "@jr/types";
+import { Permission, ROLE_PERMISSIONS } from "@jr/validation/permissions";
+import { can as authCan, hasPermission as authHasPermission } from "@jr/auth";
 
 /** Allowed roles for JR Control. Any other role is rejected. */
-const CONTROL_ROLES: UserRole[] = ["SUPER_ADMIN", "ADMIN", "SELLER"];
+const CONTROL_ROLES: UserRole[] = ["SUPER_ADMIN", "ADMIN", "SELLER", "DESIGNER", "ACCOUNTANT", "SUPPORT"];
 
 /**
  * Canonical user lookup by Supabase UUID.
  *
- * On the very first login for a user, their `supabaseId` may not yet be
- * set in the Prisma database (accounts created before this field existed).
- * In that case we fall back to an email lookup and backfill `supabaseId`.
- * All subsequent calls go through the UUID-only path.
+ * All lookups are resolved via the UUID.
  */
 export async function getCurrentUser(): Promise<User | null> {
   try {
@@ -27,27 +24,11 @@ export async function getCurrentUser(): Promise<User | null> {
 
     if (!supabaseUser) return null;
 
-    // ── Primary path: look up by Supabase UUID ──────────────────────────────
-    let userRecord = await prisma.user.findUnique({
+    // Look up by Supabase UUID
+    const userRecord = await prisma.user.findUnique({
       where: { supabaseId: supabaseUser.id },
       include: { seller: true },
     });
-
-    // ── Backfill path: first login for an existing email-only account ────────
-    if (!userRecord && supabaseUser.email) {
-      const emailRecord = await prisma.user.findUnique({
-        where: { email: supabaseUser.email },
-        include: { seller: true },
-      });
-
-      if (emailRecord && !emailRecord.supabaseId) {
-        userRecord = await prisma.user.update({
-          where: { id: emailRecord.id },
-          data: { supabaseId: supabaseUser.id },
-          include: { seller: true },
-        });
-      }
-    }
 
     if (!userRecord) return null;
 
@@ -89,7 +70,7 @@ export async function requireAuth(redirectTo: string = "/login"): Promise<User> 
  * Check whether a user has a specific granular permission.
  */
 export function hasPermission(user: User, permission: Permission): boolean {
-  return (user.permissions as Permission[]).includes(permission);
+  return authHasPermission(user, permission);
 }
 
 /**
@@ -98,10 +79,11 @@ export function hasPermission(user: User, permission: Permission): boolean {
  */
 export async function requirePermission(
   permission: Permission,
-  redirectTo: string = "/dashboard"
+  context?: any,
+  redirectTo: string = "/403"
 ): Promise<User> {
   const user = await requireAuth();
-  if (!hasPermission(user, permission)) {
+  if (!authCan(user, permission, context)) {
     redirect(redirectTo);
   }
   return user;
@@ -125,12 +107,6 @@ export type SecurityEvent =
 
 /**
  * Writes a structured security event to the AuditLog table.
- *
- * `userId` may be null for pre-authentication failures (e.g. LOGIN_FAILED
- * where the user record doesn't exist).
- *
- * Device metadata is extracted from the request `User-Agent` and forwarded
- * `X-Forwarded-For` / `CF-Connecting-IP` headers for future device models.
  */
 export async function logSecurityEvent(
   event: SecurityEvent,

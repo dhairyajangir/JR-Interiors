@@ -1,51 +1,88 @@
 import { UserRole } from "@jr/types";
 
-export type Permission =
-  | "catalog:read"
-  | "catalog:write"
-  | "catalog:publish"
-  | "crm:read"
-  | "crm:write"
-  | "orders:read"
-  | "orders:write"
-  | "orders:fulfill"
-  | "logs:read"
-  | "settings:read"
-  | "settings:write";
+export const PERMISSIONS = {
+  USERS_MANAGE: "USERS_MANAGE",
+  SETTINGS_EDIT: "SETTINGS_EDIT",
+  FINANCIAL_VIEW: "FINANCIAL_VIEW",
+  AUDIT_LOGS_VIEW: "AUDIT_LOGS_VIEW",
+  CATALOG_APPROVE: "CATALOG_APPROVE",
+  CATALOG_WRITE: "CATALOG_WRITE",
+  CRM_ASSIGN: "CRM_ASSIGN",
+  CRM_EDIT: "CRM_EDIT",
+  QUOTES_APPROVE: "QUOTES_APPROVE",
+  QUOTATION_DRAFT: "QUOTATION_DRAFT",
+  PAYMENT_STATUS_OVERRIDE: "PAYMENT_STATUS_OVERRIDE",
+  INVENTORY_READ: "INVENTORY_READ",
+  INVENTORY_UPDATE: "INVENTORY_UPDATE",
+  CLIENT_ADDRESS_SPECS_READ: "CLIENT_ADDRESS_SPECS_READ",
+} as const;
+
+export type Permission = keyof typeof PERMISSIONS;
+
+export const PERMISSION_GROUPS = {
+  SYSTEM: [
+    PERMISSIONS.USERS_MANAGE,
+    PERMISSIONS.SETTINGS_EDIT,
+    PERMISSIONS.AUDIT_LOGS_VIEW,
+  ],
+  CATALOG: [
+    PERMISSIONS.CATALOG_APPROVE,
+    PERMISSIONS.CATALOG_WRITE,
+  ],
+  CRM: [
+    PERMISSIONS.CRM_ASSIGN,
+    PERMISSIONS.CRM_EDIT,
+  ],
+  FINANCIALS: [
+    PERMISSIONS.FINANCIAL_VIEW,
+    PERMISSIONS.QUOTES_APPROVE,
+    PERMISSIONS.PAYMENT_STATUS_OVERRIDE,
+  ],
+  INVENTORY: [
+    PERMISSIONS.INVENTORY_READ,
+    PERMISSIONS.INVENTORY_UPDATE,
+  ],
+  CLIENTS: [
+    PERMISSIONS.CLIENT_ADDRESS_SPECS_READ,
+  ],
+} as const;
 
 export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
-  SUPER_ADMIN: [
-    "catalog:read",
-    "catalog:write",
-    "catalog:publish",
-    "crm:read",
-    "crm:write",
-    "orders:read",
-    "orders:write",
-    "orders:fulfill",
-    "logs:read",
-    "settings:read",
-    "settings:write",
-  ],
+  SUPER_ADMIN: Object.values(PERMISSIONS) as Permission[],
   ADMIN: [
-    "catalog:read",
-    "catalog:write",
-    "catalog:publish",
-    "crm:read",
-    "crm:write",
-    "orders:read",
-    "orders:write",
-    "orders:fulfill",
-    "logs:read",
-    "settings:read",
+    PERMISSIONS.CATALOG_APPROVE,
+    PERMISSIONS.CATALOG_WRITE,
+    PERMISSIONS.CRM_ASSIGN,
+    PERMISSIONS.CRM_EDIT,
+    PERMISSIONS.QUOTATION_DRAFT,
+    PERMISSIONS.PAYMENT_STATUS_OVERRIDE,
+    PERMISSIONS.INVENTORY_READ,
+    PERMISSIONS.INVENTORY_UPDATE,
+    PERMISSIONS.CLIENT_ADDRESS_SPECS_READ,
   ],
   SELLER: [
-    "catalog:read",
-    "catalog:write",
-    "orders:read",
-    "orders:fulfill",
-    "crm:read",
+    PERMISSIONS.CATALOG_WRITE,
+    PERMISSIONS.CRM_EDIT,
+    PERMISSIONS.QUOTATION_DRAFT,
+    PERMISSIONS.INVENTORY_READ,
+    PERMISSIONS.CLIENT_ADDRESS_SPECS_READ,
   ],
+  DESIGNER: [
+    PERMISSIONS.CATALOG_WRITE,
+    PERMISSIONS.INVENTORY_READ,
+    PERMISSIONS.CLIENT_ADDRESS_SPECS_READ,
+  ],
+  ACCOUNTANT: [
+    PERMISSIONS.FINANCIAL_VIEW,
+    PERMISSIONS.PAYMENT_STATUS_OVERRIDE,
+    PERMISSIONS.INVENTORY_READ,
+    PERMISSIONS.CLIENT_ADDRESS_SPECS_READ,
+  ],
+  SUPPORT: [
+    PERMISSIONS.INVENTORY_READ,
+    PERMISSIONS.CLIENT_ADDRESS_SPECS_READ,
+  ],
+  CUSTOMER: [],
 };
 
 export function hasPermission(role: UserRole, permission: Permission): boolean {
