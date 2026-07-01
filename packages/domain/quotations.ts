@@ -1,0 +1,11 @@
+export const QUOTATION_STATUS = {
+  DRAFT: "DRAFT",
+  PENDING_APPROVAL: "PENDING_APPROVAL",
+  APPROVED: "APPROVED",
+  REJECTED: "REJECTED",
+  SENT: "SENT",
+  ACCEPTED: "ACCEPTED",
+  EXPIRED: "EXPIRED",
+} as const;
+
+export type QuotationStatus = typeof QUOTATION_STATUS[keyof typeof QUOTATION_STATUS];

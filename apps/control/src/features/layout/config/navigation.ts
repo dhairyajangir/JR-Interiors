@@ -17,6 +17,11 @@ import {
   Shield,
   Settings,
   History,
+  GitBranch,
+  Sofa,
+  Gem,
+  Palette,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import { Permission } from "@jr/validation/permissions";
@@ -71,6 +76,33 @@ export const NAVIGATION_CONFIG: NavigationGroup[] = [
         icon: Layers,
         href: "/dashboard/collections",
         permission: "INVENTORY_READ",
+      },
+      {
+        title: "Taxonomy",
+        icon: GitBranch,
+        permission: "INVENTORY_READ",
+        children: [
+          {
+            title: "Rooms",
+            href: "/dashboard/taxonomy/rooms",
+            permission: "INVENTORY_READ",
+          },
+          {
+            title: "Materials",
+            href: "/dashboard/taxonomy/materials",
+            permission: "INVENTORY_READ",
+          },
+          {
+            title: "Styles",
+            href: "/dashboard/taxonomy/styles",
+            permission: "INVENTORY_READ",
+          },
+          {
+            title: "Finishes",
+            href: "/dashboard/taxonomy/finishes",
+            permission: "INVENTORY_READ",
+          },
+        ],
       },
     ],
   },

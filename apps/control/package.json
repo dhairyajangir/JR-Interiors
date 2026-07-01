@@ -9,31 +9,33 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "next": "^16.2.7",
+    "@hookform/resolvers": "^3.10.0",
+    "@jr/auth": "workspace:*",
+    "@jr/command": "workspace:*",
+    "@jr/database": "workspace:*",
+    "@jr/domain": "workspace:*",
+    "@jr/types": "workspace:*",
+    "@jr/validation": "workspace:*",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",
     "@tanstack/react-query": "^5.66.0",
-    "zod": "^3.23.8",
-    "react-hook-form": "^7.54.2",
-    "@hookform/resolvers": "^3.10.0",
-    "sonner": "^1.7.2",
     "lucide-react": "^0.475.0",
-    "@jr/auth": "workspace:*",
-    "@jr/database": "workspace:*",
-    "@jr/types": "workspace:*",
-    "@jr/validation": "workspace:*",
-    "@jr/command": "workspace:*"
+    "next": "^16.2.7",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-hook-form": "^7.54.2",
+    "sonner": "^1.7.2",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "typescript": "^5.9.3",
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
-    "tailwindcss": "^3.4.19",
-    "postcss": "^8.5.15",
     "autoprefixer": "^10.5.0",
-    "prisma": "^6.19.3"
+    "postcss": "^8.5.15",
+    "prisma": "^6.19.3",
+    "tailwindcss": "^3.4.19",
+    "tsx": "^4.22.4",
+    "typescript": "^5.9.3"
   }
 }

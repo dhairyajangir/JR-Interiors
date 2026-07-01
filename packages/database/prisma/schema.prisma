@@ -59,18 +59,91 @@ model Address {
   @@index([userId])
 }
 
-model Category {
-  id          String    @id @default(cuid())
-  slug        String    @unique
-  name        String
-  kind        String    @default("room") // "room" | "collection" | "type"
-  description String?
-  imageUrl    String?
-  itemCount   Int       @default(0)
-  sortOrder   Int       @default(0)
-  products    Product[]
+// ── Taxonomy System ─────────────────────────────────────────────────────────
+// Generalized taxonomy engine: single model for categories, collections,
+// rooms, materials, styles, and finishes. New kinds can be added via enum
+// without schema changes. The UI filters by kind for distinct sections.
+
+enum TaxKind {
+  CATEGORY
+  COLLECTION
+  ROOM
+  MATERIAL
+  STYLE
+  FINISH
+}
+
+enum TaxStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum TaxVisibility {
+  PUBLIC
+  PRIVATE
+  UNLISTED
+}
+
+model Taxonomy {
+  id           String        @id @default(cuid())
+  kind         TaxKind       @default(CATEGORY)
+  name         String
+  slug         String        @unique
+  description  String?
+  coverImage   String?       // General cover / thumbnail
+  bannerImage  String?       // Wide banner — used by collections
+  icon         String?       // Icon name or URL
+  // ── Tree structure ─────────────────────────────────────────────────────
+  parentId     String?
+  parent       Taxonomy?     @relation("TaxonomyTree", fields: [parentId], references: [id])
+  children     Taxonomy[]    @relation("TaxonomyTree")
+  sortOrder    Int           @default(0)
+  // ── Lifecycle ──────────────────────────────────────────────────────────
+  status       TaxStatus     @default(DRAFT)
+  visibility   TaxVisibility @default(PUBLIC)
+  publishedAt  DateTime?
+  slugLocked   Boolean       @default(false) // locked after first publish
+  // ── SEO ────────────────────────────────────────────────────────────────
+  seoTitle     String?
+  seoDesc      String?
+  seoKeywords  String[]      @default([])
+  // ── Cached counters (async refresh) ────────────────────────────────────
+  productCount Int           @default(0)
+  childCount   Int           @default(0)
+  // ── Authorship ─────────────────────────────────────────────────────────
+  createdById  String?
+  updatedById  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  // ── Relations ──────────────────────────────────────────────────────────
+  productLinks ProductTaxonomy[]
 
   @@index([kind])
+  @@index([kind, status])
+  @@index([parentId])
+  @@index([slug])
+  @@index([status])
+  @@index([sortOrder])
+  @@index([createdAt])
+}
+
+// Many-to-many: a product can be assigned to multiple taxonomy nodes
+// (primary category, a collection, a room, a material, etc.)
+model ProductTaxonomy {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  taxonomyId String
+  taxonomy   Taxonomy @relation(fields: [taxonomyId], references: [id], onDelete: Cascade)
+  primary    Boolean  @default(false) // marks the primary category assignment
+  createdAt  DateTime @default(now())
+
+  @@unique([productId, taxonomyId])
+  @@index([productId])
+  @@index([taxonomyId])
+  @@index([productId, primary])
 }
 
 model Product {
@@ -95,18 +168,23 @@ model Product {
   signature   Boolean  @default(false)
   inStock     Boolean  @default(true)
   stock       Int      @default(0)
-  status      String   @default("PUBLISHED") // "DRAFT" | "PENDING" | "PUBLISHED" | "REJECTED"
+  status      String   @default("PUBLISHED") // "DRAFT" | "PENDING_REVIEW" | "APPROVED" | "PUBLISHED" | "CHANGES_REQUESTED" | "ARCHIVED"
   reviewNote  String? // admin rejection reason
+  referenceId String?  @unique // e.g. JR-PROD-000001
+  mediaId     String?
+  mediaIds    String[] @default([])
+  seo         Json?    @default("{}")
   createdAt   DateTime @default(now())
 
   sellerId      String?
-  seller        Seller?        @relation(fields: [sellerId], references: [id])
-  categoryId    String?
-  category      Category?      @relation(fields: [categoryId], references: [id])
+  seller        Seller?           @relation(fields: [sellerId], references: [id])
+  // ── Shadow FK: kept for Phase A backward-compat; replaced by taxonomyLinks ──
+  categoryId    String?           // deprecated — use taxonomyLinks with primary=true
   cartItems     CartItem[]
   orderItems    OrderItem[]
   reviews       Review[]
   wishlistItems WishlistItem[]
+  taxonomyLinks ProductTaxonomy[] // enterprise taxonomy assignments
 
   @@index([room])
   @@index([type])

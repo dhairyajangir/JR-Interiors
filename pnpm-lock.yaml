@@ -32,6 +32,9 @@ importers:
       '@jr/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@jr/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       '@jr/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -90,6 +93,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.19
         version: 3.4.19(tsx@4.22.4)
+      tsx:
+        specifier: ^4.22.4
+        version: 4.22.4
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -223,6 +229,8 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.9.3
+
+  packages/domain: {}
 
   packages/hooks: {}
 
