@@ -12,6 +12,7 @@ datasource db {
 model User {
   id            String         @id @default(cuid())
   email         String         @unique
+  supabaseId    String?        @unique
   passwordHash  String
   fullName      String
   phone         String?
@@ -238,12 +239,12 @@ model Consultation {
 
 model AuditLog {
   id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?  // Nullable — pre-auth events (e.g. LOGIN_FAILED) may not have a resolved userId
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   action    String
   entity    String?
   entityId  String?
-  details   String?
+  details   String?  // JSON-serialized metadata
   ipAddress String?
   userAgent String?
   createdAt DateTime @default(now())
