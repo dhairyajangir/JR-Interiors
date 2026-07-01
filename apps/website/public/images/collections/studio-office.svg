@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Studio office interior illustration">
+  <rect width="1200" height="800" fill="#efe8de"/>
+  <rect x="0" y="560" width="1200" height="240" fill="#bb9b74"/>
+  <rect x="120" y="220" width="320" height="280" rx="16" fill="#7f5d35"/>
+  <rect x="500" y="210" width="260" height="300" rx="16" fill="#a57b4a"/>
+  <rect x="830" y="200" width="180" height="220" rx="12" fill="#8d653e"/>
+  <rect x="150" y="520" width="200" height="110" rx="10" fill="#5d3d22"/>
+  <rect x="760" y="520" width="180" height="120" rx="10" fill="#5d3d22"/>
+  <rect x="420" y="140" width="220" height="70" rx="8" fill="#8f673b"/>
+</svg>

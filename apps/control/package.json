@@ -15,6 +15,7 @@
     "@jr/database": "workspace:*",
     "@jr/domain": "workspace:*",
     "@jr/types": "workspace:*",
+    "@jr/ui": "workspace:*",
     "@jr/validation": "workspace:*",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",

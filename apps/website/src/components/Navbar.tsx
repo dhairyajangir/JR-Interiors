@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/Icon";
 import { useCart } from "@/components/CartProvider";
 import { clsx } from "@/lib/clsx";
+import { Logo, LogoLight } from "@/components/Logo";
 
 const LINKS = [
   { href: "/furniture", label: "Furniture" },
   { href: "/services", label: "Interiors" },
-  { href: "/collections", label: "Collections" },
+  // { href: "/collections", label: "Collections" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -114,7 +115,7 @@ export function Navbar() {
       className={clsx(
         "fixed top-0 w-full z-[100] transition-all duration-500 ease-[var(--ease-out-soft)]",
         menuOpen
-          ? "bg-surface text-primary border-b border-outline-variant/30"
+          ? "bg-surface text-primary border-b border-outline-variant/30 backdrop-blur-2xl"
           : scrolled
           ? "scrolled-nav shadow-sm"
           : "glass-nav"
@@ -124,9 +125,14 @@ export function Navbar() {
       <div className="relative z-50 flex justify-between items-center h-20 md:h-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <Link
           href="/"
-          className="text-subheading font-bold text-primary tracking-tight"
+          aria-label="JR Interiors â€” Home"
+          className="logo-hover flex items-center"
         >
-          JR INTERIORS
+          <Logo
+            variant="secondary"
+            priority
+            className="w-[180px] sm:w-[220px] md:w-[280px] lg:w-[340px] xl:w-[380px] h-auto max-w-none transition-all duration-300"
+          />
         </Link>
 
         <ul id="main-menu" role="menubar" className="hidden md:flex items-center gap-10">
@@ -208,6 +214,13 @@ export function Navbar() {
           aria-label="Mobile navigation menu"
           className="md:hidden absolute top-20 left-0 right-0 z-40 bg-surface border-b border-outline-variant/30 px-margin-mobile py-8 shadow-xl flex flex-col gap-6 overflow-y-auto max-h-[calc(80vh)] animate-slide-down scroll-hide"
         >
+          {/* Secondary Horizontal logo at top of drawer */}
+          <div className="flex justify-center pb-4 border-b border-outline-variant/20">
+            <Link href="/" onClick={() => setMenuOpen(false)} aria-label="JR Interiors â€” Home">
+              <Logo variant="secondary" className="w-[150px] h-auto" />
+            </Link>
+          </div>
+
           {/* Search Box in Menu */}
           <div className="relative">
             <Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant" />
@@ -273,7 +286,7 @@ export function Navbar() {
           <div className="border-t border-outline-variant/30 pt-6 mt-2 space-y-1">
             <p className="text-[10px] uppercase tracking-widest text-outline">Jaipur Atelier</p>
             <p className="text-body-md text-primary font-medium">Ph: +91 94603 00750</p>
-            <p className="text-body-md text-primary font-medium">Email: concierge@jrinteriors.in</p>
+            <p className="text-body-md text-primary font-medium">Email: adityajangid1409@gmail.com</p>
           </div>
         </div>
       )}

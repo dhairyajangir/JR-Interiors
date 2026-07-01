@@ -57,11 +57,11 @@ export default async function FurniturePage({ searchParams }: { searchParams: SP
   const to = Math.min(page * PER_PAGE, total);
 
   return (
-    <main className="pt-32 pb-stack-lg">
+    <main className="pt-20 pb-stack-lg">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <div className="mb-stack-md reveal">
           <h1 className="text-headline-section-mobile md:text-headline-section text-primary mb-4">
-            The Furniture Collection
+            Furniture
           </h1>
           <p className="text-body-lg text-on-surface-variant max-w-2xl">
             Discover a curated selection of artisanal pieces crafted for modern

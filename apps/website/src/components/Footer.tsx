@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { NewsletterForm } from "@/components/NewsletterForm";
+import { Logo, LogoLight } from "@/components/Logo";
 
 
 export function Footer() {
@@ -8,7 +9,15 @@ export function Footer() {
     <footer className="bg-primary pt-24 pb-12 text-on-primary">
       <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
         <div>
-          <h3 className="text-2xl font-bold mb-8">JR Interiors</h3>
+          {/* Footer body: Secondary Horizontal logo — inverted white on dark background */}
+          <div className="mb-6">
+            <Link href="/" aria-label="JR Interiors — Home">
+              <LogoLight
+                variant="secondary"
+                className="w-[180px] sm:w-[220px] md:w-[280px] lg:w-[340px] xl:w-[380px] h-auto logo-hover"
+              />
+            </Link>
+          </div>
           <p className="text-on-primary/60 mb-6 leading-relaxed max-w-xs text-sm">
             Crafting modern sanctuaries and artisanal furniture designed to become part of your story.
           </p>
@@ -31,7 +40,6 @@ export function Footer() {
           </h5>
           <ul className="space-y-4">
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/furniture">Curated Collections</Link></li>
-            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/collections">Collections</Link></li>
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/services">Design Experiences</Link></li>
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/about">About Us</Link></li>
           </ul>
@@ -45,7 +53,7 @@ export function Footer() {
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/services">White Glove Delivery</Link></li>
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/contact">Schedule a Design Call</Link></li>
             <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/about">Sustainability</Link></li>
-            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/contact">Let's Create Your Space</Link></li>
+            <li><Link className="text-on-primary/70 hover:text-on-primary transition-colors" href="/contact">Let&apos;s Create Your Space</Link></li>
           </ul>
         </div>
 
@@ -60,13 +68,17 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto pt-8 border-t border-on-primary/10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-on-primary/30 uppercase tracking-widest">
-        <p>© 2024 JR Interiors. Crafted for a Life in Balance.</p>
-        <div className="flex flex-wrap gap-x-8 gap-y-2">
-          <Link className="hover:text-on-primary transition-colors" href="/legal/privacy">Privacy Policy</Link>
-          <Link className="hover:text-on-primary transition-colors" href="/legal/terms">Terms of Service</Link>
-          <Link className="hover:text-on-primary transition-colors" href="/legal/cookies">Cookie Policy</Link>
-          <Link className="hover:text-on-primary transition-colors" href="/legal/accessibility">Accessibility Statement</Link>
+      {/* Footer bottom bar — clean text baseline alignment */}
+      <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto pt-8 border-t border-on-primary/10 flex flex-col md:flex-row justify-between items-baseline gap-6 text-on-primary/40 text-[11px] uppercase tracking-[0.18em]">
+        <div className="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8">
+          <span className="font-serif font-medium text-sm text-on-primary/80 tracking-[0.15em] uppercase">JR Interiors</span>
+          <span>©2024 Crafted for a Life in Balance</span>
+        </div>
+        <div className="flex flex-wrap gap-x-6 gap-y-2">
+          <Link className="hover:text-on-primary transition-colors" href="/legal/privacy">Privacy</Link>
+          <Link className="hover:text-on-primary transition-colors" href="/legal/terms">Terms</Link>
+          <Link className="hover:text-on-primary transition-colors" href="/legal/accessibility">Accessibility</Link>
+          <Link className="hover:text-on-primary transition-colors" href="/legal/cookies">Cookies</Link>
         </div>
       </div>
     </footer>

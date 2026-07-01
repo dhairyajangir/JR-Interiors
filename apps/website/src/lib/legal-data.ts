@@ -22,11 +22,11 @@ export const LEGAL_DATA: Record<string, LegalDoc> = {
       },
       {
         heading: "2. Personal Data We Collect",
-        content: "We collect only the personal information required to serve you and manage your spatial design selections. This includes:\n• Identity & Contact Details: Name, email address, mobile number, shipping address, and billing address.\n• Project Preferences: Selection logs of furniture pieces, room preferences, custom finishes, layout specifications, and messages submitted via our consultation forms.\n• Technical Metadata: Client IP addresses, cookie consent logs, browser types, and usage data via Vercel Speed Insights (subject to your consent)."
+        content: "We collect only the personal information required to serve you and manage your spatial design selections. This includes:\nâ€¢ Identity & Contact Details: Name, email address, mobile number, shipping address, and billing address.\nâ€¢ Project Preferences: Selection logs of furniture pieces, room preferences, custom finishes, layout specifications, and messages submitted via our consultation forms.\nâ€¢ Technical Metadata: Client IP addresses, cookie consent logs, browser types, and usage data via Vercel Speed Insights (subject to your consent)."
       },
       {
         heading: "3. Grounds for Processing Data",
-        content: "We process your personal data on the following legal grounds under DPDPA:\n• Consent: Explicit consent provided by you when submitting contact, consultation, or newsletter forms, or choosing cookie preferences.\n• Contractual Obligations: Processing necessary to coordinate custom furniture fabrication, transport, and white-glove setup at your address.\n• Legal Compliance: Compliance with Indian tax laws (GST invoicing) and reporting requirements."
+        content: "We process your personal data on the following legal grounds under DPDPA:\nâ€¢ Consent: Explicit consent provided by you when submitting contact, consultation, or newsletter forms, or choosing cookie preferences.\nâ€¢ Contractual Obligations: Processing necessary to coordinate custom furniture fabrication, transport, and white-glove setup at your address.\nâ€¢ Legal Compliance: Compliance with Indian tax laws (GST invoicing) and reporting requirements."
       },
       {
         heading: "4. Data Sharing & Third-Party Processors",
@@ -38,11 +38,11 @@ export const LEGAL_DATA: Record<string, LegalDoc> = {
       },
       {
         heading: "6. Your Rights under DPDPA 2023",
-        content: "Under Indian law, you have the following rights regarding your personal data:\n• Right to Access: Request a summary of personal data processed by us and the processing activities.\n• Right to Correction & Erasure: Request corrections to inaccurate details or request deletion of data that is no longer necessary for the purpose it was collected.\n• Right to Withdraw Consent: Withdraw your consent to data processing at any time by contacting our Grievance Officer.\n• Right to Grievance Redressal: Register a complaint regarding our processing activities."
+        content: "Under Indian law, you have the following rights regarding your personal data:\nâ€¢ Right to Access: Request a summary of personal data processed by us and the processing activities.\nâ€¢ Right to Correction & Erasure: Request corrections to inaccurate details or request deletion of data that is no longer necessary for the purpose it was collected.\nâ€¢ Right to Withdraw Consent: Withdraw your consent to data processing at any time by contacting our Grievance Officer.\nâ€¢ Right to Grievance Redressal: Register a complaint regarding our processing activities."
       },
       {
         heading: "7. Contact & Grievance Officer",
-        content: "For inquiries, corrections, or grievances regarding your data privacy, please contact our designated Grievance Officer:\nName: Grievance Officer\nEmail: concierge@jrinteriors.in\nAddress: PLOT NO 251, NIRMAL VIHAR, Benar Road, Dadi Ka Phatak, Jhotwara, Jaipur, Rajasthan 302012\nPhone: +91 94603 00750"
+        content: "For inquiries, corrections, or grievances regarding your data privacy, please contact our designated Grievance Officer:\nName: Grievance Officer\nEmail: adityajangid1409@gmail.com\nAddress: PLOT NO 251, NIRMAL VIHAR, Benar Road, Dadi Ka Phatak, Jhotwara, Jaipur, Rajasthan 302012\nPhone: +91 94603 00750"
       }
     ]
   },
@@ -88,7 +88,7 @@ export const LEGAL_DATA: Record<string, LegalDoc> = {
       },
       {
         heading: "2. Types of Cookies We Use",
-        content: "We categorize cookies as follows:\n• Essential Cookies: Required for core website functions, security checks, and user sessions (e.g. 'jr_session' for authentication, and Turnstile tokens). These cannot be disabled.\n• Functional Cookies: Retain selections, user layouts, and theme preferences (e.g., saving address defaults).\n• Analytics Cookies: Used to gather aggregate statistics on traffic and performance (e.g., Vercel Analytics). These are loaded only after your explicit consent."
+        content: "We categorize cookies as follows:\nâ€¢ Essential Cookies: Required for core website functions, security checks, and user sessions (e.g. 'jr_session' for authentication, and Turnstile tokens). These cannot be disabled.\nâ€¢ Functional Cookies: Retain selections, user layouts, and theme preferences (e.g., saving address defaults).\nâ€¢ Analytics Cookies: Used to gather aggregate statistics on traffic and performance (e.g., Vercel Analytics). These are loaded only after your explicit consent."
       },
       {
         heading: "3. Cookie Consent Management",
@@ -107,7 +107,7 @@ export const LEGAL_DATA: Record<string, LegalDoc> = {
       },
       {
         heading: "2. Damage & Transit Coverage",
-        content: "We provide white-glove shipping and installation to ensure that furniture is delivered in pristine condition. In the rare event that an item is damaged during transit:\n• The damage must be reported immediately to our delivery team at the time of delivery and installation.\n• Alternatively, please email concierge@jrinteriors.in with detailed photographs within 24 hours of delivery.\n• JR Interiors will evaluate the damage and arrange for repair, refinishing, or complete replacement of the damaged parts at no additional cost."
+        content: "We provide white-glove shipping and installation to ensure that furniture is delivered in pristine condition. In the rare event that an item is damaged during transit:\nâ€¢ The damage must be reported immediately to our delivery team at the time of delivery and installation.\nâ€¢ Alternatively, please email adityajangid1409@gmail.com with detailed photographs within 24 hours of delivery.\nâ€¢ JR Interiors will evaluate the damage and arrange for repair, refinishing, or complete replacement of the damaged parts at no additional cost."
       },
       {
         heading: "3. Defective Craftsmanship",
@@ -126,7 +126,7 @@ export const LEGAL_DATA: Record<string, LegalDoc> = {
       },
       {
         heading: "2. Consultation Bookings",
-        content: "Design consultations can be rescheduled or cancelled free of charge up to 24 hours before the scheduled time. Please notify us via email (concierge@jrinteriors.in) or phone (+91 94603 00750) if you need to adjust your consultation window."
+        content: "Design consultations can be rescheduled or cancelled free of charge up to 24 hours before the scheduled time. Please notify us via email (adityajangid1409@gmail.com) or phone (+91 94603 00750) if you need to adjust your consultation window."
       },
       {
         heading: "3. Commissioned Orders",
@@ -160,7 +160,7 @@ export const LEGAL_DATA: Record<string, LegalDoc> = {
     sections: [
       {
         heading: "1. Copyright Ownership",
-        content: "© 2026 JR Interiors. All rights reserved. The website https://jrinteriors.in, including its structure, design layout, database models, source code, 3D design files, photographs, descriptions, and written content, is protected under the Copyright Act 1957 of India and international copyright treaties."
+        content: "Â© 2026 JR Interiors. All rights reserved. The website https://jrinteriors.in, including its structure, design layout, database models, source code, 3D design files, photographs, descriptions, and written content, is protected under the Copyright Act 1957 of India and international copyright treaties."
       },
       {
         heading: "2. Trade Information",
@@ -179,11 +179,11 @@ export const LEGAL_DATA: Record<string, LegalDoc> = {
       },
       {
         heading: "2. Implemented Features",
-        content: "To ensure a premium accessible experience, we have implemented:\n• Semantic HTML structure for screen readers.\n• High color contrast ratios to meet readability thresholds.\n• Visible focus indicators and a Visible skip-to-content link.\n• Alt-text annotations on all design visualizations and structural images.\n• Support for reduced motion configuration flags to prevent animation-induced discomfort."
+        content: "To ensure a premium accessible experience, we have implemented:\nâ€¢ Semantic HTML structure for screen readers.\nâ€¢ High color contrast ratios to meet readability thresholds.\nâ€¢ Visible focus indicators and a Visible skip-to-content link.\nâ€¢ Alt-text annotations on all design visualizations and structural images.\nâ€¢ Support for reduced motion configuration flags to prevent animation-induced discomfort."
       },
       {
         heading: "3. Feedback & Contact",
-        content: "If you encounter accessibility barriers or have suggestions for improving our digital experience, please contact us:\nEmail: concierge@jrinteriors.in\nPhone: +91 94603 00750"
+        content: "If you encounter accessibility barriers or have suggestions for improving our digital experience, please contact us:\nEmail: adityajangid1409@gmail.com\nPhone: +91 94603 00750"
       }
     ]
   }

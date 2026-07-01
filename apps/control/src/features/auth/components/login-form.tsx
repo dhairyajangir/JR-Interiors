@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { loginAction } from "../actions";
 import { KeyRound, Mail, AlertCircle, Eye, EyeOff } from "lucide-react";
 
@@ -58,10 +59,21 @@ export function LoginForm() {
   return (
     <div className="w-full max-w-md p-8 bg-panel rounded-md border border-muted luxury-shadow-md animate-fade-in">
       <div className="flex flex-col items-center mb-8">
+        {/* Monogram logo — luxury premium authentication per brand spec */}
+        <div className="mb-4">
+          <Image
+            src="/logos/monogram.svg"
+            alt="JR Interiors"
+            width={64}
+            height={64}
+            priority
+            className="object-contain"
+          />
+        </div>
         <span className="text-xs uppercase tracking-widest text-bronze font-semibold mb-2">
           Atelier Control
         </span>
-        <h1 className="text-2xl font-semibold tracking-tight text-primary text-center">
+        <h1 className="text-lg font-semibold tracking-tight text-primary text-center">
           JR Interiors
         </h1>
         <p className="mt-2 text-xs text-secondary text-center">

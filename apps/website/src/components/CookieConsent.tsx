@@ -75,8 +75,8 @@ export function CookieConsent() {
           </h3>
           <p id="cookie-consent-desc" className="text-xs text-on-primary/70 leading-relaxed mt-1">
             In compliance with the DPDP Act (India), we use cookies to provide secure forms, enhance your browsing experience, and analyze traffic. Data is retained for 365 days. You have the right to access, update, or request erasure of your data by contacting our Grievance Officer at{" "}
-            <a href="mailto:concierge@jrinteriors.in" className="underline font-semibold hover:text-on-primary transition-colors">
-              concierge@jrinteriors.in
+            <a href="mailto:adityajangid1409@gmail.com" className="underline font-semibold hover:text-on-primary transition-colors">
+              adityajangid1409@gmail.com
             </a>{" "}
             or calling +91 94603 00750. Review our{" "}
             <Link href="/legal/cookies" className="underline font-semibold hover:text-on-primary transition-colors">

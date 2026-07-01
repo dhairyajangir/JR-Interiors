@@ -338,3 +338,15 @@ model NewsletterSubscriber {
   createdAt DateTime @default(now())
 }
 
+model MediaAsset {
+  id        String   @id @default(cuid())
+  url       String
+  filename  String
+  mimeType  String
+  sizeBytes Int
+  width     Int?
+  height    Int?
+  hash      String?  @unique
+  createdAt DateTime @default(now())
+}
+

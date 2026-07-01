@@ -35,6 +35,6 @@ Next.js security headers are configured inside `next.config.mjs`:
 
 ## 3. Vulnerability Reporting
 If you discover a security vulnerability, please refer to our security policy contact:
-- **Email**: concierge@jrinteriors.in
+- **Email**: adityajangid1409@gmail.com
 - **Preferred Languages**: English, Hindi
 - **Policy**: Do not disclose vulnerabilities publicly prior to coordination. We target patching critical bugs within 72 hours of disclosure.

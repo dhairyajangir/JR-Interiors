@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Icon } from "@/components/Icon";
 import { ConsultationForm } from "@/components/ConsultationForm";
+import { Logo } from "@/components/Logo";
 
 export const metadata: Metadata = { title: "Contact & Consultation | JR INTERIORS" };
 
@@ -9,7 +10,7 @@ export default function ContactPage() {
     <main className="pt-32 pb-16 bg-surface">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-start w-full mb-16">
-          <div className="reveal">
+          <div className="reveal delay-100">
             <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-6 block">Get in touch</span>
             <h1 className="font-display-hero text-display-hero-mobile md:text-headline-section text-primary leading-[1.1] mb-6">
               Let&rsquo;s design your sanctuary.
@@ -18,23 +19,27 @@ export default function ContactPage() {
               Whether you&rsquo;re furnishing a single corner or reimagining an entire home, our designers would love to help. Book a complimentary consultation or reach us directly.
             </p>
             <div className="space-y-5">
-              <ContactRow icon="mail" label="Email" value="concierge@jrinteriors.in" href="mailto:concierge@jrinteriors.in" />
+              <ContactRow icon="mail" label="Email" value="adityajangid1409@gmail.com" href="mailto:adityajangid1409@gmail.com" />
               <ContactRow icon="call" label="Phone" value="+91 94603 00750" href="tel:+919460300750" />
               <ContactRow icon="chat" label="WhatsApp Chat" value="+91 94603 00750 (Click to Chat)" href="https://wa.me/919460300750" />
               <ContactRow icon="location_on" label="Jaipur Atelier" value="Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara, Jaipur 302012" href="https://maps.google.com/?q=Pno.+251+Nirmal+Vihar,+Dadi+Ka+Phatak,+Jhotwara,+Jaipur+302012" />
               <ContactRow icon="instagram" label="Instagram" value="@jr_interiors_2024" href="https://instagram.com/jr_interiors_2024" />
-              <ContactRow icon="schedule" label="Hours" value="Mon–Sat · 10am – 7pm IST" />
+              <ContactRow icon="schedule" label="Hours" value="Monâ€“Sat Â· 10am â€“ 7pm IST" />
             </div>
           </div>
 
-          <div className="bg-surface-container-lowest rounded-xl editorial-shadow p-6 md:p-8 reveal delay-100">
-            <h2 className="text-subheading text-primary mb-6">Book a Consultation</h2>
+          {/* Contact Form Container: Icon Only Brand Logo â€” per brand spec */}
+          <div className="bg-surface-container-lowest rounded-xl editorial-shadow p-6 md:p-8 reveal delay-200">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-subheading text-primary font-bold">Book a Consultation</h2>
+              <Logo variant="icon" className="h-14 w-14 opacity-80" decorative />
+            </div>
             <ConsultationForm />
           </div>
         </div>
 
         {/* Embedded Google Map */}
-        <div className="reveal delay-200 border-t border-outline-variant/20 pt-16">
+        <div className="reveal delay-300 border-t border-outline-variant/20 pt-16">
           <h2 className="text-headline-section-mobile md:text-headline-section font-serif text-primary mb-6">Visit our Jaipur Atelier</h2>
           <p className="text-body-lg text-on-surface-variant mb-8 max-w-2xl">
             We welcome visitors to our Jhotwara workshop by appointment. Browse raw timber selections, view master woodworkers at their benches, and feel our textile finishes in person.

@@ -5,7 +5,13 @@ export default function StructuredData() {
     "@type": "Organization",
     "name": "JR Interiors",
     "url": "https://jrinteriors.in",
-    "logo": "https://jrinteriors.in/logo.png",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://jrinteriors.in/logos/primary.png",
+      "width": 800,
+      "height": 800,
+      "caption": "JR Interiors — Where Vision Meets Transformation"
+    },
     "description": "Premium luxury furniture India handcrafted for calm, elegant living. Artisanal pieces with white-glove delivery and custom design services.",
     "contactPoint": {
       "@type": "ContactPoint",

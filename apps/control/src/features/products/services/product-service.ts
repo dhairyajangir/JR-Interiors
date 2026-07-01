@@ -311,6 +311,10 @@ export async function deleteProductService(id: string, currentUser: User) {
       throw new AuthorizationError("You can only delete products owned by your brand.");
     }
 
+    if (currentUser.role === "SELLER" && product.status === "PUBLISHED") {
+      throw new AuthorizationError("Sellers cannot delete published products.");
+    }
+
     await productRepository.deleteProduct(id, tx);
 
     await logAuditAction(
@@ -472,8 +476,8 @@ export async function archiveProductService(id: string, currentUser: User) {
       throw new AuthorizationError("You do not have permission to archive products.");
     }
 
-    if (currentUser.role === "SELLER" && product.sellerId !== currentUser.sellerId) {
-      throw new AuthorizationError("You can only archive products owned by your brand.");
+    if (currentUser.role === "SELLER") {
+      throw new AuthorizationError("Sellers do not have permission to archive products.");
     }
 
     const updated = await productRepository.updateProduct(

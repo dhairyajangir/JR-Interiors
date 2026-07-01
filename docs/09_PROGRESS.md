@@ -6,8 +6,8 @@ This document tracks the active sprint goals, completed milestones, ongoing impl
 
 ## Current Sprint Status
 
-*   **Active Sprint**: Sprint 1 (Foundation & Security Specifications)
-*   **Sprint Goal**: Establish the architectural framework, write the documentation constitution, and align security standards.
+*   **Active Sprint**: Sprint 3 (Catalog Management & Media Infrastructure)
+*   **Sprint Goal**: Implement the flagship Enterprise AppShell, hierarchical Taxonomy Engine, and Product Form Workspace with Media Library integration.
 
 ---
 
@@ -17,16 +17,16 @@ This document tracks the active sprint goals, completed milestones, ongoing impl
 *   [x] **Storefront Implementation**: Public-facing luxury showroom website (`jr-interiors`) is fully functional.
 *   [x] **Database Schema**: Relational PostgreSQL database schema designed and initialized using Prisma ORM.
 *   [x] **Website Deployment**: Storefront is deployed and accessible on Vercel.
-*   [x] **Project Constitution**: Complete documentation set drafted (README, Project Charter, Architecture, Design System, Security, Data Model, Feature Spec, Roadmap, Agent Guide, ADRs).
+*   [x] **Project Constitution**: Complete documentation set drafted.
+*   [x] **Sprint 3 — Phase A (Enterprise AppShell)**: Role-based AppShell, Command Palette, and Global Notifications.
+*   [x] **Sprint 3 — Phase B (Taxonomy Engine)**: Categories and Collections tree drag-and-drop hierarchy.
+*   [x] **Sprint 3 — Phase C (Enterprise Product Editor & Media Experience)**: Flagship Product Editor, reusable Form Workspace building blocks, Media Library picker, and audit trails.
 
 ### In Progress
-*   [/] **Monorepo Structuring**: Refining dependencies and scripts in the root `package.json` to link the admin workspace.
+*   [/] **Monorepo Structuring**: Refining pnpm workspace setups for admin features.
 
-### Next Up (Sprint 2)
-*   [ ] **Admin App Initialization**: Scaffold the `jr-admin` Next.js directory.
-*   [ ] **Authentication System**: Build the login interface and integrate Supabase Auth.
-*   [ ] **MFA Challenge Flow**: Build the TOTP enrollment screen and edge security verification middleware.
-*   [ ] **Audit Log Mutations**: Hook Prisma write middleware to auto-log database mutations.
+### Next Up (Sprint 4)
+*   [ ] **Customer CRM & Quotation Editor**: Client management dashboard, site measurement notes, and quotation PDF generation.
 
 ### Blocked
 *   **None**

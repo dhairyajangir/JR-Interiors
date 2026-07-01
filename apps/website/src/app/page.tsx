@@ -5,6 +5,7 @@ import { Icon } from "@/components/Icon";
 import { ProductCard } from "@/components/ProductCard";
 import StructuredData from "@/components/StructuredData";
 import { getAltText } from "@/lib/altText";
+import { Logo } from "@/components/Logo";
 
 export const revalidate = 3600;
 
@@ -63,7 +64,7 @@ export default async function HomePage() {
       take: 4,
       orderBy: { priceCents: "desc" },
     }),
-    prisma.category.findMany({ where: { kind: "room" }, orderBy: { sortOrder: "asc" } }),
+    prisma.taxonomy.findMany({ where: { kind: "ROOM" }, orderBy: { sortOrder: "asc" } }),
   ]);
 
   const living = rooms.find((r) => r.slug === "living-room");
@@ -93,7 +94,8 @@ export default async function HomePage() {
         </div>
         <div className="relative z-10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
           <div className="max-w-3xl">
-            <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-6 block reveal font-medium">
+
+            <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-6 block reveal delay-100 font-medium">
               Artisanal Atelier
             </span>
             <h1 className="font-serif text-display-hero-mobile md:text-display-hero text-primary mb-8 leading-[1.05] reveal delay-100">
@@ -213,22 +215,22 @@ export default async function HomePage() {
           <RoomCard
             className="col-span-12 md:col-span-8 h-[400px] md:h-auto"
             href={living ? `/furniture?room=Living` : "/furniture"}
-            image={living?.imageUrl ?? G(ZEN)}
+            image={living?.coverImage ?? G(ZEN)}
             title="Living Room"
-            subtitle={living ? `${living.itemCount} Curated Pieces` : undefined}
+            subtitle={living ? `${living.productCount} Curated Pieces` : undefined}
             large
           />
           <div className="col-span-12 md:col-span-4 flex flex-col gap-8">
             <RoomCard
               className="flex-1 h-[300px] md:h-auto"
               href="/furniture?room=Bedroom"
-              image={bedroom?.imageUrl ?? G(NOOK)}
+              image={bedroom?.coverImage ?? G(NOOK)}
               title="Bedroom"
             />
             <RoomCard
               className="flex-1 h-[300px] md:h-auto"
               href="/furniture?room=Dining"
-              image={dining?.imageUrl ?? G(HALL)}
+              image={dining?.coverImage ?? G(HALL)}
               title="Dining Room"
             />
           </div>
@@ -440,6 +442,10 @@ export default async function HomePage() {
               <Image src={G(CONSULT)} alt="A spatial interior designer walking through material selections with a client" fill sizes="(max-width:768px) 100vw, 40vw" className="object-cover" placeholder="blur" blurDataURL={BLUR_DATA_URL} />
             </div>
           </div>
+          {/* Decorative watermark background — significantly visible */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+            <Logo variant="watermark" className="w-[480px] h-[480px] opacity-[0.06]" decorative />
+          </div>
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/felt.png')]" />
         </div>
       </section>
@@ -477,10 +483,14 @@ function TestimonialCard({ testimonial }: { testimonial: typeof TESTIMONIALS[num
   return (
     <div className="w-[380px] sm:w-[440px] shrink-0 bg-surface-container-low p-8 rounded-2xl border border-outline-variant/20 flex flex-col justify-between h-[280px]">
       <div>
-        <div className="flex gap-0.5 text-primary mb-4">
-          {Array.from({ length: testimonial.rating }).map((_, i) => (
-            <Icon key={i} name="star" fill className="text-sm" />
-          ))}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex gap-0.5 text-primary">
+            {Array.from({ length: testimonial.rating }).map((_, i) => (
+              <Icon key={i} name="star" fill className="text-sm" />
+            ))}
+          </div>
+          {/* Subtle architectural icon accent — per brand card rule */}
+          <Logo variant="icon" decorative className="h-8 w-8 ml-auto opacity-20" />
         </div>
         <p className="text-body-md text-primary italic font-light leading-relaxed mb-6">
           &ldquo;{testimonial.quote}&rdquo;

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useCurrentUser } from "../../auth/hooks";
 import { NAVIGATION_CONFIG, NavigationItem } from "../config/navigation";
@@ -41,21 +42,29 @@ export function Sidebar({
     <div className="flex flex-col h-full bg-sidebar border-r border-muted select-none">
       {/* Brand Logo Section */}
       <div className="h-16 flex items-center justify-between px-4 border-b border-muted">
-        <div className="flex items-center space-x-3">
-          <div className="h-8 w-8 rounded bg-bronze flex items-center justify-center text-panel font-display font-semibold text-base shadow-sm">
-            J
-          </div>
-          {!isCollapsed && (
-            <div className="flex flex-col">
-              <span className="font-display font-semibold text-xs tracking-wider text-primary uppercase leading-none">
-                JR Control
-              </span>
-              <span className="text-[9px] font-mono text-secondary mt-0.5 leading-none">
-                Atelier OS
-              </span>
-            </div>
+        <Link href="/dashboard" aria-label="JR Interiors — Atelier Control">
+          {isCollapsed ? (
+            /* Collapsed: Icon Only — per brand spec */
+            <Image
+              src="/logos/icon.svg"
+              alt="JR Interiors"
+              width={32}
+              height={32}
+              priority
+              className="object-contain"
+            />
+          ) : (
+            /* Expanded: Secondary Horizontal — per brand spec */
+            <Image
+              src="/logos/secondary-horizontal.svg"
+              alt="JR Interiors"
+              width={180}
+              height={46}
+              priority
+              className="object-contain h-8 w-auto"
+            />
           )}
-        </div>
+        </Link>
 
         {/* Mobile close button only */}
         <button

@@ -59,10 +59,10 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: `${siteUrl}/og-image-1200x630.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "JR Interiors | Luxury Furniture India — Spaces Designed for Calm Living",
+        url: `${siteUrl}/logos/og-social.png`,
+        width: 1080,
+        height: 1080,
+        alt: "JR Interiors | Luxury Furniture India — Where Vision Meets Transformation",
       },
     ],
   },
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: "JR Interiors | Luxury Furniture India",
     description:
       "Premium handcrafted furniture for calm, elegant living. Free design consultations.",
-    images: [`${siteUrl}/og-image-1200x630.jpg`],
+    images: [`${siteUrl}/logos/og-social.png`],
     creator: "@jr_interiors_2024",
   },
   robots: {
@@ -81,11 +81,15 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.svg" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", type: "image/png" },
     ],
-    apple: "/apple-touch-icon.png",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      { rel: "mask-icon", url: "/logos/icon.svg" },
+      { rel: "msapplication-TileImage", url: "/favicons/mstile-150x150.png" },
+    ],
   },
   manifest: "/manifest.webmanifest",
   other: {

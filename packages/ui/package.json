@@ -3,5 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",
-  "types": "./index.ts"
+  "types": "./index.ts",
+  "dependencies": {
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "lucide-react": "^0.475.0",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3"
+  }
 }

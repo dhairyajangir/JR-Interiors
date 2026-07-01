@@ -1,9 +1,14 @@
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 
 export default function NotFound() {
   return (
     <main className="pt-32 pb-stack-lg min-h-[70vh] flex items-center">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center">
+        {/* Monogram logo — per brand spec for 404 */}
+        <div className="flex justify-center mb-8">
+          <Logo variant="monogram" className="h-20 w-auto" />
+        </div>
         <span className="text-label-xs uppercase tracking-[0.3em] text-primary/60 mb-4 block">Lost the thread</span>
         <h1 className="font-display-hero text-display-hero-mobile md:text-display-hero text-primary mb-6">
           404

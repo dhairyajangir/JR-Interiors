@@ -22,7 +22,7 @@ const getCachedProduct = unstable_cache(
   async (slug: string) => {
     return prisma.product.findFirst({
       where: { slug, status: "PUBLISHED" },
-      include: { reviews: { orderBy: { createdAt: "asc" } }, category: true, seller: true },
+      include: { reviews: { orderBy: { createdAt: "asc" } }, taxonomyLinks: { include: { taxonomy: true } }, seller: true },
     });
   },
   ["product-detail"],
@@ -108,7 +108,7 @@ export default async function ProductPage({ params }: { params: Params }) {
           <Link className="hover:text-primary transition-colors" href="/furniture">Furniture</Link>
           <span>/</span>
           <Link className="hover:text-primary transition-colors" href={`/furniture?room=${product.room}`}>
-            {product.category?.name ?? product.room}
+            {product.taxonomyLinks?.find((link: any) => link.primary)?.taxonomy?.name ?? product.room}
           </Link>
           <span>/</span>
           <span className="text-on-surface-variant">{product.name}</span>

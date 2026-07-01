@@ -1,4 +1,8 @@
 import withBundleAnalyzer from "@next/bundle-analyzer";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -39,14 +43,16 @@ const securityHeaders = [
 
 const nextConfig = {
   output: "standalone",
+  outputFileTracingRoot: path.join(__dirname, "../../.."),
   poweredByHeader: false,
   compress: true,
   productionBrowserSourceMaps: false,
   reactStrictMode: true,
   images: {
-    domains: ["jrinteriors.in", "cdn.jrinteriors.in"],
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
+      { protocol: "https", hostname: "jrinteriors.in" },
+      { protocol: "https", hostname: "cdn.jrinteriors.in" },
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "www.transparenttextures.com" },

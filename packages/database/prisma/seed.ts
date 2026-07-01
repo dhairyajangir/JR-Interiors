@@ -438,7 +438,7 @@ async function main() {
   await prisma.address.deleteMany();
   await prisma.seller.deleteMany();
   await prisma.user.deleteMany();
-  await prisma.category.deleteMany();
+  await prisma.taxonomy.deleteMany();
 
   console.log("Seeding demo user…");
   await prisma.user.create({
@@ -470,13 +470,13 @@ async function main() {
   console.log("Seeding categories…");
   const catByRoom = new Map<string, string>();
   for (const c of CATEGORIES) {
-    const created = await prisma.category.create({
+    const created = await prisma.taxonomy.create({
       data: {
         slug: c.slug,
         name: c.name,
-        kind: c.kind,
+        kind: c.kind.toUpperCase() as "ROOM" | "CATEGORY" | "COLLECTION" | "MATERIAL" | "STYLE" | "FINISH",
         description: c.description,
-        imageUrl: c.image,
+        coverImage: c.image,
         sortOrder: c.sortOrder,
       },
     });
@@ -652,7 +652,7 @@ async function main() {
   console.log("Updating category counts…");
   for (const [room, id] of catByRoom) {
     const count = await prisma.product.count({ where: { room, status: "PUBLISHED" } });
-    await prisma.category.update({ where: { id }, data: { itemCount: count } });
+    await prisma.taxonomy.update({ where: { id }, data: { productCount: count } });
   }
 
   const total = await prisma.product.count();

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Dining room interior illustration">
+  <rect width="1200" height="800" fill="#f1e8de"/>
+  <rect x="0" y="560" width="1200" height="240" fill="#caa575"/>
+  <rect x="180" y="220" width="360" height="260" rx="16" fill="#8e6d44"/>
+  <rect x="620" y="200" width="280" height="220" rx="16" fill="#b98b58"/>
+  <rect x="240" y="500" width="270" height="120" rx="12" fill="#6f4d2b"/>
+  <rect x="680" y="460" width="220" height="140" rx="12" fill="#6f4d2b"/>
+  <rect x="440" y="140" width="180" height="80" rx="8" fill="#956d3c"/>
+</svg>

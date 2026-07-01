@@ -1,7 +1,7 @@
 /* TEAM */
 Team: JR Interiors
 Location: Jaipur, Rajasthan, India
-Contact: concierge@jrinteriors.in
+Contact: adityajangid1409@gmail.com
 
 /* SITE */
 Last Updated: 2026-06-30
