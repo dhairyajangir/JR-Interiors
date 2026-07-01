@@ -1,7 +1,7 @@
 // JR Interiors — data model. Prices stored as integer cents.
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/@prisma/client-storefront"
+  output   = "../../node_modules/@prisma/client-storefront"
 }
 
 datasource db {
