@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@jr/ui", "@jr/database", "@jr/types"],
-  outputFileTracingRoot: path.join(__dirname, "../../.."),
+  outputFileTracingRoot: path.join(__dirname, "../.."),
 };
 
 export default nextConfig;
