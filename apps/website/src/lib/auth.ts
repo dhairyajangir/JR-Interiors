@@ -7,15 +7,10 @@ const COOKIE = "jr_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const DEV_FALLBACK = "dev-insecure-secret-change-me";
 const isProduction = process.env.NODE_ENV === "production";
-const isBuild = process.env.NEXT_PHASE?.includes("build") || process.env.CI === "true";
-const SECRET = process.env.AUTH_SECRET || (isProduction && !isBuild ? "" : DEV_FALLBACK);
+const SECRET = process.env.AUTH_SECRET || DEV_FALLBACK;
 
 if (isProduction && !process.env.AUTH_SECRET) {
-  if (isBuild) {
-    console.warn("[auth] AUTH_SECRET is not set during build; using a temporary fallback for compilation.");
-  } else {
-    throw new Error("AUTH_SECRET is required in production. Set a long random value.");
-  }
+  console.warn("[auth] AUTH_SECRET is not set in environment. Using fallback for compilation/build.");
 }
 
 if (isProduction && SECRET && (SECRET === DEV_FALLBACK || SECRET.length < 16)) {
@@ -40,6 +35,9 @@ export function emailIsAdmin(email: string): boolean {
 }
 
 function sign(value: string): string {
+  if (isProduction && (!process.env.AUTH_SECRET || process.env.AUTH_SECRET === DEV_FALLBACK)) {
+    throw new Error("AUTH_SECRET is required in production. Set a long random value.");
+  }
   return createHmac("sha256", SECRET).update(value).digest("base64url");
 }
 
