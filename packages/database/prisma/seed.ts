@@ -1,5 +1,11 @@
 import { PrismaClient, Prisma } from "@prisma/client-storefront";
-import { hashPassword } from "../src/lib/password";
+import { randomBytes, scryptSync } from "node:crypto";
+
+function hashPassword(password: string): string {
+  const salt = randomBytes(16);
+  const hash = scryptSync(password, salt, 64);
+  return `scrypt$${salt.toString("hex")}$${hash.toString("hex")}`;
+}
 
 const prisma = new PrismaClient();
 
