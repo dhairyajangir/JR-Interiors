@@ -20,12 +20,13 @@ export default function ContactPage() {
             </p>
             <div className="space-y-5">
               <ContactRow icon="mail" label="Email" value="adityajangid1409@gmail.com" href="mailto:adityajangid1409@gmail.com" />
-              <ContactRow icon="call" label="Phone" value="+91 94603 00750" href="tel:+919460300750" />
-              <ContactRow icon="call" label="Phone" value="+91 70231 90388" href="tel:+917023190388" />
+              <PhoneRow numbers={[
+                { value: "+91 94603 00750", href: "tel:+919460300750" },
+                { value: "+91 70231 90388", href: "tel:+917023190388" },
+              ]} />
               <ContactRow icon="chat" label="WhatsApp Chat" value="+91 94603 00750 (Click to Chat)" href="https://wa.me/919460300750" />
               <ContactRow icon="location_on" label="Jaipur Atelier" value="Pno. 251 Nirmal Vihar, Dadi Ka Phatak, Jhotwara, Jaipur 302012" href="https://maps.google.com/?q=Pno.+251+Nirmal+Vihar,+Dadi+Ka+Phatak,+Jhotwara,+Jaipur+302012" />
               <ContactRow icon="instagram" label="Instagram" value="@jr_interiors_2024" href="https://instagram.com/jr_interiors_2024" />
-              <ContactRow icon="schedule" label="Hours" value="Monâ€“Sat Â· 10am â€“ 7pm IST" />
             </div>
           </div>
 
@@ -99,6 +100,32 @@ function ContactRow({
         ) : (
           <p className="text-body-md text-primary font-bold">{value}</p>
         )}
+      </div>
+    </div>
+  );
+}
+
+function PhoneRow({ numbers }: { numbers: { value: string; href: string }[] }) {
+  return (
+    <div className="flex items-start gap-4">
+      <span className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+        <Icon name="call" className="text-[20px]" />
+      </span>
+      <div>
+        <p className="text-label-xs uppercase tracking-widest text-on-surface-variant">Phone</p>
+        <p className="text-body-md text-primary font-bold">
+          {numbers.map((number, index) => (
+            <span key={number.href}>
+              <a
+                href={number.href}
+                className="hover:underline hover:text-primary/80 transition-colors"
+              >
+                {number.value}
+              </a>
+              {index < numbers.length - 1 ? ", " : ""}
+            </span>
+          ))}
+        </p>
       </div>
     </div>
   );
